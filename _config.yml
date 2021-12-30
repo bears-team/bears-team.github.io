@@ -57,9 +57,9 @@ plugins:
   - jekyll-include-cache
 
 author:
-  name   : "First Lastname"
+  name   : "BEARS"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "My awesome biography constrained to a sentence or two goes here."
+  bio    : "BEARS means Blacksmith Enhanced Armor for Robust Smart-contract. The purpose of BEARS study group is to analyze and learn the old style vulnerabilities of smart-contract as quickly as possible. And our team will research various methods for discovering the vulnerabilities of smart-contract."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
