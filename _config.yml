@@ -16,9 +16,14 @@
 title: Bears Team Blog
 email: bears.team.kr@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  BEARS means Blacksmith Enhanced Armor for Robust Smart-contract.
+  The purpose of BEARS team is to analyze and learn the old and
+  contemporary vulnerabilities of smart-contract as quickly as possible.
+  And our team will research various methods for discovering 
+  the vulnerabilities of smart-contract.
+  Furthermore, our team survey and research the bussiness model of blockchain
+  ecosystem including system trading algorithms.
+logo                     : "/assets/images/bears_logo.png"
 twitter_username: username
 github_username: username
 minimal_mistakes_skin: default
@@ -58,9 +63,12 @@ plugins:
 
 author:
   name   : "BEARS"
-  avatar : "/assets/images/bio-photo.jpg"
-  bio    : "BEARS means Blacksmith Enhanced Armor for Robust Smart-contract. The purpose of BEARS study group is to analyze and learn the old style vulnerabilities of smart-contract as quickly as possible. And our team will research various methods for discovering the vulnerabilities of smart-contract."
+  avatar : "/assets/images/bears_team.png"
+  bio    : "Blockchain Study Group"
   links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "bears.team.kr@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://"
