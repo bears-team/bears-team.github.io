@@ -26,7 +26,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 #{% endfigure %}
 ---
 # Executive Summary
-이 문서는 Immunefi사의 기술 블로그중 Ploygon Lack Of Balance Check Bug fix Postmortem-$2.2m Bounty 문서를 읽고 BEARS 팀내 기술 세미나 자료로 활용하기 위해 작성되었으며, 해당 블로그 내용 공유를 통해 Smart Contract내 취약점 유형을 학습하는데 중점을 두고 작성된 문서임.
+이 문서는 Immunefi사의 기술 블로그중 [Ploygon Lack Of Balance Check Bug fix Postmortem-$2.2m Bounty](https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d) 문서를 읽고 BEARS 팀내 기술 세미나 자료로 활용하기 위해 작성되었으며, 해당 블로그 내용 공유를 통해 Smart Contract내 취약점 유형을 학습하는데 중점을 두고 작성된 문서입니다.
 
 # Background
 ## Polygon project
@@ -54,6 +54,22 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 
 # Vulnerability
 
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-01-26-immunefi-polygon/transferWithSig.png"| relative_url}}) | 
+|:--:| 
+| 그림.3 transferWithSig 함수 코드 |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-01-26-immunefi-polygon/ecrecovery.png"| relative_url}}) | 
+|:--:| 
+| 그림.4 ecrecovery 함수 코드 |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-01-26-immunefi-polygon/transferFrom.png"| relative_url}}) | 
+|:--:| 
+| 그림.5 _transferFrom 함수 코드 |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-01-26-immunefi-polygon/patch.png"| relative_url}}) | 
+|:--:| 
+| 그림.6 폴리곤 프로젝트팀에서 실시한 패치 정보 |
+
 # References
-* https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d
-* https://polygonscan.com/address/0x0000000000000000000000000000000000000000
+* [https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d](https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d)
+* [https://polygonscan.com/address/0x0000000000000000000000000000000000000000](https://polygonscan.com/address/0x0000000000000000000000000000000000000000)
