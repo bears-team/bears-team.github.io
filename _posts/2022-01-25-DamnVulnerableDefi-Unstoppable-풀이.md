@@ -147,7 +147,7 @@ All contracts have already been compiled, skipping compilation.
 ## 마치며
 
 DeFi에서 사용하는 Pool을 관리하는데 있어 Balance가 다양한 방식으로 조절될 수 있다.
-특히 여러 체인을 연계하는 서비스의 경우 ...
+특히 여러 체인을 연계하는 서비스의 경우 자체적으로 각 Token에 대한 Balance를 가지고 관리하는 경우 이러한 문제가 발생할 수 있다.
 
 
 [Damn Vulnerable DeFi]: https://www.damnvulnerabledefi.xyz 
