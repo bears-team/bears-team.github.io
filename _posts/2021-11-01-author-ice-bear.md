@@ -23,4 +23,4 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 #{% endfigure %}
 ---
 # Executive Summary
-Author Test
+IceBear is a security researcher with more than 10-years'experience in the field.
