@@ -1,15 +1,15 @@
 ---
-title:  "Author Test IceBear"
-excerpt: "Author Test"
+title:  "Author IceBear"
+excerpt: "About IceBear"
 
 author: IceBear
 categories:
-  - System Trading
+  - Introduction
 tags:
-  - HFT
+  - IceBear
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2021-11-04 09:00:00 +09:00
-lastmod: 2021-11-10 11:10:00 +09:00
+lastmod: 2022-01-16 10:10:00 +09:00
 
 # table of contents
 toc: true # 오른쪽 부분에 목차를 자동 생성해준다.

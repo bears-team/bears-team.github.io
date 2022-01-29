@@ -33,7 +33,7 @@ Grizzly:
 IceBear:
   name             : "IceBear"
   avatar           : "/assets/images/ice_bear.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Security Researcher & Deep Learning enthusiast"
+  bio              : "Security Researcher"
   location         : "Seoul"
   email            :
   links:
