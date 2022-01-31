@@ -24,6 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Furthermore, our team survey and research the bussiness model of blockchain
   ecosystem including system trading algorithms.
 logo                     : "/assets/images/bears_logo.png"
+url                      : "https://bears-team.github.io/"
 twitter_username: username
 github_username: username
 minimal_mistakes_skin: default
