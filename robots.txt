@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bears-team.github.io/sitemap.xml
