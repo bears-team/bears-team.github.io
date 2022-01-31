@@ -1,10 +1,10 @@
 ---
-title: "Chronos Theft of Transaction Fees Bugfix 리뷰"
+title: "Cronos Theft of Transaction Fees Bugfix 리뷰"
 author: IceBear
 categories:
   - Vulnerability
 tags:
-  - Chronos
+  - Cronos
   - Ethermint
   - Theft of Transaction Fees
 # table of contents
@@ -14,17 +14,19 @@ toc_icon: "bars" # 아이콘 설정
 toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ---
 
-ImmuneFi 블로그 글인 "Chronos Theft of Transaction Fees Bugfix Postmortem"을 정리해보고자 한다.
+ImmuneFi 블로그 글인 "Cronos Theft of Transaction Fees Bugfix Postmortem"을 정리해보고자 한다.
 원문은 [ImmuneFi 블로그]를 참조하면 된다.
 
 블록체인에서는 Transaction을 통해 모든 것이 이루어진다고 할 수 있다. 
 Transaction이 처리되도록 하기 위해서 수수료(Fee)를 지불하게 되는데, Fee를 많이 지불하면 할수록 해당 Transaction이 빨리 처리될 수 있다.
-Chronos 블록체인의 Ethermint 클라이언트에서 Fee를 훔치는 방법을 [zb3]라는 해커가 발견하였다.
+Cronos 블록체인의 Ethermint 클라이언트에서 Fee를 훔치는 방법을 [zb3]라는 해커가 발견하였다.
 
-## Chronos 블록체인과 Ethermint
+## Cronos 블록체인과 Ethermint
 
-Chronos는 EVM(Ethereum Virtual Machine)과 호환가능한(compatible) Cosmos SDK로 구현된 블록체인으로, Crypto.com의 확장 프로젝트이다.
+Cronos는 EVM(Ethereum Virtual Machine)과 호환가능한(compatible) Cosmos SDK로 구현된 블록체인으로, Crypto.com의 확장 프로젝트이다.
+![Cronos](/assets/images_post/2022-01-23-immunefi-cronos/cronos.png)
 그리고 이를 기반으로 만들어진 것이 Ethermint이다.
+![Ethermint](/assets/images_post/2022-01-23-immunefi-cronos/ethermint.png)
 따라서 Ethermint를 통해 EVM 기반 블록체인과 Cosmos 기반 블록체인을 동시에 지원하므로, 두 체인간 Transaction을 연결(Bridge)하거나 전파(Propagate)할 수 있다.
 
 Ethermint는 MsgEthereumTx를 이용해 Ethereum Transaction을 SDK Message로 감싼다(Wrap).
