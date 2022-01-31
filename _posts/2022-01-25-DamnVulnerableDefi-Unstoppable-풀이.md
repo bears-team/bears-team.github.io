@@ -6,6 +6,10 @@ categories:
 tags:
   - DamnVulnerableDefi
   - Unstoppable
+
+sitemap :
+changefreq : daily
+priority : 1.0
 # table of contents
 toc: true # 오른쪽 부분에 목차를 자동 생성해준다.
 toc_label: "table of content" # toc 이름 설정

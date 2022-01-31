@@ -14,6 +14,9 @@ tags:
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2022-1-26 07:00:00 +09:00
 lastmod: 2022-1-29 11:00:00 +09:00
+sitemap :
+changefreq : daily
+priority : 1.0
 
 # table of contents
 toc: true # 오른쪽 부분에 목차를 자동 생성해준다.
