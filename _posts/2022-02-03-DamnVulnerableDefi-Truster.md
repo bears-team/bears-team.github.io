@@ -25,6 +25,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ## 컨트랙트 분석
 
 ### TrusterLenderPool
+
 ~~~
   ...
   function flashLoan(
@@ -63,6 +64,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 이 문제의 포인트는 누가봐도 이상한 이 문장이다: `target.functionCall(data);`. `functionCall`은 openZepplin에서 개발한 `Utilities` 라이브러리에 다음과 같은 형태로 구현되어 있다.
 
 * `functionCall(address, bytes)` in `@openzepplin/contracts/utils`
+
 ~~~
 function functionCall(address target, bytes memory data) internal returns (bytes memory) {
     return functionCall(target, data, "Address: low-level call failed");
@@ -70,6 +72,7 @@ function functionCall(address target, bytes memory data) internal returns (bytes
 ~~~
 
 * `functionCall(address, bytes, string)` in `@openzepplin/contracts/utils`
+
 ~~~
 function functionCall(
     address target,
@@ -81,6 +84,7 @@ function functionCall(
 ~~~
 
 * `functionCallWithValue(address, bytes, uint256, string)` in `@openzepplin/contracts/utils`
+
 ~~~
 function functionCallWithValue(
     address target,
@@ -196,7 +200,7 @@ contract Attack {
 $ npm install --save-dev @nomiclabs/hardhat-web3
 ~~~
 그 다음 `hardhat.config.js`에 아래와 같이 `require` 문장을 추가한다.
-~~~Javascript
+~~~
 require("@nomiclabs/hardhat-waffle");
 require('@nomiclabs/hardhat-web3'); // 이거
 require('@openzeppelin/hardhat-upgrades');
