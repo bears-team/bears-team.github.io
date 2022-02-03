@@ -33,7 +33,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 
 ### NaiveReceiverLenderPool
 
-```Solidity
+~~~Solidity
     ...
     function flashLoan(address borrower, uint256 borrowAmount) external nonReentrant {
 
@@ -57,7 +57,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         );
     }
     ...
-```
+~~~
 가장 중요한 `flashLoan` 함수만 보면, 
 1. 대출자의 주소(`borrower`)와 대출금액(`borrowAmount`)을 매개변수로 전달받아, 
 2. 대출 전 잔액인 `balanceBefore`가 `borrowAmount`보다 크면, 
@@ -69,7 +69,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 
 ### FlashLoanReceiver
 
-```Solidity
+~~~Solidity
     ...
     // Function called by the pool during flash loan
     function receiveEther(uint256 fee) public payable {
@@ -85,7 +85,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         pool.sendValue(amountToBeRepaid);
     }
     ...
-```
+~~~
 여기에서도 `receiveEther` 함수만 살펴본다. 
 1. 이 함수는 수수료(`fee`)를 매개변수로 전달받아, 
 2. `msg.sender`가 `NaiveReceiverLenderPool` 컨트랙트인지 확인한다. 
@@ -97,7 +97,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ## Solution
 이 문제는 너무 쉬워서 풀이라 할 것도 없다... `FlashLoanReceiver`가 얼마를 대출하던 항상 수수료로 `1 ether`가 지출되기 떄문에 대출금을 `0`으로 설정하고 `flashLoan` 함수를 `10`번 호출하면, `FlashLoanReceiver`의 자본 `10 ether`를 모두 소진하게 된다.
 
-```Javascript
+~~~Javascript
     ...
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */   
@@ -106,6 +106,6 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         }
     });
     ...
-```
+~~~
 
 ***EZ***
