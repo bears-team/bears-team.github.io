@@ -25,7 +25,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ## 컨트랙트 분석
 
 ### TrusterLenderPool
-~~~Solidity
+~~~
   ...
   function flashLoan(
         uint256 borrowAmount,
@@ -63,14 +63,14 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 이 문제의 포인트는 누가봐도 이상한 이 문장이다: `target.functionCall(data);`. `functionCall`은 openZepplin에서 개발한 `Utilities` 라이브러리에 다음과 같은 형태로 구현되어 있다.
 
 * `functionCall(address, bytes)` in `@openzepplin/contracts/utils`
-~~~Solidity
+~~~
 function functionCall(address target, bytes memory data) internal returns (bytes memory) {
     return functionCall(target, data, "Address: low-level call failed");
 }
 ~~~
 
 * `functionCall(address, bytes, string)` in `@openzepplin/contracts/utils`
-~~~Solidity
+~~~
 function functionCall(
     address target,
     bytes memory data,
@@ -81,7 +81,7 @@ function functionCall(
 ~~~
 
 * `functionCallWithValue(address, bytes, uint256, string)` in `@openzepplin/contracts/utils`
-~~~Solidity
+~~~
 function functionCallWithValue(
     address target,
     bytes memory data,
@@ -117,7 +117,7 @@ ERC20를 접해본적이 있다면, 느낌이 올 것이다. 바로 `approve`/`t
 
 1. 컨트랙트를 이용하는 방법
 * Attack.sol
-~~~Solidity
+~~~
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
@@ -151,7 +151,7 @@ contract Attack {
 ~~~
 
 * 익스플로잇 Javscript 코드
-~~~Javascript
+~~~
   ...
   it('Exploit', async function () {
     /** CODE YOUR EXPLOIT HERE  */
@@ -166,8 +166,8 @@ contract Attack {
   ...
 ~~~
 
-2. Javascript만 이용하는 방법
-~~~Javascript
+1. Javascript만 이용하는 방법
+~~~
   ...
   it('Exploit', async function () {
     /** CODE YOUR EXPLOIT HERE  */
@@ -188,7 +188,7 @@ contract Attack {
   ...
 ~~~
 이 방법으로 할 때에는 익스플로잇 Javascript에서 web3.js를 사용할 수 있도록 해야 한다. 방법은 다음과 같다.
-~~~Bash
+~~~
 # Damn Vulnerable Defi 프로젝트의 root 디렉토리에서
 $ npm install --save-dev @nomiclabs/hardhat-web3
 ~~~
