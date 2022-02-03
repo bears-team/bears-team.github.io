@@ -21,7 +21,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 `Unstoppable`에 이은 Damn Vulnerable Defi 워게임의 2번째 문제이다. 
 (하지만, 여느 워게임이 그렇듯 문제간 연관성은 없다;P)
 
-첫 번째 문제에 서술되어 있듯이, 이 워게임에서 제공되는 문제들은 `Solidity`로 작성된 스마트 컨트랙트 파일(들)과 `Javascript`로 작성된 익스플로잇 코드 템플릿을 제공한다. 익스플로잇 코드 템플릿은 `Hardhat`과 `Mocha` 프레임워크로 작성되어 크게 템플릿 코드가 크게 `before`, `it`, `after`로 구분된다. `before` 파트는 문제의 스마트 컨트랙트를 배포하고 초기 자본(?) 설정 등과 같은 초기화를 담당한다. `it` 파트에는 스마트 컨트랙트를 익스플로잇하기 위한 코드가 위치하며, 플레이어가 작성할 수 있도록 비워져있다. 마지막으로, `after` 파트에는 문제의 달성 조건이 작성되어있다. 
+첫 번째 문제에 서술되어 있듯이, 이 워게임에서 제공되는 문제들은 `Solidity`로 작성된 스마트 컨트랙트 파일(들)과 `Javascript`로 작성된 익스플로잇 코드 템플릿을 제공한다. 익스플로잇 코드 템플릿은 `Hardhat`과 `Waffle` 프레임워크로 작성되어 크게 템플릿 코드가 크게 `before`, `it`, `after`로 구분된다. `before` 파트는 문제의 스마트 컨트랙트를 배포하고 초기 자본(?) 설정 등과 같은 초기화를 담당한다. `it` 파트에는 스마트 컨트랙트를 익스플로잇하기 위한 코드가 위치하며, 플레이어가 작성할 수 있도록 비워져있다. 마지막으로, `after` 파트에는 문제의 달성 조건이 작성되어있다. 
 
 워게임 플레이어는 스마트 컨트랙트와 익스플로잇 코드의 after 파트를 확인해서, 문제의 방향을 확인해야 한다.
 (물론, 워게임 [사이트](https://www.damnvulnerabledefi.xyz/)에도 글로 잘 작성되어 있다.)
@@ -33,7 +33,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 
 ### NaiveReceiverLenderPool
 
-```Solidity
+~~~
     ...
     function flashLoan(address borrower, uint256 borrowAmount) external nonReentrant {
 
@@ -57,7 +57,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         );
     }
     ...
-```
+~~~
 가장 중요한 `flashLoan` 함수만 보면, 
 1. 대출자의 주소(`borrower`)와 대출금액(`borrowAmount`)을 매개변수로 전달받아, 
 2. 대출 전 잔액인 `balanceBefore`가 `borrowAmount`보다 크면, 
@@ -69,7 +69,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 
 ### FlashLoanReceiver
 
-```Solidity
+~~~
     ...
     // Function called by the pool during flash loan
     function receiveEther(uint256 fee) public payable {
@@ -85,7 +85,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         pool.sendValue(amountToBeRepaid);
     }
     ...
-```
+~~~
 여기에서도 `receiveEther` 함수만 살펴본다. 
 1. 이 함수는 수수료(`fee`)를 매개변수로 전달받아, 
 2. `msg.sender`가 `NaiveReceiverLenderPool` 컨트랙트인지 확인한다. 
@@ -97,7 +97,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ## Solution
 이 문제는 너무 쉬워서 풀이라 할 것도 없다... `FlashLoanReceiver`가 얼마를 대출하던 항상 수수료로 `1 ether`가 지출되기 떄문에 대출금을 `0`으로 설정하고 `flashLoan` 함수를 `10`번 호출하면, `FlashLoanReceiver`의 자본 `10 ether`를 모두 소진하게 된다.
 
-```Javascript
+~~~
     ...
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */   
@@ -106,6 +106,6 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
         }
     });
     ...
-```
+~~~
 
 ***EZ***
