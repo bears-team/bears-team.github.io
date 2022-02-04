@@ -208,3 +208,9 @@ require('hardhat-dependency-compiler');
 ~~~
 
 ***EZ*** (...?)
+
+## References
+
+* Damn Vulnerable DeFi-Truster, https://www.damnvulnerabledefi.xyz/challenges/3.html
+* OpenZepplin Docs-Utilities, https://docs.openzeppelin.com/contracts/2.x/utilities
+* OpenZepplin Docs-ERC 20, https://docs.openzeppelin.com/contracts/2.x/api/token/erc20

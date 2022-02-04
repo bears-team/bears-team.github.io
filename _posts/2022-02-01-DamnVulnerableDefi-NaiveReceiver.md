@@ -109,3 +109,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ~~~
 
 ***EZ***
+
+## References
+
+* Damn Vulnerable DeFi-Naive receiver, https://www.damnvulnerabledefi.xyz/challenges/2.html
