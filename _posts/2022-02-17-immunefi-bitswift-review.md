@@ -7,7 +7,7 @@ categories:
   - Security
   - Smart Contract
 tags:
-  - Ploygon
+  - Web
   - Logical Bug
   - Critical Severity
   - Korean

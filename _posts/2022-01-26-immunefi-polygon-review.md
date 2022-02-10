@@ -7,7 +7,7 @@ categories:
   - Security
   - Smart Contract
 tags:
-  - Ploygon
+  - Polygon
   - Logical Bug
   - Critical Severity
   - Korean
@@ -30,12 +30,12 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 #{% endfigure %}
 ---
 # Executive Summary
-이 문서는 Immunefi사의 기술 블로그중 [Ploygon Lack Of Balance Check Bug fix Postmortem-$2.2m Bounty](https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d) 문서를 읽고 BEARS 팀내 기술 세미나 자료로 활용하기 위해 작성되었으며, 해당 블로그 내용 공유를 통해 Smart Contract내 취약점 유형을 학습하는데 중점을 두고 작성된 문서입니다.
+이 문서는 Immunefi사의 기술 블로그중 [Polygon Lack Of Balance Check Bug fix Postmortem-$2.2m Bounty](https://medium.com/immunefi/polygon-lack-of-balance-check-bugfix-postmortem-2-2m-bounty-64ec66c24c7d) 문서를 읽고 BEARS 팀내 기술 세미나 자료로 활용하기 위해 작성되었으며, 해당 블로그 내용 공유를 통해 Smart Contract내 취약점 유형을 학습하는데 중점을 두고 작성된 문서입니다.
 
 # Background
 ## Polygon project
 * 2017년도에 Matic 프로젝트라는 이름으로 프로젝트 시작
-* 2021년 2월에 Ploygon으로 리브랜딩
+* 2021년 2월에 Polygon으로 리브랜딩
 * Proof of Stake (PoS) 
 * 인도 사람들이 주축(인도에 본사 위치)
 * 이더리운 호환 블록체인 네트워크 구축을 목표
@@ -45,7 +45,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 |:--:| 
 | 그림.1 Polygon 프로젝트의 목표 |
 
-## Ploygon Address(0x0)
+## polygon Address(0x0)
 * 특별한 주소이며, 폴리곤 프로젝트에서 토큰을 소각하거나 생성할 때 사용하는 주소
 * 아래 그림을 보면 지금 현재에도 관점에 따라 상당하다고 생각할 수 있는 약 3.5만개의 MATIC(폴리콘 토큰 단위)이 존재하며, 취약점 제보시 9,276,584,322 MATIC이 존재했던 것으로 Immunefi 원문 포스트에 기술되어 있습니다.
 
@@ -84,7 +84,7 @@ Immunefi에서 공개한 글을 분석해보면, 취약점은 매우 단순하�
 |:--:| 
 | 그림.5 _transferFrom 함수 코드 |
 
-결국 일단 급한데로 폴리곤(Ploygon) 프로젝트에서는 아래 그림과 같이, 해당 함수를 제거하는 것으로 급하게 취약점을 제거한 것으로 보입니다.
+결국 일단 급한데로 폴리곤(Polygon) 프로젝트에서는 아래 그림과 같이, 해당 함수를 제거하는 것으로 급하게 취약점을 제거한 것으로 보입니다.
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-01-26-immunefi-polygon/patch.png"| relative_url}}) | 
 |:--:| 
