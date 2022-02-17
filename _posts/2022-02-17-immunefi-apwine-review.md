@@ -12,7 +12,7 @@ tags:
   - Critical Severity
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-02-17 19:00:00 +09:00
+date: 2022-02-16 19:00:00 +09:00
 lastmod: 2022-02-17 19:00:00 +09:00
 sitemap :
 changefreq : daily
