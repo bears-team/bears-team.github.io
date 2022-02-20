@@ -19,8 +19,9 @@ toc_icon: "bars" # 아이콘 설정
 toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 ---
 
-1월 24일 0x Protocol 팀이 ZORA의 AsksV1 모듈에 대한 Race Condition 취약점을 발견하여 제보하였다.
-다행히 금전적인 피해는 없었고 ZORA 측에서 바로 패치하였다.
+본 글은 팀 스터디 목적으로 ZORA의 기술문서를 읽고 요약한 내용이다.
+
+1월 24일 0x Protocol 팀이 ZORA의 AsksV1 모듈에 대한 Race Condition 취약점을 발견하여 제보한 내용으로, 다행히 금전적인 피해는 없었고 ZORA 측에서 바로 패치하였다.
 
 ## ZORA 란?
 
