@@ -1,8 +1,11 @@
 ---
 title:  "Immunefi Bounty Alchemix Finance 분석"
-excerpt: "Immunefi Bounty 프로그램에 등록된 블록체인 서비스(Alchemix Finance) 분석 내용임"
+excerpt: "Immunefi Bounty 프로그램에 등록된 블록체인 서비스(Alchemix Finance)를 베어즈(Bears) 팀에서 분석 내용임"
 
-author: Panda
+author: 
+  - Grizzly
+  - IceBear
+  - Panda
 categories:
   - Immunefi Bounty
 tags:
@@ -37,6 +40,12 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 | 그림.1 Alchemix Finance 프로토콜 스택 |
 
 # Related Work(Certik)
+
+# Analysis Environment
+
+# Code Audit(By Grizzly)
+
+# Code Audit(By IceBear)
 
 # Code Audit(By Panda)
 
