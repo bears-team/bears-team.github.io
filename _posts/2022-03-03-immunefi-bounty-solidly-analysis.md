@@ -44,4 +44,5 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 # Code Audit(By Panda)
 
 # References
+* [https://soliditydeveloper.com/solana](https://soliditydeveloper.com/solana)
 * [https://github.com/andrecronje/solidly/blob/master/readme.md](https://github.com/andrecronje/solidly/blob/master/readme.md)
