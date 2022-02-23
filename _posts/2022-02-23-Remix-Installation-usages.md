@@ -69,7 +69,7 @@ chunk {vendor} vendor.js (vendor) 36.6 MiB ={main}= ={runtime}= [initial] [rende
 ### Writing a smart contract
 REMIX의 화면의 좌측 윈도우에서 `File explorers`를 보면, `default workspace`로 되어 있고, 밑에 디렉토리 구조가 보일 것이다. (Hardhat이 디폴트가 아니기 때문에 사용할 수 없지만,) 프로젝트 구조가 Hardhat의 프로젝트 구조와 유사하다 (사실 Truffle도 비슷하다). `contracts` 디렉토리에는 작성한 스마트 컨트랙트가 위치하고, `scripts`에는 배포 스크립트, `tests`는 테스트 스크립트가 위치한다. 
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-file-explorers.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-file-explorers.png)
 
 `contracts` 디렉토리에는 기본적으로 3개의 스마트 컨트랙트가 생성되어 있다. 이것들을 사용해도 좋지만, Solidity를 손에 익을 겸 간단한 컨트랙트를 작성해보자. Solidity의 "Hello, world" 격인 Greeter 컨트랙트이다.
 
@@ -101,18 +101,18 @@ contract Greeter {
 ### Compile a smart contract
 작성한 스마트 컨트랙트를 컴파일해보자. REMIX의 좌측 윈도우에서 `Solidity compiler`를 보면, 스마트 컨트랙트를 컴파일하기 위한 컴파일어를 선택할 수 있다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-solidity-compiler.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-solidity-compiler.png)
 
 작성한 스마트 컨트랙트의 Solidity 버전에 맞춰서 컴파일러를 선택하면 된다. Solidity의 버전은 기본적으로 semantic versioning을 사용하기 때문에 익숙한 사람들은 쉽게 알아볼 수 있을 것이다. 이 예제에서는 `0.8.0` 버전의 컴파일러를 사용하겠다. 컴파일러 버전을 선택하면, 잠시 컴파일러를 불러오는 시간이 필요하다. 이후에 하단의 `Compile [컨트랙트 파일 명]` 버튼을 클릭하면, 컨트랙트가 컴파일된다.
 
 스마트 컨트랙트를 컴파일하면 EVM이 사용할 정보가 이것저것 만들어진다. 예를 들어, 컨트랙트의 바이트코드, 함수의 ABI 등이 여기에 포함된다. 이런 정보를 확인하고 싶다면, 하단의 `Compilation Details`를 통해 확인할 수 있다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-solidity-compiler-details.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-solidity-compiler-details.png)
 
 ### Deploy a smart contract
 컴파일까지 성공했으니, 이제 스마트 컨트랙트를 배포해보자. REMIX의 좌측 윈도우에서 `Deploy & RUN Transactions`를 선택하면, 스마트 컨트랙트를 배포하고, 트랙잭션을 발생시킬 수 있는 인터페이스가 나타난다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy.png)
 
 먼저, 어떤 네트워크에 컨트랙트를 배포해야할 지 선택해야 하는데, `Environment`를 몇 가지 환경이 나타날 것이다. 일단 디폴트로 세팅되어 있는 `JavaScript VM (London)`을 사용하자. 이 환경은 로컬 테스트 환경이라고 생각하면 된다.
 
@@ -122,7 +122,7 @@ contract Greeter {
 
 그리고, 배포할 컨트랙트를 선택한다. 이 메뉴가 왜 드롭다운 형태로 되어 있냐하면, 한 파일에 여러개의 컨트랙트를 작성할 수 있고, Solidity가 상속을 지원하기 때문이다. 아무튼 여기에서는 위에서 작성한 예제 컨트랙트인 `Greeter`를 선택하고, 하단의 `Deploy` 버튼을 클릭한다. 스마트 컨트랙트를 배포하면 곧바로 컨트랙트의 생성자가 호출되는데, 이 예제의 생성자는 문자열 매개변수를 요구한다. 따라서 적당히 "hello, world"를 입력해놓고, `Deploy` 버튼을 클릭한다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-contract.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-contract.png)
 
 배포가 성공하면 REMIX 하단의 콘솔에 녹색 체크 아이콘을 가진 문장이 출려될 것이다. 배포에 성공했다는 뜻이다. 이 문장을 클릭해보면, 배포 트랜잭션의 다양한 정보를 확인할 수 있다.
 
@@ -131,25 +131,25 @@ contract Greeter {
 
 먼저, 배포된 스마트 컨트랙트와 해당 컨트랙트가 구현하고 있는 함수의 목록을 확인한다. 이는 `Deploy & RUN Transactions` 윈도우 하단의 `Deployed Contract`를 통해 확인가능하다. 앞서 컨트랙트를 성공적으로 배포했다면, 여기에 배포한 컨트랙트 이름을 가진 접이식 메뉴가 보일 것이다. 이것을 클릭하면 함수 목록을 확인할 수 있다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-functions.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-functions.png)
 
 인터페이스가 굉장히 직관적이라서 별로 헷갈릴 것도 없다. 실행하고 싶은 함수 버튼을 클릭하면 해당 함수를 실행하기 위한 트랜잭션이 발생되고, 함수가 매개변수를 요구한다면, 적당히 작성해주면 된다. 앞서 컨트랙트를 배포할 때, 생성자의 매개변수로 "Hello, world"를 전달했다. 생성자가 정상적으로 실행되었다면, 현재 컨트랙트의 상태 변수(state variable)인 `greeting`은 "Hello, world"를 가지고 있을 것이다. 이를 확인하기 위해 `getGreet` 함수를 실행해본다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-getgreet.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-getgreet.png)
 
 예상대로 "Hello, world" 문자열이 반환되었다. 이번에는 `setGreet` 함수를 호출해서 `greeting`의 값을 변경하고, `getGreet` 함수로 그 값을 확인해보자.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-setgreet.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-setgreet.png)
 
 `setGreet`를 호출해서 `greeting`의 값을 "Bears"로 변경하고, `getGreet`로 확인해보니, 변경된 값으로 반환되었다. 
 
 이번에는 스마트 컨트랙트로 이더를 전송해보자. 예제로 작성한 컨트랙트는 `fallback` 함수를 가지고있다. `fallback`은 쉽게 말해 컨트랙트가 이더를 받기 위한 함수이다 (정확한 설명은 아니기 때문에 직접 검색해보기 바란다). 아무튼 컨트랙트가 이더를 받으려면 반드시 이 함수가 있어야 한다 (Solidity 버전에 따라 `receive` 함수도 있는데, 이것도 직접 검색해보기 바란다). 이 함수는 사용자가 명시적으로 호출할 수 없고, 컨트랙트가 이더를 받으면 자동으로 호출된다. 때문에 앞서 함수 목록에 나타나지 않은 것이다. 앞서 `Deployed Contracts`에서 확인한 함수 목록 밑에 `Low level interactions`라는 메뉴가 있다. 여기에서는 말 그대로 함수 호출을 abi 스펙에 따라 인코딩한 calldata를 low-level로 생성해 전달할 수 있다. 혹은 값이 없어도 트랜잭션을 발생시킬 수 있다. 이번에는 값을 넣지 않고, 이더만 전송해보자. 이더를 전송할 때는 해당 화면 상단의 value를 설정하면 된다. 10 wei만 전송해보겠다. 아래 그림과 같이 세팅하고, `Transact` 버튼을 클릭한다. 만약, 다른 계정에서 전송하고 싶다면, `Account` 목록에서 다른 계정을 선택하면 된다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-calldata.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-calldata.png)
 
 위 그림은 서로 멀리 떨어져있는 이더 값 설정과 트랜잭션 화면을 잘라서 붙여 놓은 것이니 오해하지 말자. 트랜잭션이 성공하면 스마트 컨트랙트로 10 wei가 전송되었을 것이다. 콘솔에서 쉽게 확인할 수 있다. 우선, 배포한 컨트랙트의 주소를 획득한다. 컨트랙트의 주소는 아래 그림같이 `Deployed Contracts`에서 원하는 컨트랙트의 `copy` 버튼을 클릭하면, 컨트랙트의 주소가 클립보드에 복사된다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-balance1.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-balance1.png)
 
 이제 REMIX 하단의 콘솔에서 계정의 잔액을 확인하기 위한 Javascript 코드를 입력한다. 계정 주소에는 앞서 복사한 컨트랙트의 주소를 입력한다.
 
@@ -157,7 +157,7 @@ contract Greeter {
 > web3.eth.getBalance('계정 주소');
 ~~~
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-balance2.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-deploy-balance2.png)
 
 ## Use the local workspace
 지금까지는 REMIX의 `default workspace`에서 모든 작업을 진행했다. 이 workspace는 사용하고 있는 웹 브라우저의 로컬 스토리지에 모든 작업 내용이 저장된다. 하지만, 실제 스마트 컨트랙트 개발에서 브라우저의 로컬 스토리지를 사용하는 것은 매우 불편하고 비생산적일 것이다. 이 때문에 REMIX는 자체 로컬 디렉토리를 workspace로 사용할 수 있게 하는 기능을 제공한다. 이를 위해 먼저 `remixd`를 설치해야 한다. 
@@ -172,7 +172,7 @@ $ remixd -s ~/remix-dir -u http://localhost:8080
 
 `remixd`를 실행한 상태로 REMIX의 `File exlorers`에서 workspace를 선택한다. 아마 처음과 달리 `-- connect to localhost --`라는 메뉴가 있을 것이다. 이 메뉴를 클릭하면 아래와 같은 팝업이 나타나면서, `remixd`에 연결할 것인지 확인한다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-remixd.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-remixd.png)
 
 성공적으로 연결되면, workspace에 접속하고, 작업을 할 수 있다. 이하 방법은 앞선 REMIX 사용법과 동일하다. 
 
@@ -208,15 +208,15 @@ $ remixd -s ~/remix-dir/example1 -u http://localhost:8080
 
 이후에는 앞서 `remixd` 연결에서 했던 것과 동일하게, REMIX의 `File explorers`에서 workspace를 localhost로 연결하면 된다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-file-explorers.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-file-explorers.png)
 
 `contracts` 디렉토리에는 Hardhat 프로젝트를 생성하면서, 자동으로 생성되는 `Greeter.sol` 파일이 포함되어 있다. 이 컨트랙트를 컴파일하고, 배포해보자. 먼저 컴파일할 때, REMIX의 `Solidity Complier`에서 컴파일 버튼 윗쪽의 `Enable Hardhat Compilation`을 체크한다. 그리고, 컴파일 버튼을 클릭하면, `remix-compiler.config.js` 파일이 프로젝트 디렉토리에 생성된다. 이 파일이 프로젝트 디렉토리 내에 있으면, Hardhat의 컴파일러를 사용할 수 있게 된다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-compile.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-compile.png)
 
 이제 컴파일한 컨트랙트를 배포하기에 앞서, REMIX에 Hardhat provider 플러그인을 설치한다. REMIX의 `Plugin manager` 윈도우에서 hardhat을 검색하면, `Hardhat provider`가 나타나고, 우측의 `activate` 버튼을 클릭하면 된다.
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-plugin.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-plugin.png)
 
 이렇게 Hardhat 플러그인을 활성화하고, 배포 윈도우로 이동한다. `Environment` 선택 메뉴에 `Hardhat Provider` 이 추가되었을 것이다. 이 메뉴는 스마트 컨트랙트를 Hardhat의 테스트 환경에 배포할 수 있게 한다. 따라서, `Hardhat Provider`에 연결하기 전에, 먼저 Hardhat 테스트 네트워크를 실행한다. 
 
@@ -237,7 +237,7 @@ Private Key: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
 그리고, `Environement`에서 `Hardhat Provider`를 선택하면, 연결할 것인지 확인하는 팝업이 나타탄다. 
 
-![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-provider.png){: width="50%" height="50%"}{: .center}
+![remix-file-explorers](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-hardhat-provider.png)
 
 연결에 성공하면, 이제 Hardhat 환경에서 테스트를 진행할 수 있다.
 
