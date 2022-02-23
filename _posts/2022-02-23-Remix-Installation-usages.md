@@ -64,7 +64,7 @@ chunk {vendor} vendor.js (vendor) 36.6 MiB ={main}= ={runtime}= [initial] [rende
 
 웹 브라우저에서 `http://localhost:8080`에 접속하면 REMIX를 사용할 수 있다. 개인적으로 검은 배경색을 선호하지 않아서 밝은 계열 테마로 바꾼 것이니 당황하지 말자.
 
-![remix-main](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-main.png)
+![remix-main](/assets/images_post/2022-02-23-Remix-Installation-usages/remix-window.png)
 
 ### Writing a smart contract
 REMIX의 화면의 좌측 윈도우에서 `File explorers`를 보면, `default workspace`로 되어 있고, 밑에 디렉토리 구조가 보일 것이다. (Hardhat이 디폴트가 아니기 때문에 사용할 수 없지만,) 프로젝트 구조가 Hardhat의 프로젝트 구조와 유사하다 (사실 Truffle도 비슷하다). `contracts` 디렉토리에는 작성한 스마트 컨트랙트가 위치하고, `scripts`에는 배포 스크립트, `tests`는 테스트 스크립트가 위치한다. 
