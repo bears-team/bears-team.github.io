@@ -74,7 +74,7 @@ REMIX의 화면의 좌측 윈도우에서 `File explorers`를 보면, `default w
 
 `contracts` 디렉토리에는 기본적으로 3개의 스마트 컨트랙트가 생성되어 있다. 이것들을 사용해도 좋지만, Solidity를 손에 익을 겸 간단한 컨트랙트를 작성해보자. Solidity의 "Hello, world" 격인 Greeter 컨트랙트이다.
 
-~~~Solidity
+~~~
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
@@ -154,7 +154,7 @@ contract Greeter {
 
 이제 REMIX 하단의 콘솔에서 계정의 잔액을 확인하기 위한 Javascript 코드를 입력한다. 계정 주소에는 앞서 복사한 컨트랙트의 주소를 입력한다.
 
-~~~Javascript
+~~~
 > web3.eth.getBalance('계정 주소');
 ~~~
 
@@ -163,7 +163,7 @@ contract Greeter {
 ## Use the local workspace
 지금까지는 REMIX의 `default workspace`에서 모든 작업을 진행했다. 이 workspace는 사용하고 있는 웹 브라우저의 로컬 스토리지에 모든 작업 내용이 저장된다. 하지만, 실제 스마트 컨트랙트 개발에서 브라우저의 로컬 스토리지를 사용하는 것은 매우 불편하고 비생산적일 것이다. 이 때문에 REMIX는 자체 로컬 디렉토리를 workspace로 사용할 수 있게 하는 기능을 제공한다. 이를 위해 먼저 `remixd`를 설치해야 한다. 
 
-~~~Shell
+~~~
 $ npm install @remix-project/remixd
 $ mkdir ~/remix-dir
 $ remixd -s ~/remix-dir -u http://localhost:8080
@@ -180,7 +180,7 @@ $ remixd -s ~/remix-dir -u http://localhost:8080
 ## Link REMIX with Hardhat
 REMIX는 최근 활발하게 사용되고 있는 스마트 컨트랙트 개발 프레임워크인 Hardhat과의 연동을 제공한다. 먼저 이미 `remixd`가 실행 중이라면 잠시 종료하고, 이하 과정을 먼저 진행한다. `remixd` 연동에서 `remix-dir`를 workspace로 사용했다. 여기에 `example1`이라는 Hardhat 프로젝트를 생성한다.
 
-~~~Shell
+~~~
 $ cd ~/remix-dir
 $ npx hardhat
 888    888                      888 888               888
@@ -221,7 +221,7 @@ $ remixd -s ~/remix-dir/example1 -u http://localhost:8080
 
 이렇게 Hardhat 플러그인을 활성화하고, 배포 윈도우로 이동한다. `Environment` 선택 메뉴에 `Hardhat Provider` 이 추가되었을 것이다. 이 메뉴는 스마트 컨트랙트를 Hardhat의 테스트 환경에 배포할 수 있게 한다. 따라서, `Hardhat Provider`에 연결하기 전에, 먼저 Hardhat 테스트 네트워크를 실행한다. 
 
-~~~Shell
+~~~
 $ npx hardhat node
 Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 
