@@ -3,6 +3,7 @@ title: "REMIX Installation과 기본 사용법"
 author: Grizzly
 categories:
   - Blockchain
+  - Development environment
 tags:
   - REMIX
 
