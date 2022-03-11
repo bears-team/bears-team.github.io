@@ -75,11 +75,87 @@ Validator는 폴리곤 블록체인내에서 합의 그룹 업무에 참여하�
 
 그럼 원하는 사람 모두가 검증자로 참여 가능한가?라는 질문에 대답은 검증자 참여는 앞에서도 설명한 것 과같이 제한이 있으며 현재 폴리곤의 경우 100개로 제한하고 있다. 하지만 자리가 날 경우 토큰양을 기반으로 많이 가진 참여자가 검증자 자리를 차지할 수 있다. 참여 슬롯을 의미하는 변수는 validatorThreshold가 존재한다.
 
-해당 검증자가 위임자를 받고 싶으면 acceptDelegation bool 파라미터를 셋팅하면 되는데, 이 때 [validatorShare](https://github.com/maticnetwork/contracts/blob/e7505c926d/contracts/staking/validatorShare/ValidatorShare.sol) 컨트렉트를 생성하는 것을 그림.1에서 확인할 수 있다.
+해당 검증자가 위임자를 받고 싶으면 acceptDelegation bool 파라미터를 셋팅하면 되는데, 이 때 [validatorShare](https://github.com/maticnetwork/contracts/blob/e7505c926d/contracts/staking/validatorShare/ValidatorShare.sol) 컨트렉트를 생성하는 것을 그림.1에서 확인할 수 있다.  
 
+[validatorShare](https://github.com/maticnetwork/contracts/blob/e7505c926d/contracts/staking/validatorShare/ValidatorShare.sol) 컨트렉트는 위임자 참여와 관련된 보유하고 있으며, 그 기능은 아래와 같다.
+* buying and selling shares of the validators
+* caculating the rewards earned
+
+위임자는 폴리곤 네트워크에 [stakeManager](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/stakeManager/StakeManager.sol) 컨트렉트에 토큰(폴리곤에서는 MATIC)을 스테이킹 함으로써 참여할 수 있다. 이때 스테이킹 양에 따른 검증자의 지분을 받게 되며, 일정 시간이 지난 후 지분을 매각함으로써 원래 맡긴 토큰과 보상을 받게 된다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/buyVoucher.png"| relative_url}})  |
+|:--:| 
+| 그림.2 buyVoucher 함수 |
+
+그림.2 buyVoucher함수에서 내부적으로 [\_buyShares](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/validatorShare/ValidatorShare.sol#L370)함수를 호출하며, 그림.3에서와 같이 결국 스테이킹 토큰양에 비례하여 지분을 받게 된다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/buyShare.png"| relative_url}})  |
+|:--:| 
+| 그림.3 \_buyShare 함수 |
+
+스테이킹되는 토큰 및 스테이커의 추가되거나 제거될 때 매번 stateManager 컨트렉트에 있는 [updateTimeline(amount, stakerCount, epoch)](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/stakeManager/StakeManager.sol#L740)가 호출되며, 이 함수의 주요 기능한 전체 스테이킹된 토큰의 양과 스테이커의 개수를 계산하는 것이다.  
+
+StakingManager 컨트렉트의 경우 검증자(validator) 상태에 대한 정보를 유지하기 위해서 "validateState"라는 구조체를 이용한다. 해당 구조체는 멤버로 아래와 같은 변수를 가지고, 이 변수는 본 취약점에서 중요한 요소이다.
+* validatorState.amount : 해당 검증자(validator)에 의해 스테이킹된 토큰의 전체 양을 의미하며, 이는 곧 해당 검증자의 파워를 의미한다.
+* validatorState.stakerCount : 해당 컨트렉트에 스테이킹한 스테이커의 전체 개수를 의미한다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/updateTimeline.png"| relative_url}})  |
+|:--:| 
+| 그림.4 updateTimeline 함수 |
+
+만약 검증자(validator)가 언스테이킹을 하게 되면, 전체 스테이킹 파워는 위임된 토큰의 양과 검증자 토큰 양이 함께 업데이트 된다. 
+
+```javascript
+updateTimeline(-(int256(amount) + delegationAmount), -1, targetEpoch);
+```
+
+이를 \_unstake 함수에서 확인할 수 있다.
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/unstake.png"| relative_url}})  |
+|:--:| 
+| 그림.5 \_unstake 함수 |
+
+StakeManager 컨트렉트의 경우 [migrateDelegation](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/stakeManager/StakeManager.sol#L521) 기능을 가지고 있는데, 해당 함수를 통해 위임자가 위임한 토큰을 다른 검증자에게 옮길 수 있다. 아래 그림을 보면 migrateDelegation 함수코드가 보이는데, validator\[fromValidatorId\].contractAddress의 [migrateOut](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/validatorShare/ValidatorShare.sol#L166) 함수를 호출하여 토큰을 인출하는데, 이때 검증자로 부터 받을 리워드를 포함한 스테이킹 토큰이 인출되며, 위임자가 보유하고 있는 지분은 소각처리 된다. 이후 검증자의 상태는 업데이트 된다. [migrateIn](https://github.com/maticnetwork/contracts/blob/e7505c926d871f7ff2191691808f2c4661516366/contracts/staking/validatorShare/ValidatorShare.sol#L183)함수의 경우 buyVoucher 함수의 동작(\_buyShares 호출)과 같다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/migrateOut.png"| relative_url}})  |
+|:--:| 
+| 그림.6 migrateOut 함수와 migrateIn 함수 |
+
+이 번에 제보된 폴리곤 취약점의 경우 위임자가 위임된 토큰을 다른 검증자로 옮기는 과정에서 취약점이 발생하게 된다. migrateOut 함수를 보면 updateValidatorState함수 호출을 통해 updateTimeline(-amount)가 호출이 될 것이며, 이를 통해 stakeManger 컨트렉트에서 전체 검증자 파워이 줄어들 것이다. 이 때 어떤 검증자가 언스테이킹을 한다면, 전체 스테이킹 파워는 검증자의 토큰양 및 위임자의 토큰 양만큼 줄어들게 된다. 
+* 검증자가 언스테이킹 한다면, 위임자는 자신의 토큰을 이동시킬 수 있다.
+* 위임자가 자신의 토큰을 이전할 때, 전체 스테이킹 파워가 줄어 들게되며
+* 검증가가 언스테이킹 될 때, 전체 스테이킹 파워에서 검증자 토큰 및 위임자 토큰이 전체 스트테이킹 파워가 빠지게 된다.
+
+이 것을 코드 수준에서 다시 한 번 더 살펴보면 다음과 같다.
+위임자가 migrateOut함수를 호출하면 그림.6에서와 같이 내부적으로 stakeManager 컨트렉트의 updateValidateState(validatorId, -int256(amount)) 함수가 호출되며, 이는 updateTimeline(amount, 0, 0) 함수를 통해 전체 스테이킹 파워를 해당 amount만큼 줄이게 된다. 이 때 좀더 해당 검증자의 상태 스테이킹 중인지 여부만 확인하는 코드가 있다면 위 버그를 막을 수 있다. 검증자가 언스테이킹 상태일 경우는 위 동작을 하지 않도록 하면 될 것이다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/updateValidatorState.png"| relative_url}})  |
+|:--:| 
+| 그림.7 updateValidatorState 함수 |
+
+# Exploitation
+* stakeFor 함수을 이용하여 새로운 검증자(validator)를 생성한다.
+* buyVoucher 함수를 호출하여 엄청난 양의 지분을 확보한다.
+* 위 과정을 전체 지분의 2/3 합의를 통과할 정도로 반복한다.
+* 검증자 자리가 비면 해당 검증자 자리를 확보한다.
+* migrateDelegation 함수를 사용해 토큰을 해당 신규 검증자로 옮긴다.
+* 토큰을 옮긴 검증자를 언스테이킹 한다. 전체 스테이킹 파워가 줄어듦
+* 체크 포인트를 기다린다. 빈 검증자 자리를 차지한다.
+* 위 작업을 2/3 합의 알고리즘을 충분히 무력화 시킬때까지 지속적으로 반복한다. 단 하나의 검증자로도 합의 알고리즘을 통과시킬 정도로까지 반복 가능
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/MajorityCheck.png"| relative_url}})  |
+|:--:| 
+| 그림.8 다수성을 확인 |
+
+합의 알고리즘을 무력화 했기 때문에, 예치된 토큰을 전체 인출한다라는 것과 같은 거짓된 트렌젝션을 합의함으로써 경제적 이득을 가져갈 수 있다.
 
 # Vulnerability Fix & Lesson
-* Blob
+
+버그의 수정은 updateValidatorState함수내에 해당 검증자가 살아있는 검증자인지를 확인하는 코드가 추가되었다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/updateValidatorStateFix.png"| relative_url}})  |
+|:--:| 
+| 그림.9 수정된 updateValidatorState함수 |
+
 
 # References
 * [https://medium.com/immunefi/polygon-consensus-bypass-bugfix-review-7076ce5047fe](https://medium.com/immunefi/polygon-consensus-bypass-bugfix-review-7076ce5047fe)
