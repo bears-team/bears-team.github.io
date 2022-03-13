@@ -12,8 +12,8 @@ tags:
   - Critical Severity
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-03-16 19:00:00 +09:00
-lastmod: 2022-03-17 19:00:00 +09:00
+date: 2022-03-11 19:00:00 +09:00
+lastmod: 2022-03-11 19:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -38,6 +38,9 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 * Validator 자리가 비어져 있어야 한다. 그리고 해당 자리를 가지고 유지하기 위해 
 * flashbot을 사용해서 채굴자(miner)가 Validator 자리를 계속 차지하게 할려면 상당한 돈을 지불해야 한다.
 * 또한 폴리곤의 체크포인트는 매 30-45분마다 발생하며, 공격에 필요한 시간에 비례하여, 비용이 발생하게 된다.
+
+위와 같은 이유로 해당 취약점은 활용 가능성이 떨어지나, 실제 공격 가능성 보다 취약점 유형관점에 해당 리뷰를 보면 의미가 있다고 생각됩니다. 취약점을 유발하기 위해, deposit, withdraw 함수만 주로 분석을 하게 되는데, 위 함수와 다른 기능으로 구현된 함수라도 주요 변수(예: amount)에 영향을 줄 수 있다면, 그 것을 활용하여 취약점을 유발할 수 있다는 것을 본 취약점 사례로 확인할 수 있습니다.
+취약점을 찾는 과정에서 deposit, withdraw 기능을 구현한 함수 뿐만 아니라, 핵심 변수를 접근하는 다양한 기능 함수 또한 함께 분석함으로써 취약점을 찾을 가능성을 높일 수 있다라고 생각됩니다. 
 
 # Background
 ## Validator
@@ -110,6 +113,7 @@ updateTimeline(-(int256(amount) + delegationAmount), -1, targetEpoch);
 ```
 
 이를 \_unstake 함수에서 확인할 수 있다.
+
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/unstake.png"| relative_url}})  |
 |:--:| 
 | 그림.5 \_unstake 함수 |
@@ -152,7 +156,7 @@ StakeManager 컨트렉트의 경우 [migrateDelegation](https://github.com/matic
 
 버그의 수정은 updateValidatorState함수내에 해당 검증자가 살아있는 검증자인지를 확인하는 코드가 추가되었다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/updateValidatorStateFix.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-10-immunefi-polygon-consensus-review/updateValidatorStateFixed.png"| relative_url}})  |
 |:--:| 
 | 그림.9 수정된 updateValidatorState함수 |
 
