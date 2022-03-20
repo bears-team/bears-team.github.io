@@ -34,6 +34,14 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 이 문서는 Immunefi사의 버그 바운티 프로그램에 등록된 블록체인 서비스, Solidly에 분석 내용으로, 해당 서비스에 대한 공개 정보 분석 내용과, 바운티 프로그램 대상인 솔리디티(Solidity) 기반 스마트 컨트렉스를 코드수준에서 분석한 내용을 담고 있습니다.
 
 # About Solidly
+## AMM
+* blob
+## Token
+* blob
+## Gauge
+* blob
+## Bribe
+* blob
 
 # Analysis Environment
 
