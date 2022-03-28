@@ -34,5 +34,11 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 # Introduction
 
 
+# Background
+[UniswapV2 swap function](https://github.com/Uniswap/v2-core/blob/4dd59067c76dea4a0e8e4bfdda41877a6b16dedc/contracts/UniswapV2Pair.sol#L159)
+
+# Limitation
+
 # References
 * [https://arxiv.org/pdf/2105.02784.pdf](https://arxiv.org/pdf/2105.02784.pdf)
+* [https://web.stanford.edu/~guillean/papers/uniswap_analysis.pdf](https://web.stanford.edu/~guillean/papers/uniswap_analysis.pdf)
