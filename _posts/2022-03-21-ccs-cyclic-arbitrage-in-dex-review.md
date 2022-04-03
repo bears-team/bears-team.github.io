@@ -54,13 +54,14 @@ use_math: true #수식
 
 ## Future Research Topics
 한계점을 바탕으로 DEX내 시스템 트레이딩을 위한 연구(조사/분석 포함) 주제를 생각해보면 다음과 같다.
-* 솔라나, 테라, 폴카닷과 같은 네트워크에서의 시스템 트레이딩 봇들이 시세차익을 만들어 내는 거래 분석
-* 초기 CPMM 알고리즘이 아닌 실제 보완된 CPMM알고리즘을 비롯하여 다양한 거래소에서 사용되고 있는 AMM 알고리즘에 대한 시세차익 판단 알고리즘 도출
+* 솔라나, 테라, 폴카닷과 같은 네트워크에서의 시스템 트레이딩 봇들이 시세차익을 만들어 내는 거래 분석 즉 Cyclic 형태의 트랜젝션을 식별하는 방법 확보를 기반으로 각 체인별 특징을 식별하고, 시세차익 발생 조건식을 도출하는 것을 앞으로의 연구주제로 생각해볼 수 있다.
+* 초기 CPMM 알고리즘이 아닌 실제 보완된 CPMM알고리즘을 비롯하여 다양한 거래소에서 사용되고 있는 AMM 알고리즘에 대한 시세차익 판단 알고리즘 도출이 필요하다. Uniswap-V3를 비롯하여 실제 각 DEX 거래소에서 사용하는 AMM 알고리즘에 대한 시세차익 유발 조건에 대해서 확인이 필요하다.
 * 한 DEX 거래소내에서의 토큰 스와핑(Swapping)을 통한 시세차익 뿐만 아니라, 같은 메인넷상 동일한 범주의 AMM 알고리즘을 사용하는 DEX간의 시세차익을 활용해서 시세차익을 만들어 내는 방법, 다른 범주의 AMM 알고리즘을 활용하는 DEX간의 시세차익을 만들어내는 방법, 마지막으로 Flashloan과 같은 블록체인 네트워크에서만 존재하는 특별한 기능을 활용하여 시세차익을 만들어내는 방법
 
 위와 같이 아직 DEX내 시세차익관련해서 연구해야할 주제는 많이 있는 것 같다.
 
 # Background
+
 ## CPMM(Constant Product Market Maker) : Uniswap V2
 [UniswapV2 swap function](https://github.com/Uniswap/v2-core/blob/4dd59067c76dea4a0e8e4bfdda41877a6b16dedc/contracts/UniswapV2Pair.sol#L159)
 
@@ -69,6 +70,10 @@ $$
 \overset{\left[\frac{0}{0}\right]}{\underset{\mathrm{H}}{=}}
 \lim_{x\to 0}{\frac{e^x}{2}}={\frac{1}{2}}
 $$
+
+## Arbitrage in Cryptocurrency Markets
+논문의 해당 절에서는 가상화폐 시장에서 시세차익을 유발하는 거래에 대한 
+
 
 
 # Cyclic Arbitrage Model
