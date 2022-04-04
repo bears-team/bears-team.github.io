@@ -78,6 +78,29 @@ $$
 
 # Cyclic Arbitrage Model
 
+# Cyclic Arbitrage Opportunities
+이 절에서는 순환 매매를 통한 시세차익 거래 기회가 존재하는지에 대한 실제 데이터 분석 결과를 설명한다.
+
+### Data Collection
+시세차인 거래 기회분석을 위해 이더리움 Uniswap-V2관련 데이터를 수집했으며, V2가 실제로 배포된 시점 2020년 5월 4일 10000835블록부터 해서 2021년 4월 15일 12244144블록까지 Uniswap 거래소에서 발생한 트랜젝션을 수집하였다.
+
+### Profitable opportunities
+그림 2.를 보면 수익(Revenue) 만들 수 있는 길이3(ETH부터 시작, ETH-A-B-ETH구조) 토큰 패스의 개수를 시간 축으로 표현한 그래프이다. 해당 그래프를 통해 확인할 수 있는 사실은 <span style='background-color: #fff5b1'>마이너에게 지급해야 하는 가스비 0.0001ETH 이상되는 길이3 토큰 패스는 존재한다.</span>는 것과, 논문에서 설명을 하고 있지는 않지만, 상승장으로 진입이 이윤을 만들어 낼 수 있는 경로의 개수가 증가한다는 것이다. 상승장으로 집입시 DeFi 시장 규모 자체가 커짐으로 좀 더 많은 기회가 생기는 것으로 추정할 수 있다. 
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/figure02.png"| relative_url}})  |
+|:--:| 
+| 그림.2 x축은 시간(날짜), y축은 해당 수익(녹색은 0.001ETH 이하, 파란색 0.0001ETH 이상)낼 수 있는 길이3짜리 토큰 패스 |
+
+그림 3.은 시간별 순환 시세차익 거래가 만들어 낼 수 있는 수익의 변화와 단일 거래도 만들 수 있는 최대 수익에 대한 그래프이다. 규모적인 측면에서 당일 거래도 호황기일 때 100ETH 약 지금 시세로 4억 정도 만들어 낼 수 있음을 볼 수 있다. 그림 3에서 2020년 12월부터 본격적인 호황기 진입인데, 전체적인 순환 시세차익 수익이 떨어진 이유와 21년5월이후 수익이 증가한 이유에 대한 해석이 있었으면 했는데 이 두 시점에 대한 해석은 논문에 언급이 없으므로, 추가적인 조사가 필요해 보인다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/figure03.png"| relative_url}})  |
+|:--:| 
+| 그림.3 x축은 시간(날짜), y축은 해당 수익규모인데 오렌지색은 각각의 순환 시세차익 거래의 수익의 합, 파란색은 단일 순환 시세차익 거래로 만들수 있는 최대 수익 |
+
+논문에서는 CEX 거래소를 활용한 시세차익 거래 대비 DEX 거래소를 활용한 시세차익 거래의 장점을 아래의 두가지로 설명하고 있다.
+* Wider range of arbitage : 취급하는 토큰의 개수가 CEX 거래소 대비 매우 많다는 것이다. 보통 Uniswap과 같은 DEX 거래소 대비 CEX 거래소의 경우 토큰 상장 과정이 까다롭기 때문에 당연히 CEX 거래소에 상장된 토큰 개수가 적다. 따라서 시세차익을 만들어 낼 수 토큰 경로가 DEX가 CEX보다 더 많을 수 있고, 논문에 따르면 Uniswap에서 거래될 수 있는 토큰 조합이 30,000개 세계최대 거래소 Binance에서는 토큰 거래 종류가 400개로 거의 100배 정도 차이가 난다. 반대로 안정성에 대해서 의문을 제기할 수 도 있을 것 같은데 개인적인 견해로는 DEX 순환 시세차익 거래의 시작과 끝 토큰을 CEX 거래소에 상장된 토큰(주로 메인넷 토큰)으로 하면 안정성에 대한 문제도 해결 가능할 것으로 판단됨
+* Larger market size : 논문에서는 Makarov와 Schoar의 논문 [Trading and arbitarge in cryptocurrency markets](https://www.sciencedirect.com/science/article/abs/pii/S0304405X19301746)을 근거로 이 부분은 설명하고 이는데, 34개의 CEX 거래소에서 발생하는 시세차익 수익이 4개월 동안 20억 USD인 것에 반해서, Uniswap한 곳에서만 하루에 2천4백만 USD의 시세차익이 존재한다고 한다. 하루에 2천4백만 USD이면 저 중에 정말 작은 부분만이라도 확실하게 먹을 수 있다면, 삶의 자유(Freedom)를 달성 가능한다.
+
 # Arbitrage Markets
 
 # Arbitrage Implementation
