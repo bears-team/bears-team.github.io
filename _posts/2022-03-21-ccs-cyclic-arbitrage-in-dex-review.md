@@ -95,7 +95,7 @@ $$\gamma \cdot \Delta \cdot x = \frac{\beta}{1 - \beta} \cdot x$$
 
 결국 $\Delta x$ 는 $\Delta x = {\frac{\beta}{1 - \beta}} \cdot {\frac{1}{\gamma}} \cdot x$
 
-그럼 $\Delta y$ 를 구해보겠습니다. 이상적인 모델에서의 $\Delta y$ 와 구분하기 위해서 수수료가 적용된 모델에서의 $\Delta y$ 는 $\Delta y_{\rho}$ 로 하겠습니다. Formal Specification of Constant Product Market Maker Model and Implmemtation에서는 이 둘을 구분하지 않고 사용해서 처음에는 좀 혼돈이 있었습니다. 본 논문의 수수료 모델에서의 $\Delta y$ 는 이상적인 모델에서의 $\Delta y$ 동일한 의미가 동일한 것이 아닙니다.
+그럼 $\Delta y$ 를 구해보겠습니다. 이상적인 모델에서의 $\Delta y$ 와 구분하기 위해서 수수료가 적용된 모델에서의 $\Delta y$ 는 $\Delta y_{\rho}$ 로 하겠습니다. Formal Specification of Constant Product Market Maker Model and Implmemtation에서는 이 둘을 구분하지 않고 사용해서 처음에는 좀 혼돈이 있었습니다. 본 논문의 수수료 모델에서의 $\Delta y$ 는 이상적인 모델에서의 $\Delta y$ 의미가 동일한 것이 아닙니다.
 
 이상적인 경우의 $\Delta y$는 아래와 같은 수식으로 표현하였습니다.
 $$
@@ -130,7 +130,7 @@ TODO
 
 # Cyclic Arbitrage Model
 
-이 섹션에서는 순환 시세차익이 가능한 경우를 판별하는 수식을 유도하고 있습니다. 간단하게 생각하면 3개의 토큰 ${A}_{1} \Leftrightarrow {A}_{2} \Leftrightarrow {A}_{3} \Leftrightarrow {A}_{1}$ 구조일 경우 아래와 같은 수식을 본 논문에서는 도출하고 있습니다.
+이 섹션에서는 순환 시세차익이 가능한 경우를 판별하는 수식을 유도하고 있습니다. 간단하게 생각하면 3개의 토큰 $${A}_{1} \Leftrightarrow {A}_{2} \Leftrightarrow {A}_{3} \Leftrightarrow {A}_{1}$$ 구조일 경우 아래와 같은 수식을 본 논문에서는 도출하고 있습니다.
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/equation01.png"| relative_url}})  |
 |:--:| 
