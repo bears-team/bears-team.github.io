@@ -12,7 +12,7 @@ tags:
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2022-04-07 7:00:00 +09:00
-lastmod: 2022-04-07 7:00:00 +09:00
+lastmod: 2022-04-08 6:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -58,7 +58,7 @@ use_math: true #수식
 ## CPMM(Constant Product Market Maker) : Uniswap V2
 [UniswapV2 swap function](https://github.com/Uniswap/v2-core/blob/4dd59067c76dea4a0e8e4bfdda41877a6b16dedc/contracts/UniswapV2Pair.sol#L159)
 
-CPMM의 스와핑때 기본 알고리즘은 $x \times y$ 를 일정하게 유지하는 것입니다. 만약 $X$ 토큰을 $\Delta x$ 만큼 팔고, 이후에 토큰 $Y$ 를 $\Delta y$ 만큼 구매하였다면, DEX 거래소 금고(Vault)관점에서는 아래과 같은 수식이 설립하여야 합니다. $ x \times y = (x + \Delta x) + (y - \Delta y) $ 이 때의 $\Delta x$ , $\Delta y$ 는 아래와 같은 수식으로 유도 가능합니다.
+CPMM의 스와핑때 기본 알고리즘은 $x \times y$ 를 일정하게 유지하는 것입니다. 만약 $X$ 토큰을 $\Delta x$ 만큼 팔고, 이후에 토큰 $Y$ 를 $\Delta y$ 만큼 구매하였다면, DEX 거래소 금고(Vault)관점에서는 아래과 같은 수식이 설립하여야 합니다. $ x \times y = (x + \Delta x) \times (y - \Delta y) $ 이 때의 $\Delta x$ , $\Delta y$ 는 아래와 같은 수식으로 유도 가능합니다.
 
 $$ 
 x^{\prime} = x + \Delta x = (1 + \alpha)x = \frac{1}{1 - \beta}x\\
@@ -91,7 +91,7 @@ $$
 
 이를 수수료 모델에 대입하면, 아래의 수식이 성립하고
 
-$$\gamma \cdot \Delta \cdot x = \frac{\beta}{1 - \beta} \cdot x$$
+$$\gamma \cdot \Delta x = \frac{\beta}{1 - \beta} \cdot x$$
 
 결국 $\Delta x$ 는 $\Delta x = {\frac{\beta}{1 - \beta}} \cdot {\frac{1}{\gamma}} \cdot x$
 
@@ -198,7 +198,7 @@ Cyclic arbitrage 거래를 식별하기 위해 휴리스틱으로 접근했다�
 
 그림 7.에서는 가스비를 고려한 순 이윤에 대해서 설명을 하고 있는데, 개인적으로는 지금도 그림이 직관적으로 이해가 되지 않는데 이부분은 세미나에서 다루고 보완하겠습니다. 논문에서는 해당 그래프를 설명하며, 약 7.1% 트렌젝션의 순수익이 마이너스라고 언급하고, 전체 트렌젝션의 78.4%가 순 이익이 0에서 0.1ETH, 가스비가 0.01에서 0.3ETH에 해당한다고 합니다. 파란색 막대와 주황색 막대외 자주색(?) 막대가 무엇을 의미하는지 명확하지 않습니다. 파란색과 주황색이 겹치는 영역을 표시한 것 같은데 수익 막대와 자주색 막대의 차이가 가스비 및 거래 수수료로 인한 손실을 애기 하고 싶은 건지 해당 그래프가 무엇을 중점적으로 설명하고 싶은 건지 잘 모르겠습니다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/figure06.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/figure07.png"| relative_url}})  |
 |:--:| 
 | 그림.7 트렌젝션별 순이익 및 수익의 분포 분포 |
 
