@@ -11,8 +11,8 @@ tags:
   - DEX
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-04-07 9:00:00 +09:00
-lastmod: 2022-04-07 9:00:00 +09:00
+date: 2022-04-07 7:00:00 +09:00
+lastmod: 2022-04-07 7:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -58,12 +58,69 @@ use_math: true #수식
 ## CPMM(Constant Product Market Maker) : Uniswap V2
 [UniswapV2 swap function](https://github.com/Uniswap/v2-core/blob/4dd59067c76dea4a0e8e4bfdda41877a6b16dedc/contracts/UniswapV2Pair.sol#L159)
 
-TODO
+CPMM의 스와핑때 기본 알고리즘은 $x \times y$ 를 일정하게 유지하는 것입니다. 만약 $X$ 토큰을 $\Delta x$ 만큼 팔고, 이후에 토큰 $Y$ 를 $\Delta y$ 만큼 구매하였다면, DEX 거래소 금고(Vault)관점에서는 아래과 같은 수식이 설립하여야 합니다. $ x \times y = (x + \Delta x) + (y - \Delta y) $ 이 때의 $\Delta x$ , $\Delta y$ 는 아래와 같은 수식으로 유도 가능합니다.
 
 $$ 
-\lim_{x\to 0}{\frac{e^x-1}{2x}}
-\overset{\left[\frac{0}{0}\right]}{\underset{\mathrm{H}}{=}}
-\lim_{x\to 0}{\frac{e^x}{2}}={\frac{1}{2}}
+x^{\prime} = x + \Delta x = (1 + \alpha)x = \frac{1}{1 - \beta}x\\
+y^{\prime} = y - \Delta y = \frac{1}(1 + \alpha)y = {1 - \beta}y
+$$
+
+이 때의 $\alpha = \frac{\Delta x}{x}$ 이고, $\beta = \frac{\Delta y}{y}$ 로 정의하면 우리가 구하고 싶은 토큰 변화량은 다음과 같다.
+
+$$
+\Delta x = \frac{\beta}{1 - \beta}x\\
+\Delta y = \frac{\alpha}{1 + \alpha}y
+$$
+
+위 경우는 이상적인 경우의 수식이고 실제 스와핑 거래시 수수료가 존재합니다. 그럼 수수료는 $\rho$ 로 정의하면, $\rho$ 의 범위는 $0 \leq \rho <1$ 이 됩니다. 
+
+$$
+{x^{\prime}}_{\rho} = x + \Delta x = (1 + \alpha)x = \frac{1 + \beta(\frac{1}{\gamma} - 1)}{1 - \beta}x\\
+{y^{\prime}}_{\rho} = y - \Delta y = \frac{1}{1 + \alpha \cdot \gamma}y = (1 - \beta)y
+$$
+
+이 때의 $\alpha = \frac{\Delta x}{x}$ 이고, $\beta = \frac{\Delta y}{y}$ 이며, $\gamma = 1 - \rho$ 로 정의하면 우리가 구하고 싶은 토큰 변화량은 다음과 같습니다.
+
+여기서 한 번 잘 생각해봐야 하는게 우리가 $\Delta x$ 만큼 토큰을 스와핑 하지만 여기에 수수료가 붙기 때문에 실제로 우리가 교환하게 되는 토큰은 $\Delta x \times \gamma$ 만큼이 됩니다. 엄밀히 말하면 $\Delta y$ 의 경우 $\Delta x \times \gamma$ 에 대응하는 변화량이 되는 것입니다.
+
+이상적인 경우의 교환되는 $\Delta x$ 의 경우 아래의 수식이 성립하였으며
+
+$$
+\Delta x = \frac{\beta}{1 - \beta}x
+$$
+
+이를 수수료 모델에 대입하면, 아래의 수식이 성립하고
+
+$$\gamma \cdot \Delta \cdot x = \frac{\beta}{1 - \beta} \cdot x$$
+
+결국 $\Delta x$ 는 $\Delta x = {\frac{\beta}{1 - \beta}} \cdot {\frac{1}{\gamma}} \cdot x$
+
+그럼 $\Delta y$ 를 구해보겠습니다. 이상적인 모델에서의 $\Delta y$ 와 구분하기 위해서 수수료가 적용된 모델에서의 $\Delta y$ 는 $\Delta y_{\rho}$ 로 하겠습니다. Formal Specification of Constant Product Market Maker Model and Implmemtation에서는 이 둘을 구분하지 않고 사용해서 처음에는 좀 혼돈이 있었습니다. 본 논문의 수수료 모델에서의 $\Delta y$ 는 이상적인 모델에서의 $\Delta y$ 의미가 동일한 것이 아닙니다.
+
+이상적인 경우의 $\Delta y$는 아래와 같은 수식으로 표현하였습니다.
+$$
+\Delta y = \frac{\alpha}{1 + \alpha}y
+$$
+
+여기에서 이상적인 $\alpha$ 와 수수료 적용모델에서의 $\alpha_{\rho}$ 에 관계에 주목하면 될 것 같습니다.  
+
+$$
+\Delta y_{\rho} = \frac{\alpha_{\rho}}{1 + \alpha_{\rho}}y\\
+\alpha_{\rho} = \gamma \cdot \alpha\\
+\Delta y_{\rho} = \frac{\gamma \cdot \alpha}{1 + \gamma \cdot \alpha}y
+$$
+
+교환이 끝난 최종 상태 $${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho}$$ 와 처음 상태 $$x \times y$$ 간에는 $${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho} > x \times y$$ 부등식이 설립하는데, 그 이유는 수수료 만큼 토큰 풀에 유동성이 공급되었기 때문입니다. 실제 스와핑이 계속 발생하면서 $k$ 상수 값이 유동성 공급 모델과 같이 점점 커지게 됩니다.
+
+Cyclic 논문의 배경지식 섹션에서도 수수료가 적용된 CPMM 모델을 사용하고 있으며 기호를 정의하면 다음과 같다.
+* ${\delta}_{a}$ : 교환시 공급하는 토큰 A의 양, 앞의 식에서 $\Delta x$ 와 동일한 의미
+* ${\delta}_{b}$ : 교환시 수령하는 토큰 B의 양, 앞의 식에서 $\Delta y$ 와 동일한 의미
+* ${\gamma}_{a}$ : 교환시 1에서 A토큰에 붙는 수수료 뺀 값, 앞의 식에서 $\gamma$ 와 동일한 의미
+* ${\gamma}_{b}$ : 교환시 1에서 B토큰에 붙는 수수료 뺀 값, 앞의 식에서 $\gamma$ 와 동일한 의미
+
+$$
+{a^{\prime}}_{\rho} \times {b^{\prime}}_{\rho} = 
+(a + {\delta}_{a}) \times (b - \frac{ {\gamma}_{a} \cdot {\gamma}_{b} \cdot b \cdot {\delta}_{a} }{ a + {\gamma}_{a} \cdot {\delta}_{a} }) 
 $$
 
 ## Arbitrage in Cryptocurrency Markets
@@ -72,6 +129,14 @@ $$
 TODO
 
 # Cyclic Arbitrage Model
+
+이 섹션에서는 순환 시세차익이 가능한 경우를 판별하는 수식을 유도하고 있습니다. 간단하게 생각하면 3개의 토큰 $${A}_{1} \Leftrightarrow {A}_{2} \Leftrightarrow {A}_{3} \Leftrightarrow {A}_{1}$$ 구조일 경우 아래와 같은 수식을 본 논문에서는 도출하고 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-03-21-ccs-cyclic-arbitrage-in-dex-review/equation01.png"| relative_url}})  |
+|:--:| 
+| 수식.1 유효한 순환 시세차익 거래 판별식 |
+
+한 거래소에서 순환 토큰 거래를 유발한다면, 거래소별 위와 같은 판별식을 도출하는 것은 가능할 것으로 판단됩니다.
 
 # Cyclic Arbitrage Opportunities
 이 절에서는 순환 매매를 통한 시세차익 거래 기회가 존재하는지에 대한 실제 데이터 분석 결과를 설명하고 있습니다.
@@ -95,6 +160,7 @@ TODO
 논문에서는 CEX 거래소를 활용한 시세차익 거래 대비 DEX 거래소를 활용한 시세차익 거래의 장점을 아래의 두가지로 설명하고 있습니다.
 * Wider range of arbitage : 취급하는 토큰의 개수가 CEX 거래소 대비 매우 많다는 것입니다. 보통 Uniswap과 같은 DEX 거래소 대비 CEX 거래소의 경우 토큰 상장 과정이 까다롭기 때문에 당연히 CEX 거래소에 상장된 토큰 개수가 적습니다. 따라서 시세차익을 만들어 낼 수 토큰 경로가 DEX가 CEX보다 더 많을 수 있고, 논문에 따르면 Uniswap에서 거래될 수 있는 토큰 조합이 30,000개 세계최대 거래소 Binance에서는 토큰 거래 종류가 400개로 거의 100배 정도 차이가 납니다. 반대로 안정성에 대해서 의문을 제기할 수 도 있을 것 같은데 개인적인 견해로는 DEX 순환 시세차익 거래의 시작과 끝 토큰을 CEX 거래소에 상장된 토큰(주로 메인넷 토큰)으로 하면 안정성에 대한 문제도 해결 가능할 것으로 판단됨
 * Larger market size : 논문에서는 Makarov와 Schoar의 논문 [Trading and arbitarge in cryptocurrency markets](https://www.sciencedirect.com/science/article/abs/pii/S0304405X19301746)을 근거로 이 부분은 설명하고 이는데, 34개의 CEX 거래소에서 발생하는 시세차익 수익이 4개월 동안 20억 USD인 것에 반해서, Uniswap한 곳에서만 하루에 2천4백만 USD의 시세차익이 존재한다고 합니다. 하루에 2천4백만 USD이면 저 중에 정말 작은 부분만이라도 확실하게 먹을 수 있다면, 우리 모두 좋아하는 일만 하면서 살수 있는 삶의 자유(Freedom)를 달성 가능합니다.
+
 
 # Cyclic Arbitrage Markets
 논문에서는 Arbitrage Markets으로 제목을 정하고 있는데, 개인적으로는 Cyclic Arbitrage Markets으로 제목을 정하는게 맞을 것 같아서 Cyclic Arbitrage Market으로 변경했습니다. 그 이유는 실제 해당 절에서 저자들이 언급하기를 본인들이 수집하고 분석한 것이 얼마나 많은 "cyclic arbitrages trading"이 실제 시장에서 발생하고 있는지 그리고 얼마나 많은 수익이 생겨나고 있는지를 조사한 내용에 대한 것을 기술하기 때문입니다.
