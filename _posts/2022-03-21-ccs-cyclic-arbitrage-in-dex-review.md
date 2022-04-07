@@ -61,21 +61,21 @@ use_math: true #수식
 CPMM의 스와핑때 기본 알고리즘은 $x \times y$ 를 일정하게 유지하는 것입니다. 만약 $X$ 토큰을 $\Delta x$ 만큼 팔고, 이후에 토큰 $Y$ 를 $\Delta y$ 만큼 구매하였다면, DEX 거래소 금고(Vault)관점에서는 아래과 같은 수식이 설립하여야 합니다. $ x \times y = (x + \Delta x) + (y - \Delta y) $ 이 때의 $\Delta x$ , $\Delta y$ 는 아래와 같은 수식으로 유도 가능합니다.
 
 $$ 
-x^{\prime} = x + \Delta x = (1 + \alpha)x = \frac{1}{1 - \beta}x
+x^{\prime} = x + \Delta x = (1 + \alpha)x = \frac{1}{1 - \beta}x\\
 y^{\prime} = y - \Delta y = \frac{1}(1 + \alpha)y = {1 - \beta}y
 $$
 
 이 때의 $\alpha = \frac{\Delta x}{x}$ 이고, $\beta = \frac{\Delta y}{y}$ 로 정의하면 우리가 구하고 싶은 토큰 변화량은 다음과 같다.
 
 $$
-\Delta x = \frac{\beta}{1 - \beta}x
+\Delta x = \frac{\beta}{1 - \beta}x\\
 \Delta y = \frac{\alpha}{1 + \alpha}y
 $$
 
 위 경우는 이상적인 경우의 수식이고 실제 스와핑 거래시 수수료가 존재합니다. 그럼 수수료는 $\rho$ 로 정의하면, $\rho$ 의 범위는 $0 \leq \rho <1$ 이 됩니다. 
 
 $$
-{x^{\prime}}_{\rho} = x + \Delta x = (1 + \alpha)x = \frac{1 + \beta(\frac{1}{\gamma} - 1)}{1 - \beta}x
+{x^{\prime}}_{\rho} = x + \Delta x = (1 + \alpha)x = \frac{1 + \beta(\frac{1}{\gamma} - 1)}{1 - \beta}x\\
 {y^{\prime}}_{\rho} = y - \Delta y = \frac{1}{1 + \alpha \cdot \gamma}y = (1 - \beta)y
 $$
 
@@ -105,15 +105,12 @@ $$
 여기에서 이상적인 $\alpha$ 와 수수료 적용모델에서의 $\alpha_{\rho}$ 에 관계에 주목하면 될 것 같습니다.  
 
 $$
-\Delta y_{\rho} = \frac{\alpha_{\rho}}{1 + \alpha_{\rho}}y
-
-\alpha_{\rho} = \gamma \cdot \alpha
-
+\Delta y_{\rho} = \frac{\alpha_{\rho}}{1 + \alpha_{\rho}}y\\
+\alpha_{\rho} = \gamma \cdot \alpha\\
 \Delta y_{\rho} = \frac{\gamma \cdot \alpha}{1 + \gamma \cdot \alpha}y
 $$
-가 됩니다.
 
-교환이 끝난 최종 상태 ${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho}$와 처음 상태 $x \time y$ 간에는 ${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho} > x \time y$ 부등식이 설립하는데, 그 이유는 수수료 만큼 토큰 풀에 유동성이 공급되었기 때문입니다. 실제 스와핑이 계속 발생하면서 $k$ 상수 값이 유동성 공급 모델과 같이 점점 커지게 됩니다.
+교환이 끝난 최종 상태 $${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho}$$ 와 처음 상태 $$x \times y$$ 간에는 $${x^{\prime}}_{\rho} \times {y^{\prime}}_{\rho} > x \times y$$ 부등식이 설립하는데, 그 이유는 수수료 만큼 토큰 풀에 유동성이 공급되었기 때문입니다. 실제 스와핑이 계속 발생하면서 $k$ 상수 값이 유동성 공급 모델과 같이 점점 커지게 됩니다.
 
 Cyclic 논문의 배경지식 섹션에서도 수수료가 적용된 CPMM 모델을 사용하고 있으며 기호를 정의하면 다음과 같다.
 * ${\delta}_{a}$ : 교환시 공급하는 토큰 A의 양, 앞의 식에서 $\Delta x$ 와 동일한 의미
