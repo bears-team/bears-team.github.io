@@ -43,6 +43,20 @@ Private Smart Contract를 지원하는 프레임들은 기본적인 큰 틀에�
 본 블로그에서는 두 편의 Solidity기반 Smart Contract 코드 난독화 논문을 살펴볼 것이고, 한 논문의 경우는 github에 소스코드 또한 공개한 상태입니다. 두 편의 논문을 먼저 읽어본 저 개인적인 느낌은 두 편 모두 뭔가 좀 부족한데?라는 것이며, 그 부족한 부분을 우리 스터디 그룹에서 채워서 괜찮은 난독화 도구를 만들면 되지 않을까?라는 생각을 해봤습니다.  
 
 # Source Code Obfuscation for Smart Contracts
+## Motivation
+이 논문의 경우 Solidity 코드 난독화 연구를 착수한 동기가 기존의 보안연구의 목적과 사뭇 다릅니다. 저자들이 Solidity 코드 난독화 연구를 착수한 동기는 기존의 EVM 바이트코드를 Solidity 코드로 변환해주는 도구를이 있는데 이들의 성능을 공정하게 평가할 적절한 테스트을 만드는 것이 어려워서 다양한 테스트 세트를 만들기한 도구를 만드는 것입니다. 그래서 난독화된 코드에 대한 가독화를 기준으로 여러 디스어셈 도구들 간에 깊이있는 평가에 기여한다는 것입니다. 이러만 목적으로 개발한 Solidity 도구 난독화 도구로 BiAn을 제안하며, BiAn이 Solidity 난독화를 위해 지원하는 기법으로 아래의 것들을 나열하고 있습니다.
+
+* obfuscating a contract's control flow
+* obfuscating a contract's data flow
+* obfuscating a contract's layout
+
+논문에서 BiAn 도구의 활용법으로 3가지를 제안하고 있습니다. 
+* Generate obfuscated test cases to evaluate static analysis tool(직접적인 연구동기)
+* Obfuscate contracts to protect the contracts from reversing
+* Generate the obfuscated versions of public datasets to expand the size of public datasets
+
+## Proposed Model(Approach)
+## Evaluation
 
 # EShield
 
