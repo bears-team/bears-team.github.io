@@ -108,7 +108,56 @@ Layout obfuscation의 의미는 역공하는 분석자가 디스어셈을 기반
 | 그림.3 The comparison between before and after using BiAn |
 
 # EShield
+두 번째로 살펴볼 논문은 "EShield: Protect Smart Contracts against Reverse Engineering" 입니다. 첫번째 논문과 같이 중국 대학에서 연구한 논문입니다. EShield의 목표는 스마트 컨트렉트 난독화를 통해 리버싱 공격에 대비하여 스마트컨트렉트의 본안성을 높이는 것입니다. 실험도 첫번째 논문대비 약 2만개의 스마트 컨트렉트를 대상으로 3가지 종류의 역공학 도구(reverse engineering)에 대해서 얼마나 스마트컨트렉트를 보호할 수 있는지를 실험하였습니다. 상대적으로 첫 번째 논문대비 실험에 대한 신뢰가 높다고 할 수 있습니다. 다만 EShield의 경우 BiAn과 달리 소스코드를 공개하고 있지 않기 때문에, 실제적인 구조 및 실험결과에 대한 재검증이 어려울 것으로 판단됩니다.
 
+## Motivation & Contribution
+논문에서 얘기하고 있는 Solidity 보안관련 상황을 다음과 같이 설명하고 있습니다.
+* Erays와 같은 EVM 바이트코드를 리버싱할 수 있는 역공학 도구가 발전하고 있으며, 이러한 도구를 활용하여 정당하지 않은 이익을 얻기위한 시도가 많이 발생하고 있다.
+* 그러나 이와 관련해서 기존에공개된 Anti-reversing 기술들은 비효과적이고 또한 가스비적 측면에서 비효율적이다.
+
+이러한 환경에서 역공학(reverse engineering)기술로 부터 스마트컨트렉트를 보호하기 위한 기술개발에서 사전에 풀어야할 문제를 2가지로 요약하고 있습니다.
+* Challenge 1(Non Von Neumann Virtual Machine) : EVM은 표준 폰 노이만 구조를 따르지 않기 때문에 실행중에 코드 수정이 불가능하기 때문에, 암호화된 코드를 동적으로 복호화 하면서 실행할 수 가 없다.  
+* Challenge 2(Gas Cost) : 일반적으로 난독화(Obfuscation)은 실행 코드양을 증가시킴으로 자연스럽게 이더리움 가스비의 증가로 이러진다. 지금 현재는 문제인 것은 맞는데, 만약 이더리움이 PoS체계로 전환이되면, 가스비문제는 자연스럽게 해결될 가능성도 있습니다. 하지만 지금의 이더리움에서는 높은 가스비는 난독화 기술을 적용하는데 장애물인 것은 틀림없습니다.
+  
+그래서 이러난 어려움을 다 해결하고, 스마트컨트렉트의 코드 보안을 향상사킬 수 있는 기술로 이 논문에서 EShield를 제안하고 있습니다.
+
+## Proposed Model
+Solidity 소스코드를 입력으로 받아서 난독화하여 코드 복잡도를 증가시키는 접근을 사용하는 것에 반하여, EShield의 경우에는 컴파일된 바아티코드를 입력 데이터로 사용, 이를 기반으로 난독화를 하게 됩니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-28-a-survey-on-private-smart-contract-contruction-method-part2/eshield_figure1.png"| relative_url}})  |
+|:--:| 
+| 그림.1 The framework of EShield |
+
+그림 1.을 살펴보면 가장 중요한 역활을 담당하는 것은 Bytecode Analysis과 Pattern Contruct라고 할 수 있습니다. Bytescode Analysis는 입력된 바이트코드로 부터 CFG 정보를 생성해서, 이를 기반으로 anti-pattern을 삽입할 적절한 포지션을 찾아내고, Pattern Construct는 해당 위치에 삽입할 적절한 anti-pattern를 생성합니다. 이를 기반으로 Orignal Construct는 anti-pattern을 삽입할 적절한 공간을 만들고 Bytescode Reconstruct에서 제공받은 anti-pattern를 삽입하여 난독화된 컨트렉트를 만들게 됩니다.
+
+여기서 우리가 가장 중요하게 봐야할 것은 Bytescode Analysis가 어떻게 적절한 anti-pattern 지점을 선정하는지, 그리고 Pattern Construct가 Byteacode Analysis가 선정한 위치에 들어갈 적절한 anti-pattern을 어떻게 생성하는지 이 두가지 포인트입니다.
+
+### Bytecode Analysis
+EShield에서 CFG를 생성하기 위해 기존에 오픈소스 [evm cfg-builder](https://github.com/crytic/evm_cfg_builder)를 사용합니다. CFG를 만들면서 jump-pairs를 만들게 되는데, jump-pairs는 단순하게 JUMP, JUMPI 명령어와 점프 명령과 주소의 쌍을 key-value(예, 파이썬 사전형 자료구조) 형태로 저장한 것입니다. 추가적으로 3가지의 데이터를 더 추가되는데, 세가지 데이터는 다음과 같습니다.
+
+* the function address of JUMP(I)
+* the position between JUMP(I) and its jump address
+* the length of jump address
+
+그리고 entry-pair라는 것도 생성하는 하는데, entry는 x86/x86에서 함수의 prologue라고 생각하면 되고 EVM에서는 EQ-PUSH-JUMPI의 패턴을 가집니다. 모든 entry 인스트럭션을 분석해서 JUMPI에 함수 주소와 함께 마킹을 한 것이 entry-pair입니다. 모든 entry-pair는 anti-pattern이 삽입되는 위치로 사용된다고 논문은 기술하고 있습니다.
+
+### Anti-pattern Construct
+EShield에서 지원하는 anti-pattern의 종류는 4가지입니다. 각 anti-pattern을 간단하게 요약정리하면 다음과 같습니다.
+
+* Pattern1: jump 주소에 대한 난독화(MSTORE/MLOAD 명령과 스택 사용)
+* Pattern2: jump 주소에 대한 난독화(SSTORE/SLOAD 명령과 스토리지 사용)
+* Pattern3: SHA3와 EShield 특수 명령조합을 통한 함수주소 난독화
+* Pattern4: 외부 스마트 컨트렉트의 함수 호출을 활용한 JUMP 주소 생성
+
+EShield의 모든 난독화 기술이 호출 흐름을 난독화하기 위한 JUMP 주소 난독만 패턴만 지원하는 것을 확인할 수 있습니다. <span style='background-color: #fff5b1'>일단 단순한 접근으로 호출 주소 난독화 + BiAn의 몇가지 난독화를 합쳐도 괜찮은 난독화 도구가 될 수 있을 것 같습니다.</span> 두개의 난독화 입력이 다른데, BiAn으로 소스코드 수준에서 난독화 후 solc로 EVM 바이트 코드로 컴파일하고 이 바이트코드를 입력으로 EShield의 JUMP 주소 난독화를 한다면 괜찮은 결과를 얻을 수 있을 것 같습니다.
+
+### Original Construct
+
+
+## Implementation
+
+## Experiments
+## Evaluation
 # Comparison
 
 # Conclusions
@@ -116,3 +165,4 @@ Layout obfuscation의 의미는 역공하는 분석자가 디스어셈을 기반
 # References
 * [Source Code Obfuscation for Smart Contracts](https://github.com/xf97/BiAn)
 * EShield: Protect Smart Contracts against Reverse Engineering
+* [https://github.com/crytic/evm_cfg_builder](https://github.com/crytic/evm_cfg_builder)
