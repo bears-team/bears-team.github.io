@@ -185,9 +185,21 @@ EShield의 구현부분은 크게 4가지로 구분되어 있으며, 그 구조�
     * EF : 역공학 도구들이 어떤한 결과도 출력하지 못 하는 경우(역공학 자체가 실패)
 
 ## Evaluation
-# Comparison
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-28-a-survey-on-private-smart-contract-contruction-method-part2/eshield_figure4.png"| relative_url}})  |
+|:--:| 
+| 표.1 Evaluation Results, P:Patterns |
+
+표.1을 보면, Vandal, Gigahosrse를 보면 EF가 낮고, PF가 높은 것을 확인할 수 있다. 즉 부분적으로 실패했다는 것인데, 부분적으로 실패했다는 것이 정적분석기가 정상적으로 동작하지 않았다는 것을 의미함으로, 도구를 활용한 정적분석을 실패했다라고 볼 수 있다. 부분적으로 분석이 성공한 부분의 수준이 어느정도의 수준인지 분석하는 부분도 있으면 더욱 가치가 있었을 것 같은데, 그 부분에 대한 분석은 이 논문에 없었습니다. PF, EF 두 개를 더하면 100%로 임으로 그 어떤 정적분석기도 정적분석에 성공한 케이스가 없었다는 것도 의미있는 결론이라고 판단됩니다. 마지막으로 etherscan과 같은 사이트에서 제공하는 EVM 바이트 디스어셈블리 수준에서 해당 컨트렉트를 사람이 분석 가능한지에 대한 여부를 개인적으로 확인해 보고 싶은데, EShield의 경우 소스가 공개되지 않아 확인할 수 없는게 조금 아쉽습니다. 
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-28-a-survey-on-private-smart-contract-contruction-method-part2/eshield_figure4.png"| relative_url}})  |
+|:--:| 
+| 표.2 Cost of Using EShield. P:Patterns $${Extra}_{Create}$$: Extra gas cost of Creating protected contract, $${Extra}_{Dollars}$$: Extra cost in dollars, $${Extra}_{call}$$: Extra gas cost of Calling protected contracts, $${Extra}_{Dollar}$$: Extra cost in dollars, Time: average Time cost of running EShield. |
+
+표.2에서 확인할 수 있는 사실은 일단 난독화(Obfuscation)하면 무조건 가스비가 증가한다. Pattern4 외부 컨트텍트를 활용해서 난독화하는 패턴이 가장 가스비 증가가 높다고 볼수 있지만 하지만 4가지 패턴의 수행시간 측면에서는 별 차이가 없다라고 볼 수 있습니다. 4가지 패턴중에 어는 패턴이 보안적으로 더욱 안전한가? 이 것에 대한 실험이 없는게 개인적으로 아쉬웠습니다. 보안성 대비, 가스비의 비율값을 도출할 수 있다면, 앞으로 난독화를 할 때 Complexity우선 난독화 가스비우선 난독화와 같은 다양한 모드 개발도 가능하고, 기능적 측면에서 보다 완성도 있는 도구 개발이 가능하지 않을까? 생각해봤습니다.
 
 # Conclusions
+우리는 이번 포스트에서 Solidity기반 스마트컨트렉트의 난독화관련 논문 2개를 살펴보았습니다. 첫번째 살펴본 BiAn의 경우는 소스코드 기반이였으며, 주소 난독화를 포함하여 소스코드 수준에서 난독화할 수 있는 4가지 패턴의 난독화를 사용하였습니다. 비록 논문의 목적이 난독화 자체 기술 개발이 아니라 정적분석기를 올바르게 성능평가할 수 있는 테스트 세트를 생성할 수 있는 도구개발이였지만, 소스코드 수준에서의 난독화 최초의 연구라는 점에서 의의가 있다라고 생가됩니다. 두 번째 난독화 연구는 EShield는 BiAn과 달리 EVM 바이트코드를 입력으로받아 JUMP 명령어와 관련된 주소를 난독화하는데 초점을 두고, 주소 난독화만 서로다른 4가지 패턴으로 수행하였습니다. 실험 깊이면에서는 EShield가 좀 더 많은 대상으로 실시하여, 신뢰도는 상대적으로 높아보이지만, 두 도구다 난독화 측면에서는 공개된 정적분석기를 대상으로 의미있는 결과를 도출했다고 보입니다. 앞에서도 이미 말했지만, 소스코드 난독화 BiAn와 EShield를 연결하여, 소스코드 수준에서 한 번 난독화하고, 이를 컴파일하여 바이트코드 수준에서 주소 난독화까지 한다면 강력한 난독화 도구 개발이 가능할 것으로 판단됩니다. 실제로 난독화 도구에 대한 소스분석을 통하여 아이디어 도출을 하고, 이를 바탕으로 접근하면 디스어셈블리 기반의 수동 분석에도 대응할 수 있을 것으로 판단됩니다. 
 
 # References
 * [Source Code Obfuscation for Smart Contracts](https://github.com/xf97/BiAn)
