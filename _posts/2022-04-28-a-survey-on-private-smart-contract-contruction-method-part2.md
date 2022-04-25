@@ -152,11 +152,38 @@ EShield에서 지원하는 anti-pattern의 종류는 4가지입니다. 각 anti-
 EShield의 모든 난독화 기술이 호출 흐름을 난독화하기 위한 JUMP 주소 난독만 패턴만 지원하는 것을 확인할 수 있습니다. <span style='background-color: #fff5b1'>일단 단순한 접근으로 호출 주소 난독화 + BiAn의 몇가지 난독화를 합쳐도 괜찮은 난독화 도구가 될 수 있을 것 같습니다.</span> 두개의 난독화 입력이 다른데, BiAn으로 소스코드 수준에서 난독화 후 solc로 EVM 바이트 코드로 컴파일하고 이 바이트코드를 입력으로 EShield의 JUMP 주소 난독화를 한다면 괜찮은 결과를 얻을 수 있을 것 같습니다.
 
 ### Original Construct
+Original constructor의 역활은 원본 바이트코드를 anti-pattern 삽입이 가능한 형태로 변경하는 역활을 담당합니다. 바이트코드 재구축은 3단계로 구성되어 있으며, 각 단계별 내용은 다음과 같습니다.
 
+* If the jump address is behind the position of entry, the constructor will add extra length and the address value
+* calculate all the extra length produced by increasing length of jump address
+* calculate the change of length in other addressses : x86/x64에 대입해보면 코드 패치를 하는 중에 추가적으로 바이트가 더해졌기 때문에, 전체적으로 JUMP 오프셋이 변경됨으로 오프셋 값을 수정해주는 것과 동일한 과정입니다. 
 
 ## Implementation
+EShield의 구현부분은 크게 4가지로 구분되어 있으며, 그 구조는 그림 2.에 표현되어 있습니다. 개인적으로 그림 1.과 크게 다른 점은 없다고 판단되며, 그림 1. 설명에서 언급이 되었던 evm cfg-builder같은 것들이 그림으로 표현되어 있다.정도 말고는 차이점이 없다고 생각됩니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-28-a-survey-on-private-smart-contract-contruction-method-part2/eshield_figure2.png"| relative_url}})  |
+|:--:| 
+| 그림.2 The architecture of EShield in implementation |
+
+* Bytecode Analyzer : evm-cfg-builder + entry detector
+* Pattern Constructor : Bytecode Analyzer로 부터 entry pairs정보를 받아 적절한 anti-pattern을 생성함
+* Original constructor : anti-pattern 삽입이 용이하게, 입력 바이트코드를 수정하는 역활을 담당
+* Bytecode Constructor : Insert the anti-patterns into the modified bytecode to replace the old entry bytecode.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-28-a-survey-on-private-smart-contract-contruction-method-part2/eshield_figure3.png"| relative_url}})  |
+|:--:| 
+| 그림.3 EShield Screenshot |
 
 ## Experiments
+
+* Download 20,266 smart contracts
+* EShield generates 4 different patterns of protected bytescodes for each smart contract
+* User VM(1 vCPU, 6G RAM, Ubuntu 18.04)
+* Reverse Engineering Tools : [Erays](https://github.com/teamnsrg/erays), [Vandal](https://github.com/usyd-blockchain/vandal), [Gigahorse](https://github.com/nevillegrech/gigahorse-toolchain) 위 도구들중 IDA Pro와 같은 상용화 도구는 없으며, 다 오픈소스이며, 학계에서 제안된 도구들입니다.
+* Matrix : Partially Failed(PF), Entirely Failed(EF)
+    * PF : 역공학 도구들이 잘못된 결과를 출력하는 경우
+    * EF : 역공학 도구들이 어떤한 결과도 출력하지 못 하는 경우(역공학 자체가 실패)
+
 ## Evaluation
 # Comparison
 
