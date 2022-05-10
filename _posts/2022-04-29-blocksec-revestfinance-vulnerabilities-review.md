@@ -66,4 +66,6 @@ FNFT를 생성하는 방법으로 Revest Contract에서 제공하는 함수는 3
 
 # References
 * [https://blocksecteam.medium.com/revest-finance-vulnerabilities-more-than-re-entrancy-1609957b742f](https://blocksecteam.medium.com/revest-finance-vulnerabilities-more-than-re-entrancy-1609957b742f)
-* [https://twitter.com/BlockSecTeam/status/1508065573250678793](https://twitter.com/BlockSecTeam/status/1508065573250678793)
+* [https://twitter.com/BlockSecTeam/status/1508065573250678793](https://twitter.com/BlockSecTeam/status/1508065573250678793) 
+* [https://docs.openzeppelin.com/contracts/3.x/erc1155](https://docs.openzeppelin.com/contracts/3.x/erc1155)
+* [https://eips.ethereum.org/EIPS/eip-1155](https://eips.ethereum.org/EIPS/eip-1155)
