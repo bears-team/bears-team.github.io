@@ -46,6 +46,18 @@ The Financial Non-Fungible Token (FNFT) of Revest Finance makes the trustless tr
 
 간단히 설명해보면, FNFT는 기존에 immuefi 사례에서 볼 수 있듯이 예치된 자산에 대한 나의 지분률이라고 생각하면 됩니다. locked라는 표현은 일반적으로 stacking하거나 유동성을 공급하면 기본적인 예치기간이 있기 때문이고, [Immuefi의 APWine 사례](https://bears-team.github.io/security/smart%20contract/immunefi-apwine-review/)에서와 같이 예치한 사람이 아니라 다른 사람(대리수령)도 해당 토큰을 기반으로 돈을 찾아 갈 수 있기 때문에 trustless transfer라는 표현을 사용한 것으로 판단됩니다.
 
+FNFT를 생성하는 방법으로 Revest Contract에서 제공하는 함수는 3가지로 소개하고 있습니다.
+
+* mintTimeLock : 일정한 시간이 지나면 FNFT 토큰(지분) 만틈 Vault에서 예치토큰을 찾아감
+* mintValueLock : 예치 자산이 사전에 약속된 가격 이상으로 상승하거나 하락할 때 토큰을 찾아 갈 수 있음
+* mintAddressLock : 예치 자산을 지정된 주소만 해제할 수 있음
+
+기초가산 해제를 위해 Revest 컨트렉트와 연결된 컨트렉트는 3개이며, 각각의 역활은 다음과 같습니다.
+
+* FNFTHandler : 
+* LockManager : 
+* TokenVault : 
+
 # CASE#1: Re-entrancy Vulnerability
 
 # CASE#2: New Zeroday
