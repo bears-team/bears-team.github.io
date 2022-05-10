@@ -54,9 +54,20 @@ FNFT를 생성하는 방법으로 Revest Contract에서 제공하는 함수는 3
 
 기초가산 해제를 위해 Revest 컨트렉트와 연결된 컨트렉트는 3개이며, 각각의 역활은 다음과 같습니다.
 
-* FNFTHandler : 
-* LockManager : 
-* TokenVault : 
+* FNFTHandler : ERC-1155(엔진코인에서 MultiToken관련 표준)를 상속받은 컨트렉트로 유니크 아이로 fnfid를 사용하는데, 토큰을 Lock을 걸어 FNFT를 민팅할 때마다 1씩 증가한다. 새로운 FNFT을 생성/소각하는 방법은 기준토큰 예치를 통한 생성과 기초자산 출금을 통한 소각말고는 방법이 없다.
+* LockManager : 묶여있는 기초자산을 출금할 때 락(lock)을 해제할 조건을 기록하고 출금시 해제조건의 부합여부 확인과 같은 기능을 담당함
+* TokenVault : 기초자산 토큰에 대한 송수신을 담당하고 각각의 FNFT에 대한 메타데이터 기록을 담당함
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure01.png"| relative_url}})  |
+|:--:| 
+| 그림.1 기초자산에 대한 Lock과정 |
+
+
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure02.png"| relative_url}})  |
+|:--:| 
+| 그림.2 기초자산에 대한 Unlock및 출금과정 |
+
 
 # CASE#1: Re-entrancy Vulnerability
 
