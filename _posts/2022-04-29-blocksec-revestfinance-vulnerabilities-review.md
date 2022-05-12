@@ -12,8 +12,8 @@ tags:
   - Solidity
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-05-14 7:00:00 +09:00
-lastmod: 2022-05-14 7:00:00 +09:00
+date: 2022-05-13 7:00:00 +09:00
+lastmod: 2022-05-13 7:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -94,7 +94,9 @@ emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
 # CASE#1: Re-entrancy Vulnerability
 이 번 절에서는 Re-entracy취약점에 대해서 살펴보겠습니다. Re-entrancy 취약점은 그림.4에서 그림.7까지의 그림으로 설명되며, 기본적인 개념은 callback 함수 구조와 validation로직의 부재를 기반으로 특정 함수(대부분 출금함수)를 특정조건(Vault내 기초자산을 0)을 만족할 때까지 호출하는 취약점입니다. Solidity 초기에는 많이 유행했던 취약점입니다.
 
+
 ## STEP1
+
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure05.png"| relative_url}})  |
 |:--:| 
 | 그림.5 공격자가 가치가 0인 FNFT를 민팅(가장 최근 fnftid가 1로 가정)  |
@@ -102,9 +104,11 @@ emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
 첫번째 단계에서는 <span style="background-color:#fff5b1">depositAmount값을 0으로 하여</span> 두 번 RENA토큰을 기반으로 FNFT를 민팅합니다. 첫 번째에는 2개, 두 번째에는 360,000개 depositAmount값이 0이기 때문에 실제 돈이 들어가야 하는 것은 아닙니다. 웹과 같은 일반 사용자 인터페이스가 아닌 Attacking contract를 통해 직접 mintAddressLock을 호출하는 것으로 판단됩니다. 일단 다음 단계로 넘어가기에 앞서 depositAmount값이 0인 것에 대한 검증을 하지 않는다는게 가장 큰 문제라고 생각이 됩니다. 과거 윈도우 R3와 달리 R0 드라이버 같은 경우 검증을 소흘히 해서 쓰기 버퍼의 주소가 유저영역인이 확인을 하지 않는다는지, 버퍼의 길이가 0인 것을 확인 하지 않는다는지 이런 경우가 있었는데, 요즘은 볼 수 없는 유형의 취약점이 되었는데, depositAmount가 0인지 확인하지 않는 것은 거의 앞에서 언급한 과거 윈도우 커널 취약점과 동일한 수준이라고 생각합니다. <span style="background-color:#fff5b1">뒤에 부분을 확인할 필요가 없이 아주 기본적인 함수 파라미터에 대한 검증이 없다는 것 자체가 가장 문제라고 봅니다.</span>
 
 ## STEP2
+
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure06.png"| relative_url}})  |
 |:--:| 
 | 그림.6 공격자가 두번째 민팅할 때 콜백함수내에서 Revest contract의 depositAdditionalToFNFT함수를 재호출한다.  |
+
 두 번째 단계에서는 _mint함수가 아직 완료되기 전에 depositAdditionalToFNFT함수를 <span style="background-color:#fff5b1">fnftid=1, amount=$$1*1e18$$, quantity=1</span>으로 호출합니다. 여기서 중요한 것은 아직 fnftid(2)로 민팅이 완료되지 않았기 fnftid의 1 증가가 발생하지 않은 상태이기 때문에 앞에서 quantity가 전체 민팅 개수 2보다 작기 조건을 활용하여 다시 fnftid가 2인 토큰을 민팅할 수 있습니다. 앞서 만든 fnfid(1)의 amount가 0이기 때문에 fnftid(2)인 토큰 1개는 <span style="background-color:#fff5b1"> $$0 + 1*1e18$$</span>의 amount로 업데이트 됩니다. 그리고 공격자는 $$1*1e18 RENA$$를 실제 입금하고, depositAdditionalToFNFT함수에서 fnftid가 하나 증가하고 최후의 _mint 함수에 의해 fnftid가 하나 증가하게 됩니다. 여기서 조금 아쉬운 것은 fnftid의 업데이트 위치가 아쉽습니다. 아마도 mint가 정상적으로 완료되는 것을 확인하고 fnftid를 1증가 시키는 것 이 논리적으로 깔끔하기 때문에 이렇게 구현한 것 같은데, _mint함수 호출전에 fnftid를 1증가 시키면 어떨까? 생각을 해봅니다.(실제 패치를 확인해본 결과 과거 Re-entracy취약점 패치와 유사하게 검증로직 추가, fnftid 업데이트 코드 위치변경을 주요 내용으로 패치를 하였습니다.)
 
 그리고 마지막으로 mint함수가 완료되면서 quantity가 360,000으로 업데이트 됩니다. 다시 정리하면 depositAdditionalToFNFT로 amount를 업데이트 하고 mintAddressLock을 통해 quantity를 업데이트 한 것입니다. 이 모든게 mintAddressLock에서 amount가 0인 경우에 대해서 핸들리하지 않아서라고 판단합니다. 과연 amount가 0인 경우가 필요할 때가 언제인지 개인적으로 잘 생각이 나지 않습니다.
@@ -115,6 +119,7 @@ emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
 
 
 ## STEP3
+
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure07.png"| relative_url}})  |
 |:--:| 
 | 그림.8 공격자가 기초자산을 출금한다.  |
@@ -139,9 +144,78 @@ function mint(
 }
 ~~~
 
+
+
 # CASE#2: New Zeroday
+두 번째 취약점은 BlockSec팀에서 자체적으로 찾은 Zeroday에 대한 설명입니다. 아마도 BlockSec팀에서 지금 Solidity 8.XX 시대에 Re-entrancy취약점이라고? 그럼 뭔가 더 첫번째 수준의 취약점이 더 존재하지 않을까? 이런 관점에서 Revest Finance의 코드를 분석하지 않았을까? 추가적인 코드 감사이유를 생각해봤습니다.  
+
+BlockSec팀은 TokenVault 컨트넥트내의 <span style="background-color:#fff5b1">handleMultipleDeposits</span>함수내에 있는 depoitAmount를 업데이트 하는 부분을 언급하고 있습니다. 아마도 BlockSec팀은 amount를 업데이트하는 모든 함수를 다 뒤져본게 아닌가?라는 생각이 듭니다.
+
+~~~
+function handleMultipleDeposits(
+    uint fnftId,
+    uint newFNFTId,
+    uint amount
+) external override onlyRevestController {
+    require(amount >= fnfts[fnftId].depositAmount, 'E003');
+    IRevest.FNFTConfig storage config = fnfts[fnftId];
+    config.depositAmount = amount;
+    mapFNFTToToken(fnftId, config);
+    if(newFNFTId != 0) {
+        mapFNFTToToken(newFNFTId, config);
+    }
+}
+~~~
+depositAdditionalToFNFT함수에서 handleMultipleDeposits 함수가 호출되는데, 새로운 토큰의 amount업데이트 하는 부분입니다. BlockSec팀에서 전체 프로토콜을 분석했을 때 이 함수의 목적은 신규 NewFNFId의 토큰의 amount를 업데이트 하는게 이 함수의 목적인데, 위 코드를 보면 Old fnftid의 depoitAmount또한 업데이트하는 것을 확인할 수 있습니다.
+
+## STEP1
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure08.png"| relative_url}})  |
+|:--:| 
+| 그림.9 공격자는 amount 0로 360,000 RENA를 민팅한다. |
+
+이 공격에서도 시작은 amount 0으로 민팅하는 것입니다. 토큰을 한 개도 예치하지 않고 FNFT를 민팅할 수 있습니다.
+
+## STEP2
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure09.png"| relative_url}})  |
+|:--:| 
+| 그림.10 공격자는 depositAdditionalToFNFT 함수를 호출한다. |
+
+두 번째 단계에서는 TotalSuppliedFNFT 개수보다 작을 때 depositAdditionalToFNFT함수의 로직을 활용합니다. depositAdditionaToFNFT를 그림과 같이 파마리터 설정해서 호출하면 당연히 전체 발행량보다 적기 때문에 새로운 NewNFTId를 만들게 되고, 그림에서와 같이 fnftid(2)로 새로운 lock을 만들게 됩니다. 그런데 문제가 기존의 Old fnftid(1)의 amount을 0에서 $$1*1e18$$ RENA로 업데이트 하게 됩니다. amount가 $$1.0*1e18$$ 인 36만개의 RENA가 생겼습니다. 첫 번째 Re-entracy취약점 보다 더 쉽습니다. 
+
+## STEP3
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure10.png"| relative_url}})  |
+|:--:| 
+| 그림.11 공격자는 편안한 마음으로 토큰을 찾는다. |
+
+마지막 단계는 편안하게 출금을 하면 됩니다. 
+
+## Security Patch
+Old FNFTId의 amount를 업데이트 하든지, New FNFTId의 amount를 업데이트 하든지 둘 중에 한 경우만 업데이트 하도록 변경되었습니다. 제가 볼때에는 amount 0으로 민팅하는 것도 막아야할 것 같은데, 그 내용이 없어서 조금 아쉽습니다.
+~~~
+function handleMultipleDeposits(
+    uint fnftId,
+    uint newFNFTId,
+    uint amount
+) external override onlyRevestController {
+    require(amount >= fnfts[fnftId].depositAmount, 'E003');
+    IRevest.FNFTConfig memory config = fnfts[fnftId];
+    config.depositAmount = amount;
+    if(newFNFTId != 0) {
+        mapFNFTToToken(newFNFTId, config);
+    } else {
+        mapFNFTToToken(fnftId, config);
+    }
+}
+~~~
 
 # Conclusion
+이 번 블로그에서는 BlockSec팀의 Revest Finance 취약점 분석 및 탐지 내용을 살펴봤습니다.
+BlockSec 팀의 분석 글을 처음으로 리뷰를 해봤는데, Immuefi쪽 분석글 보다, 내용이 한결 이해하기 편했습니다. 분석도 그림을 직관적으로 잘 그려서 그런 것 같은데, 앞으로 BlockSec팀의 분석 글중 괜찮은 것을 가능한 많이 리뷰할 수 있도록 하겠습니다.
+
+오랜만에 만난 Re-entrancy취약점 및 이해가 너무 쉬운 취약점을 살펴봤습니다. 블록체인 프로젝트는 수만개가 존재하고, 바이너리 리버싱 기반 취약점 탐지와 같이 코드 감사기반으로 취약점을 탐지할 여지는 아직 많다고 이번 사례를 통해 느꼈으며, 이 글을 읽는 모든 분들이 [immunefi bounty](https://immunefi.com/explore/)에 도전해 봄직 하지 않을까? 생각을 해봤습니다. 
 
 # References
 * [https://blocksecteam.medium.com/revest-finance-vulnerabilities-more-than-re-entrancy-1609957b742f](https://blocksecteam.medium.com/revest-finance-vulnerabilities-more-than-re-entrancy-1609957b742f)
@@ -149,3 +223,4 @@ function mint(
 * [https://docs.openzeppelin.com/contracts/3.x/erc1155](https://docs.openzeppelin.com/contracts/3.x/erc1155)
 * [https://eips.ethereum.org/EIPS/eip-1155](https://eips.ethereum.org/EIPS/eip-1155)
 * [https://docs.openzeppelin.com/contracts/3.x/api/token/erc1155#ERC1155-_mint-address-uint256-uint256-bytes-](https://docs.openzeppelin.com/contracts/3.x/api/token/erc1155#ERC1155-_mint-address-uint256-uint256-bytes-)
+* [https://immunefi.com/explore/](https://immunefi.com/explore/)
