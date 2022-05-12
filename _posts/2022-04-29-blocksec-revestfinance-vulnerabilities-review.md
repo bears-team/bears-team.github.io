@@ -12,8 +12,8 @@ tags:
   - Solidity
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-05-13 7:00:00 +09:00
-lastmod: 2022-05-13 7:00:00 +09:00
+date: 2022-05-14 7:00:00 +09:00
+lastmod: 2022-05-14 7:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -99,8 +99,45 @@ emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
 |:--:| 
 | 그림.5 공격자가 가치가 0인 FNFT를 민팅(가장 최근 fnftid가 1로 가정)  |
 
-첫번째 단계에서는 <span style="background-color:#fff5b1">depositAmount</span>
+첫번째 단계에서는 <span style="background-color:#fff5b1">depositAmount값을 0으로 하여</span> 두 번 RENA토큰을 기반으로 FNFT를 민팅합니다. 첫 번째에는 2개, 두 번째에는 360,000개 depositAmount값이 0이기 때문에 실제 돈이 들어가야 하는 것은 아닙니다. 웹과 같은 일반 사용자 인터페이스가 아닌 Attacking contract를 통해 직접 mintAddressLock을 호출하는 것으로 판단됩니다. 일단 다음 단계로 넘어가기에 앞서 depositAmount값이 0인 것에 대한 검증을 하지 않는다는게 가장 큰 문제라고 생각이 됩니다. 과거 윈도우 R3와 달리 R0 드라이버 같은 경우 검증을 소흘히 해서 쓰기 버퍼의 주소가 유저영역인이 확인을 하지 않는다는지, 버퍼의 길이가 0인 것을 확인 하지 않는다는지 이런 경우가 있었는데, 요즘은 볼 수 없는 유형의 취약점이 되었는데, depositAmount가 0인지 확인하지 않는 것은 거의 앞에서 언급한 과거 윈도우 커널 취약점과 동일한 수준이라고 생각합니다. <span style="background-color:#fff5b1">뒤에 부분을 확인할 필요가 없이 아주 기본적인 함수 파라미터에 대한 검증이 없다는 것 자체가 가장 문제라고 봅니다.</span>
 
+## STEP2
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure06.png"| relative_url}})  |
+|:--:| 
+| 그림.6 공격자가 두번째 민팅할 때 콜백함수내에서 Revest contract의 depositAdditionalToFNFT함수를 재호출한다.  |
+두 번째 단계에서는 _mint함수가 아직 완료되기 전에 depositAdditionalToFNFT함수를 <span style="background-color:#fff5b1">fnftid=1, amount=$$1*1e18$$, quantity=1</span>으로 호출합니다. 여기서 중요한 것은 아직 fnftid(2)로 민팅이 완료되지 않았기 fnftid의 1 증가가 발생하지 않은 상태이기 때문에 앞에서 quantity가 전체 민팅 개수 2보다 작기 조건을 활용하여 다시 fnftid가 2인 토큰을 민팅할 수 있습니다. 앞서 만든 fnfid(1)의 amount가 0이기 때문에 fnftid(2)인 토큰 1개는 <span style="background-color:#fff5b1"> $$0 + 1*1e18$$</span>의 amount로 업데이트 됩니다. 그리고 공격자는 $$1*1e18 RENA$$를 실제 입금하고, depositAdditionalToFNFT함수에서 fnftid가 하나 증가하고 최후의 _mint 함수에 의해 fnftid가 하나 증가하게 됩니다. 여기서 조금 아쉬운 것은 fnftid의 업데이트 위치가 아쉽습니다. 아마도 mint가 정상적으로 완료되는 것을 확인하고 fnftid를 1증가 시키는 것 이 논리적으로 깔끔하기 때문에 이렇게 구현한 것 같은데, _mint함수 호출전에 fnftid를 1증가 시키면 어떨까? 생각을 해봅니다.(실제 패치를 확인해본 결과 과거 Re-entracy취약점 패치와 유사하게 검증로직 추가, fnftid 업데이트 코드 위치변경을 주요 내용으로 패치를 하였습니다.)
+
+그리고 마지막으로 mint함수가 완료되면서 quantity가 360,000으로 업데이트 됩니다. 다시 정리하면 depositAdditionalToFNFT로 amount를 업데이트 하고 mintAddressLock을 통해 quantity를 업데이트 한 것입니다. 이 모든게 mintAddressLock에서 amount가 0인 경우에 대해서 핸들리하지 않아서라고 판단합니다. 과연 amount가 0인 경우가 필요할 때가 언제인지 개인적으로 잘 생각이 나지 않습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/mint.png"| relative_url}})  |
+|:--:| 
+| 그림.7 OpenZepplelin내 ERC-1150의 mint함수 설명.account가 컨트넥트면 callback함수 핸들러는 구현할 것을 설명하고 있다.| 
+
+
+## STEP3
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure07.png"| relative_url}})  |
+|:--:| 
+| 그림.8 공격자가 기초자산을 출금한다.  |
+
+이제 모든것이 준비되었습니다. Lock자체도 공격자 주소기반으로 Lock을 걸었기 때문에, 공격자는 언제든지 편안하게 기초 자산을 출금할 수 있습니다. 
+
+## Security Patch
+
+패치를 보면 mint함수에서 _mint함수를 호출하기 전에 검증 및 fnftid 증가등을 하고 있는 것을 확인할 수 있습니다.
+~~~
+function mint(
+    address account, 
+    uint id, 
+    uint amount, 
+    bytes memory data
+) external override onlyRevestController {
+    require(amount > 0, "Invalid amount");
+    require(supply[id] == 0, "Repeated mint for the same FNFT");
+    supply[id] += amount;
+    fnftsCreated += 1;
+    _mint(account, id, amount, data);
+}
+~~~
 
 # CASE#2: New Zeroday
 
@@ -111,3 +148,4 @@ emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
 * [https://twitter.com/BlockSecTeam/status/1508065573250678793](https://twitter.com/BlockSecTeam/status/1508065573250678793) 
 * [https://docs.openzeppelin.com/contracts/3.x/erc1155](https://docs.openzeppelin.com/contracts/3.x/erc1155)
 * [https://eips.ethereum.org/EIPS/eip-1155](https://eips.ethereum.org/EIPS/eip-1155)
+* [https://docs.openzeppelin.com/contracts/3.x/api/token/erc1155#ERC1155-_mint-address-uint256-uint256-bytes-](https://docs.openzeppelin.com/contracts/3.x/api/token/erc1155#ERC1155-_mint-address-uint256-uint256-bytes-)
