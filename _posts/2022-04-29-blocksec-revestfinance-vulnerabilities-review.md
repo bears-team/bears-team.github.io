@@ -78,11 +78,29 @@ FNFT를 생성하는 방법으로 Revest Contract에서 제공하는 함수는 3
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure04.png"| relative_url}})  |
 |:--:| 
-| 그림.4 추가적인 기초자산 예치시 Revest Finance 동작(depositAdditionalToFNFT) 흐름도 |
+| 그림.4 추가적인 기초자산 예치시 Revest Finance 동작(depositAdditionalToFNFT) 흐름도(depositAdditionalToFNFT의 quantity가 현재 발행양 보다 작을 경우)  |
 
+그림.3의 경우는 민팅된 토큰 양만큼 추가하는 과정을 표현한 것이라면, 그림.4의 경우는 민팅된 코인 양보다 작은 양에 대해서 추가적인 예치를 할 때의 과정을 표현하고 있습니다. 이 경우는 먼저 <span style="background-color:#fff5b1">quantity</span>만큼 옛코인(fnftid가 1코인)을 소각처리를 하고 새로운 FNFT(fnftid가 2)를 <span style="background-color:#fff5b1">quantity</span>만큼 발금하고 이 새로운 FNFT의 각 토큰의 가치는 <span style="background-color:#fff5b1">1.5 + 0.5</span>해서 2.0WETH로 설정합니다. 
 
+~~~
+// Now, we transfer to the token vault
+if(fnft.asset != address(0)){
+    IERC20(fnft.asset).safeTransferFrom(_msgSender(), vault, quantity * amount);
+}
+ITokenVault(vault).handleMultipleDeposits(fnftId, newFNFTId, fnft.depositAmount + amount);
+emit FNFTAddionalDeposited(_msgSender(), newFNFTId, quantity, amount);
+~~~
 
 # CASE#1: Re-entrancy Vulnerability
+이 번 절에서는 Re-entracy취약점에 대해서 살펴보겠습니다. Re-entrancy 취약점은 그림.4에서 그림.7까지의 그림으로 설명되며, 기본적인 개념은 callback 함수 구조와 validation로직의 부재를 기반으로 특정 함수(대부분 출금함수)를 특정조건(Vault내 기초자산을 0)을 만족할 때까지 호출하는 취약점입니다. Solidity 초기에는 많이 유행했던 취약점입니다.
+
+## STEP1
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure05.png"| relative_url}})  |
+|:--:| 
+| 그림.5 공격자가 가치가 0인 FNFT를 민팅(가장 최근 fnftid가 1로 가정)  |
+
+첫번째 단계에서는 <span style="background-color:#fff5b1">depositAmount</span>
+
 
 # CASE#2: New Zeroday
 
