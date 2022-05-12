@@ -62,11 +62,24 @@ FNFT를 생성하는 방법으로 Revest Contract에서 제공하는 함수는 3
 |:--:| 
 | 그림.1 기초자산에 대한 Lock과정 |
 
-
+그림 1에서는 사용자 A가 100WETH를 최초 예치하는 과정을 그리고 있습니다. 맨처음 예치하는 것이기 때문에 fntfid는 1이되고, FNFT 토큰은 1:1 교환비율로 Unlock할 수 있는 대상 User A, User B, User C에 각각 50, 25, 25 생성됩니다. 즉 <span style="background-color:#fff5b1">1FNFT = 1WETH</span>가 됩니다.
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure02.png"| relative_url}})  |
 |:--:| 
 | 그림.2 기초자산에 대한 Unlock및 출금과정 |
+
+그림 2는 출금과정을 표현하고 있습니다. 사용자 X는 Unlock할 수 있는 대상이 아니기 때문에 거부되는 것을 보여주고 사용자 B의 경우 정당한 Unlock권한이 있으므로, 자기 지분 FNFT 25개 만큼 기초자산 25WETH를 찾아가게 됩니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure03.png"| relative_url}})  |
+|:--:| 
+| 그림.3 추가적인 기초자산 예치시 Revest Finance 동작(depositAdditionalToFNFT) 흐름도 |
+
+그림1, 2를 통해 기초적인 동작흐름을 살펴보았습니다. 이제 부터 Revest Finance취약점과 관련 있는 부분을 살펴보도록 하겠습니다. 일반적으로 거의 모든 DeFi들이 동일한 기능을 지원하고 있습니다. 추가적으로 스와핑 풀에 유동성을 공급하거나, 추가적인 스테이킹을 하는 것이 지금 Revest Finance의 경우와 유사한 기능이라고 할 수 있습니다. 우리가 지금부터 살펴볼 그림 3.에서는 <span style="background-color:#fff5b1">함수는 depositAdditionalToFNFT</span> 동작 과정을 그리고 있습니다. 그림 2.에서 사용자 B는 25 WETH만큼의 기초자산을 가져갔습니다. 그래서 Vault에는 75WETH가 남아 있으며, 이 지분을 표현하기 위해 75FNFT가 발행되어 있습이다. 사용자 A가 이 자산에 추가적으로 기초자산을 더 할려고 depositAdditionalToFNFT 함수를 호출 합니다. depositAdditionalToFNFT의 함수 파라미터를 보면 <span style="background-color:#fff5b1">amount</span>이라는게 있습니다. 우리말로 번역하면 amount는 양이 되는데, 그 다음 변수 quantity도 번역하면 양입니다. 저는 개인적으로 이 부분이 조금 헷갈렸습니다. 그래서 이 부분을 실제 [Github에서 소스코드](https://github.com/Revest-Finance/RevestContracts/blob/59b533221f62a9a422a2443f2c34060b4c3fd3d1/hardhat/contracts/Revest.sol#L214)로 확인하고 명확하게 이해할 수 있었습니다. 그림 3.에서 quantity는 amount를 추가할 FNFT 토큰의 개수를 의미합니다. 그림 3.에서 75개면 지금 현재 Vault에 남아있는 전체 fnftid 1을 의미합니다. 그 다음 <span style="background-color:#fff5b1">amount는 한 개의 FNFT에 추가할 가치라고 생각하시면 됩니다.</span> depositAdditionalToFNFT가 호출되지간 1 FNFT는 1WETH였습니다. 이제 1FNFT를 1.5WETH로 만들고 싶습니다. 각 1FNFT의 가치가 0.5WETH씩 더해져야 하는데, 그 때의 양(amount)입니다. amount에 대해서 다들 이해가 되셨을거라 생각합니다. 그러면 사용자 A가 위와 같이 FNFT의 가치를 올릴려고 하면 Vault에 추가해야할 전체 금액은 $$0.5 WETH * 75 = 37.5 WETH$$ 입니다. 사용자 C가 A가 추가적으로 가치를 더 한 다음에 자기 지분만큼 찾아가게 되면 그림 2.의 사용자 B와 다르게 동일한 지분 25FNFT를 출금함에도 $$25FNFT * 1.5WETH/FNFT = 37.5 WETH$$ 을 출금할 수 있습니다. 25WETH를 찾아간 사용자 B가 왠지 손해본 느낌이네요... ㅎㅎ
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-04-29-blocksec-revestfinance-vulnerabilities-review/figure04.png"| relative_url}})  |
+|:--:| 
+| 그림.4 추가적인 기초자산 예치시 Revest Finance 동작(depositAdditionalToFNFT) 흐름도 |
+
 
 
 # CASE#1: Re-entrancy Vulnerability
