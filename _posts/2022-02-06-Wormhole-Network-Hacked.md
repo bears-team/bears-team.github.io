@@ -8,6 +8,7 @@ tags:
   - Wormhole
   - Solana 
   - Ethereum
+  - Review
 sitemap :
 changefreq : daily
 priority : 1.0

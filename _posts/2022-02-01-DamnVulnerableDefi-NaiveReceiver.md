@@ -6,6 +6,7 @@ categories:
 tags:
   - DamnVulnerableDefi
   - NaiveReceiver
+  - Writeup
 
 sitemap :
 changefreq : daily

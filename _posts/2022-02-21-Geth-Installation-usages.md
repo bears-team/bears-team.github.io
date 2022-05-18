@@ -4,6 +4,7 @@ author: Grizzly
 categories:
   - Blockchain
   - Development environment
+  - Background
 tags:
   - Geth
 

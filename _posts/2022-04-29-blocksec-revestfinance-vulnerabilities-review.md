@@ -10,6 +10,7 @@ categories:
 tags:
   - Private Smart Contract
   - Solidity
+  - Review
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2022-05-13 7:00:00 +09:00

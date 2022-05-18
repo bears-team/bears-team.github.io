@@ -6,6 +6,7 @@ categories:
 tags:
   - DamnVulnerableDefi
   - The Rewarder
+  - Writeup
 
 sitemap :
 changefreq : daily

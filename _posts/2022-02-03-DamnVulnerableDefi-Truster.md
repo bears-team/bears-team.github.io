@@ -6,6 +6,7 @@ categories:
 tags:
   - DamnVulnerableDefi
   - Truster
+  - Writeup
 
 sitemap :
 changefreq : daily

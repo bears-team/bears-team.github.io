@@ -6,8 +6,9 @@ author: Panda
 categories:
   - Security
   - Smart Contract
-tags:
   - Polygon
+tags:
+  - Review
   - Logical Bug
   - Critical Severity
   - Korean

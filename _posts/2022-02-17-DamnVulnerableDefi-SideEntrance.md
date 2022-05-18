@@ -6,6 +6,7 @@ categories:
 tags:
   - DamnVulnerableDefi
   - SideEntrace
+  - Writeup
 
 sitemap :
 changefreq : daily

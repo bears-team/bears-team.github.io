@@ -2,7 +2,7 @@
 title: "합의 알고리즘(Consensus algorithm)"
 author: Grizzly
 categories:
-  - Commons
+  - Background
 tags:
   - ConsensusAlgorithm
 

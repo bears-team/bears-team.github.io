@@ -6,6 +6,7 @@ categories:
 tags:
   - DamnVulnerableDefi
   - Unstoppable
+  - Writeup
 
 sitemap :
 changefreq : daily
