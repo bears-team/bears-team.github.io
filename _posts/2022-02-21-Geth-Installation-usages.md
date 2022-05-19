@@ -154,3 +154,7 @@ dev 네트워크는 기본적으로 PoA 방식으로 동작하고, 처음 실행
 - [https://geth.ethereum.org/docs/install-and-build/installing-geth](https://geth.ethereum.org/docs/install-and-build/installing-geth)
 - [https://geth.ethereum.org/docs/interface/command-line-options](https://geth.ethereum.org/docs/interface/command-line-options)
 - [https://web3js.readthedocs.io/en/v1.7.0/](https://web3js.readthedocs.io/en/v1.7.0/)
+- [https://medium.com/mercuryprotocol/dev-highlights-of-this-week-cb33e58c745f](https://medium.com/mercuryprotocol/dev-highlights-of-this-week-cb33e58c745f)
+- [https://medium.com/coinmonks/deploy-your-first-private-ethereum-smart-contract-using-geth-and-web3-js-2e495c1aadf4](https://medium.com/coinmonks/deploy-your-first-private-ethereum-smart-contract-using-geth-and-web3-js-2e495c1aadf4)
+- [https://semode.tistory.com/314](https://semode.tistory.com/314)
+- [https://medium.com/taipei-ethereum-meetup/beginners-guide-to-ethereum-3-explain-the-genesis-file-and-use-it-to-customize-your-blockchain-552eb6265145](https://medium.com/taipei-ethereum-meetup/beginners-guide-to-ethereum-3-explain-the-genesis-file-and-use-it-to-customize-your-blockchain-552eb6265145)
