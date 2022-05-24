@@ -58,7 +58,6 @@ use_math: true #수식
 * Transactions from an EOA to a contract account can trigger code which can execute many differenct actions, such as transfering tokens or even creating a new contract
 
 
-
 ## Blocks
 ## Transcations
 
