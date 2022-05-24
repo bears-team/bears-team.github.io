@@ -38,7 +38,15 @@ use_math: true #수식
 이더리움은 Layer1 불록체인의 일종으로 비트코인과 같이 가치저장용(?), 전송용 블록체인과 구분이 된다. 현재 Layer1 블록체인은 여러 종류가 생겼으며, 최근에 가장 문제가 되었던 LUNA(루나) 또한 Layer1 블록체인이다. 이더리움이 비트코인과 달리, 그 블록체인 위해서 다양한 기능을 가능하게 하는 그 기반은 Smart Contract(스마트 컨트렉트)와 이 스마트 컨트렉트를 실행하는 Ethereum Virtual Machine(EVM)이다. 여기에 추가하자면 스마트 컨트렉트를 기술하기 위한 Solidity(솔리더티)라는 JavaScript비슷한 언어도 존재한다. 스마트 컨트렉트의 실행은 EVM에서 수행되며, 이 스마트 컨트렉트의 수행에 실행, 증명, 검증에 대한 보상으로 ETHER(이더)를 EVM을 구동하는 Miner(마이너)들이 받게 된다. 재미있는 것은 대부분의 Layer1 블록체인들이 EVM을 다 지원한다는 것이다. 따라서 기존에 이더리움 네트워크에서 구동되던 서비스가 이더리움이 자신들의 서비스와 맞지 않다고 판단할 때, 예를 들면 rust(러스트)기반의 솔라나(Solana)와 같은 블록체인으로 그대로 옮겨갈 수 도 있다. 또한 블록체인 앱 개발 회사의 경우 Solidity로 구현 후 동일한 앱을 다양한 체인위에서 서비스할 수 도 있다.
 
 ## Smart Contract
-그럼 Smart Contract는 무엇인가? 개인적으로는 Smart Contract(스마트 컨트렉트)는 블록체인(이더리움)위에서 돌아가는 하나의 기능(Function) 또는 코드 조각(Code Snippet)이라고 생각한다. 응용프로그램(Application)이라고 설명하고 있는데도 있지만, 개인적으로는 여러개의 스마트 컨트렉트를 구현해서 하나로 통합한 것을 DApp(Decentralized Application)이라고 개인적으로 이해하고 있다. [Immunefi](https://immunefi.com/)에 등록된 다양한 프로젝트를 살펴보면 거의 대부분 프로젝트들이 다수의 스마트 컨트렉트를 활용해서 구현하고 있는 것을 알 수 있다. 앞에서 언급했던 것과 같이 Smart Contract는 EVM위에서 동작하게 되며, EVM은 Non Von Neumann Virtual Machine이다. EVM이 Non Von Neumann 머신인 것은 블록체인에서의 핵심 속성인 실행중에 코드를 변경할 수 없기 때문이다. 즉 RAM이 없고 오직 ROM만 존재한다. 따라서 이와 관련된 문제가 있을 수 있는데, 예를 들면 스마트 컨트렉트 업데이트가 필요할 때, 그리고 스마트 컨트렉트의 보안성을 강화하기 위한 난독화를 실시할 때 어려움이 있다. 
+그럼 Smart Contract는 무엇인가? 개인적으로는 Smart Contract(스마트 컨트렉트)는 블록체인(이더리움)위에서 돌아가는 하나의 기능(Function) 또는 코드 조각(Code Snippet)이라고 생각한다. 응용프로그램(Application)이라고 설명하고 있는데도 있지만, 개인적으로는 여러개의 스마트 컨트렉트를 구현해서 하나로 통합한 것을 DApp(Decentralized Application)이라고 개인적으로 이해하고 있다. [Immunefi](https://immunefi.com/)에 등록된 다양한 프로젝트를 살펴보면 거의 대부분 프로젝트들이 다수의 스마트 컨트렉트를 활용해서 구현하고 있는 것을 알 수 있다. 앞에서 언급했던 것과 같이 Smart Contract는 EVM위에서 동작하게 되며, 스마트 컨트렉트는 Non Von Neumann Virtual Machine이다. 스마트 컨트렉트가 Non Von Neumann 것은 블록체인에서의 핵심 속성인 실행중에 코드를 변경할 수 없기 때문이다. 즉 코드 및 관련 변수 정보들이 없고 오직 ROM만 존재한다. 따라서 이와 관련된 문제가 있을 수 있는데, 예를 들면 스마트 컨트렉트 업데이트가 필요할 때, 그리고 스마트 컨트렉트의 보안성을 강화하기 위한 난독화를 실시할 때 어려움이 있다. 
+
+아래 EVM의 그림을 보면, 스마트 컨트렉트의 코드(바이트코드) 및 상태정보들이 모두 ROM에 위치하여 실행되는 것을 확인할 수 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-19-bears-about-ethereum-part1/evm.png"| relative_url}})  |
+|:--:| 
+| 그림.1 EVM의 간략한 구조도 |
+
+스마트 컨트렉트가 실행되기 위해서는 블록체인 네트워크내 배포(Deploy)가 되어야 하는데 일반적으로 배포는 특수한 주소(0x0 번지)로 스마트 컨트렉트를 전송함으로써 이뤄지게 됩니다. 배포가 완료되면 스마트 컨트렉트도 고유한 주소를 가지게 되며 이 주소가 계정(Account)가 됩니다. 바로 이어서 다시 설명이 됩니다.
 
 ## Accounts
 이더리움 블록체인에서 계정(Accounts)는 이더(ETHER)를 저장할 수 있는 공간을 의미합니다. 이더리움 블록체인을 이용하는 사용자는 계정(Accounts)을 생성할 수 있고, 이더를 보내거나 받거나 할 수 있습니다. 이렇게 적고보니 계정이라고 번역하는 것 보다 계좌라고 번역하는게 더 가까워 보입니다. 글을 읽으시는 분들이 본인이 더 적절하다고 생각하는 표현으로 사용하셔도 괜찮을 것 같습니다. 이더리움에서 Accounts는 두가지 종류가 있습니다. EOA(Externally Owned Account)라고 해서 일반적으로 사용자가 계정을 만들게 되면 EOA입니다. 그리고 당연하게 스마트 컨트넥트도 Account가 될 수 있습니다. 스마트 컨트렉트로 고유 이더리움 주소를 가질 수 있으며, 이 것은 다양한 DeFi 코드에서 확인이 가능합니다. 따라서 EOA와 EOA, EOA와 스마트 컨트렉트, 스마트 컨트렉트와 스마트 컨트렉드간에 이더의 송수신이 가능합니다.
@@ -51,17 +59,60 @@ use_math: true #수식
 * Can initiate transactions
 * Transactions between EOAs can only be ETH/token transfer
 
-### Smart Contract
+### CA(Contract Account) : Smart Contract
 
 * Creating a contract has a cost because you're using network storage
 * Can only send transactions in reponse to receiving a transaction
 * Transactions from an EOA to a contract account can trigger code which can execute many differenct actions, such as transfering tokens or even creating a new contract
 
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-19-bears-about-ethereum-part1/ca.png"| relative_url}})  |
+|:--:| 
+| 그림.2 모든 CA는 EOA에 의해 동작하게 된다. |
 
 ## Blocks
+이더리움 블록체인은 제네시스(최초의 블록)라는 상태에서 시작하며, 제네시스 상태란 어떠한 트렌젝션도 발생하지 않은 최소의 상태입니다. 이 최초의 상태에서 이더리움 블록체인의 상태를 변하게 하는 트렌젝션이 발생하면 t+1 스테이트로 전이(transition)이 발생하게 되며 이런 블록체인 세계의 상태를 변이하는 트렌젝션을 묶어서 검증하고, 기록하게 되는데 이것이 블록이다. 이러한 블록들은 이전 블록의 해쉬값을 기반으로 연속적으로 연결되어 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-19-bears-about-ethereum-part1/blocks01.png"| relative_url}})  |
+|:--:| 
+| 그림.3 모든 블록들은 해쉬값을 기반으로 체인구조로 연결되어 있다. |
+
+블록에 대한 검증(Validate)를 이더리움과 같은 PoW에서는 마이너라고 불리는 검증자 노드에서 수행하며, PoS에서는 검증자(Validator)라고 불리는 노드에서 수행하게 됩니다. 이더리움에서 마이너는 트렌젝션이 가지는 가스비와 마이닝의 보상인 이더를 가질수 있고, 이 보상을 획득할려는 마이너의 경쟁을 구도 속에서 분산화라는 목적을 달성할 수 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-19-bears-about-ethereum-part1/blocks02.png"| relative_url}})  |
+|:--:| 
+| 그림.4 블록 헤더내 속성(Properties). |
+
+* parentHash : 부모 블록의 해쉬값
+* nonce : mixHash와 결합하여 현재 블록이 충분한 연산을 행했음을 입증하는 해쉬, PoW에서 nonce값을 찾는 해쉬연산을 마이너들이 수행하게되며, 이는 무작위공격(brute-forcing)을 통해서 획득합니다.
+* timestamp : 현재 블록 시작시 unix 타임 스탬프
+* ommersHash : 현재 블록의 ommers 해쉬값의 리스트
+* beneficiary : 이 블록 채구에 대한 수수료를 받을 account 주소
+* logsBloom : log 정보를 구성하는 bloom filter라는 자료 구조의 형태
+* difficulty : 블록 생성 난이도, 난이도는 고정이 아니라 블록체인의 혼잡도와 같은 블록체인 상태에 따라 난이도의 변화합니다.
+* extraData : 블록과 관련된 정보를 저장하는 임의 바이트 배열
+* number : 현재 블록의 count(제네시스 블록이 0일 때, 이후 블록들에 대해서 이 값이 하나씩 증가)
+* gasLimit : 블록 당 현재 GAS 제한량
+* gasUsed : 현재 블록에서 사용된 가스의 총량
+* mixHash : nonce와 더블어 현재 블록이 충분한 연산이 실행되었음을 입증하는 해쉬값, Miner들은 mixHash값을 결과로 하는 입력 nonce값을 찾아야 하는 문제를 풀어야하고, 이 문제는 일방향 함수(oneway function) 해쉬 알고리즘을 기반으로 하기 있기 때문에 이런 계산에 최적화된 고성능 GPU가 CPU보다 유리하기 때문에, GPU 품귀 현상을 유발하였던 것 입니다. 좀 더 추가적으로 설명하면, NVidia, Intel, AMD에서 채굴용 AP 제품을 출시 했으나, 인기가 없었는데 그 이유는 채굴 사업이 망했을 때 채굴용 AP는 중고로 판매할 수가 없으나 고성능 GPU의 경우 중고로 판매가 수월하기 때문에 채굴 사업자 관점에서 GPU가 리스크 관리 차원에서 더 좋은 선택이 됩니다.
+* stateRoot : 상태 트리의 루트 노드 해쉬값
+* transactionRoot : 이 블록에 포함된 모든 트랜젝션을 포함하는 트리 자료구조의 루트 노드의 해쉬값
+* receiptsRoot : 이 블록에서의 모든 트랜젝션의 Receipt을 포함한 트리의 루트노드의 해쉬값
+
 ## Transcations
+이더리움 공식 홈페이지에서는 트렌젝션을 EOA가 유발한 어떠한 행위를 의미한다라고 기술하고 있습니다. [Matering Ethereum](https://github.com/ethereumbook/ethereumbook)도서에서는 트렌젝션을 EOA에서 생성한 서명된 메세지로서 이 메세지는 이더리움 네트워크를 통해 전달되며, 이더리움 블록체인에 기록이 된다라고 설명하고 있습니다. 결국 이 트렌젝션에 의해서 블록체인 네트워크의 상태가 변화하게 되는 것이고, 이 블록체인 세계의 상태값들은 EVM에서 스마트 컨트렉트 바이트코드를 실행할 때 영향을 주게 됩니다. 
+
+블록체인 네트워크에서의 트렌젝션은 직렬화되어서 처리됩니다. 즉 트렌젝션을 동시에 처리하는 것은 없습니다. 기본적으로 Step By Step으로 처리하게 됩니다. 이더리움내 트렌젝션은 다음과 같은 속성들을 가지고 있습니다.
+
+* Nonce :
+* Gas price :
+* Gas limit :
+* Recipient :
+* Value :
+* Data :
+* v,r,s :
 
 # Conclusion
+이 번 포스트에서는 스마트 컨트렉트 기반 블록체인의 대표인 이더리움에 대해서 알아보고, 관련된 주요 키워드들의 개념을 전체적으로 간단히 알아보았습니다. 다음 포스트에서는 각 개념들이 실제로 어떻게 블록체인 내에서 존재하는지 geth환경내에서 살펴보고 분석해보는 시간을 가지도록 하겠습니다. 읽어주셔서 감사합니다. 
 
 # References
 * [https://ethereum.org/en/developers/docs/intro-to-ethereum/](https://ethereum.org/en/developers/docs/intro-to-ethereum/)
