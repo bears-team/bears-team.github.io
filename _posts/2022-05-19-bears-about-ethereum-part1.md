@@ -1,5 +1,5 @@
 ---
-title:  "About Ethereum Part1"
+title:  "About Ethereum Blockchain Network Part1"
 excerpt: "이더리움과 관련된 기본 지식, 개념을 세미나용으로 정리한 글입니다."
 
 author: Panda
