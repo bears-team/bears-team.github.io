@@ -1,12 +1,12 @@
 ---
-title:  "The Anlaysis of FEGtoken Security Incident: Deil's in the Details 리뷰"
-excerpt: "BlockSec팀 5월18일에 작성한 FEGtoken 보안 사고 분석 글에 대한 세미나용 리뷰입니다."
+title:  "The Introduction of Ethereum vulnerability Part1"
+excerpt: "이더리움 네트워크에서 과거에 주로 발생했던 취약점 유형을 정리한 발표자료입니다."
 
 author: Panda
 categories:
   - Security
   - Smart Contract
-  - BlockSec
+  - Bears Team
 tags:
   - Private Smart Contract
   - Solidity
