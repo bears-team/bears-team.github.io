@@ -1,6 +1,8 @@
 ---
 title: "Geth Installation과 기본 사용법"
-author: Grizzly
+author: 
+  - Grizzly
+  - Panda
 categories:
   - Blockchain
   - Development environment
@@ -147,6 +149,9 @@ dev 네트워크는 기본적으로 PoA 방식으로 동작하고, 처음 실행
 이 밖에도 선술한 것과 같이 Web3가 지원하는 많은 기술외에도 디버깅 등 유용한 작업을 해볼 수 있기 때문에 스마트 컨트랙트 초기 개발 단계에서 테스트 환경을 사용하기 적합하다.
 
 
+## Build Your Private Network
+* TBA(Panda will write this part)
+
 ## 마치며
 이번 포스팅에서는 기본적인 Geth설치와 사용법에 대해 다뤘다. Geth는 이 글에 적힌 외에도 이더리움에 대한 정말 많은 기능을 지원하기 떄문에 이더리움 스마트 컨트랙트 개발자나 본인과 같은 연구자라면 반드시 이것저것 사용해보기 바란다. 원래 Web3를 이용해서 네트워크에 접속하거나 스마트 컨트랙트를 배포하고 트랜잭션을 발생시키는 것도 다뤄보려고 했으나, 포스팅의 취지에 어긋난다고 생각하여 적지 않았다. 이 내용에 대해서는 후속 포스팅에서 다뤄보도록 하겠다.
 
@@ -154,7 +159,9 @@ dev 네트워크는 기본적으로 PoA 방식으로 동작하고, 처음 실행
 - [https://geth.ethereum.org/docs/install-and-build/installing-geth](https://geth.ethereum.org/docs/install-and-build/installing-geth)
 - [https://geth.ethereum.org/docs/interface/command-line-options](https://geth.ethereum.org/docs/interface/command-line-options)
 - [https://web3js.readthedocs.io/en/v1.7.0/](https://web3js.readthedocs.io/en/v1.7.0/)
+- [https://geth.ethereum.org/docs/getting-started/private-net](https://geth.ethereum.org/docs/getting-started/private-net)
 - [https://medium.com/mercuryprotocol/dev-highlights-of-this-week-cb33e58c745f](https://medium.com/mercuryprotocol/dev-highlights-of-this-week-cb33e58c745f)
 - [https://medium.com/coinmonks/deploy-your-first-private-ethereum-smart-contract-using-geth-and-web3-js-2e495c1aadf4](https://medium.com/coinmonks/deploy-your-first-private-ethereum-smart-contract-using-geth-and-web3-js-2e495c1aadf4)
 - [https://semode.tistory.com/314](https://semode.tistory.com/314)
 - [https://medium.com/taipei-ethereum-meetup/beginners-guide-to-ethereum-3-explain-the-genesis-file-and-use-it-to-customize-your-blockchain-552eb6265145](https://medium.com/taipei-ethereum-meetup/beginners-guide-to-ethereum-3-explain-the-genesis-file-and-use-it-to-customize-your-blockchain-552eb6265145)
+- [https://ai.plainenglish.io/how-to-create-an-ethereum-private-network-with-geth-44faa9e53b7d](https://ai.plainenglish.io/how-to-create-an-ethereum-private-network-with-geth-44faa9e53b7d)
