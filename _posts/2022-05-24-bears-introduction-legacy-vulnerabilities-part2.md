@@ -83,5 +83,6 @@ use_math: true #수식
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part2/Slide23.PNG"| relative_url}})  |
 
+<!--
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part2/Slide24.PNG"| relative_url}})  |
-
+-->
