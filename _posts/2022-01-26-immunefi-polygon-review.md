@@ -12,6 +12,7 @@ tags:
   - Logical Bug
   - Critical Severity
   - Korean
+  - Immunefi
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2022-1-26 07:00:00 +09:00
 lastmod: 2022-1-29 11:00:00 +09:00

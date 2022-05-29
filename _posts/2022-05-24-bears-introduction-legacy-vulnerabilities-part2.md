@@ -2,7 +2,9 @@
 title:  "The Introduction of Ethereum vulnerability Part2"
 excerpt: "이더리움 네트워크에서 과거에 주로 발생했던 취약점 유형을 정리한 발표자료입니다."
 
-author: Panda
+author:
+  - Grizzly
+  - Panda
 categories:
   - Security
   - Smart Contract
@@ -13,8 +15,8 @@ tags:
   - Review
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-06-02 7:00:00 +09:00
-lastmod: 2022-06-02 20:00:00 +09:00
+date: 2022-05-29 7:00:00 +09:00
+lastmod: 2022-05-29 20:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -31,11 +33,55 @@ use_math: true #수식
 #{% endfigure %}
 ---
 # Executive Summary
+이 자료는 BEARS 스터디 그룹에서 Grizzly님이 초기에 세미나 했던 Ethereum Solidity기반 취약점을 유형별로 정리한 자료입니다. 슬라이드와 해당 슬라이드에 대한 설명으로 구성할 계획이며, 슬라이드에 대한 설명은 틈틈히 작성하도록 하겠습니다.
 
+# Presentation
 
-# Introudction
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part2/Slide1.png"| relative_url}})  |
 
-# Conclusion
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide2.png"| relative_url}})  |
 
-# References
-* [https://blocksecteam.medium.com/the-analysis-of-fegtoken-security-incident-devils-in-the-details-ea554f52bdcb](https://blocksecteam.medium.com/the-analysis-of-fegtoken-security-incident-devils-in-the-details-ea554f52bdcb)
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide3.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide4.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide5.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide6.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide7.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide8.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide9.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide10.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide11.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide12.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide13.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide14.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide15.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide16.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide17.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide18.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide19.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide20.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide21.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide22.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide23.png"| relative_url}})  |
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide24.png"| relative_url}})  |
+
