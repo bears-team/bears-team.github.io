@@ -2,8 +2,7 @@
 title:  "The Introduction of Ethereum vulnerability Part3"
 excerpt: "이더리움 네트워크에서 과거에 주로 발생했던 취약점 유형을 정리한 발표자료입니다."
 
-author:
-  - IceBear
+author: IceBear
 categories:
   - Security
   - Smart Contract
