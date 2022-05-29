@@ -27,7 +27,7 @@ toc_sticky: true # 마우스 스크롤과 함께 내려갈 것인지 설정
 use_math: true #수식
 #{% figure caption:"Le logo de **Jekyll** et son clin d'oeil à Robert Louis Stevenson"
 #  %}
-#  ![Le logo de Jekyll]({{"/assets/images_posts/2021-09-23-cve-2021-31956-part1/1.png"| #relative_url}})
+#  ![Le logo de Jekyll]({{"/assets/images_posts/2021-09-23-cve-2021-31956-part1/1.PNG"| #relative_url}})
 #{% endfigure %}
 ---
 # Executive Summary
@@ -35,99 +35,99 @@ use_math: true #수식
 
 # Presentation
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide1.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide1.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide2.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide2.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide3.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide3.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide4.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide4.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide5.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide5.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide6.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide6.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide7.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide7.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide8.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide8.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide9.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide9.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide10.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide10.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide11.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide11.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide12.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide12.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide13.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide13.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide14.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide14.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide15.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide15.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide16.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide16.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide17.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide17.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide18.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide18.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide19.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide19.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide20.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide20.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide21.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide21.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide22.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide22.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide23.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide23.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide24.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide24.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide25.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide25.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide26.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide26.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide27.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide27.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide28.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide28.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide29.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide29.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide30.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide30.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide31.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide31.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide32.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide32.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide33.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide33.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide34.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide34.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide35.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide35.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide36.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide36.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide38.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide38.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide39.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide39.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide40.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide40.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide41.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide41.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide42.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide42.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide43.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide43.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide44.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide44.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide45.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide45.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide46.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide46.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide47.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide47.PNG"| relative_url}})  |
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide48.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-05-24-bears-introduction-legacy-vulnerabilities-part1/Slide48.PNG"| relative_url}})  |
 
 # References
 * [https://blog.sigmaprime.io/solidity-security.html](https://blog.sigmaprime.io/solidity-security.html)
