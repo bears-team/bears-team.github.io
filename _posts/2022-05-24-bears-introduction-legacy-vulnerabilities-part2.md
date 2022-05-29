@@ -4,7 +4,6 @@ excerpt: "이더리움 네트워크에서 과거에 주로 발생했던 취약�
 
 author:
   - Grizzly
-  - Panda
 categories:
   - Security
   - Smart Contract
