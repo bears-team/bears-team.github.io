@@ -8,7 +8,6 @@ categories:
   - Smart Contract
   - Bears Team
 tags:
-  - Private Smart Contract
   - Solidity
   - Review
   - Korean

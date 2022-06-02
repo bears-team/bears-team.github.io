@@ -9,7 +9,6 @@ categories:
   - Bears Team
   - Polygon
 tags:
-  - Private Smart Contract
   - Solidity
   - Immunefi
   - Review

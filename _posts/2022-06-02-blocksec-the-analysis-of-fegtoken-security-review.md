@@ -1,14 +1,13 @@
 ---
 title:  "The Anlaysis of FEGtoken Security Incident: Deil's in the Details 리뷰"
 excerpt: "BlockSec팀 5월18일에 작성한 FEGtoken 보안 사고 분석 글에 대한 세미나용 리뷰입니다."
-
 author: Panda
 categories:
   - Security
   - Smart Contract
   - BlockSec
 tags:
-  - Private Smart Contract
+  - ITW
   - Solidity
   - Review
   - Korean
