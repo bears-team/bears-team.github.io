@@ -30,8 +30,11 @@ use_math: true #수식
 #{% endfigure %}
 ---
 # Executive Summary
+DeFi에 대한 취약점 탐지를 위해 현재 DeFi서비스의 프로토콜을 이해하는 것이 중요하기 때문에, 실제 코드 감사에 앞서 DeFi서비스 프토토콜에 대해서 조사한 내용을 BEARS 세미에서 공유하는 목적으로 작성된 포스트입니다.
 
 # Introudction
+이 번 포스트는 "Leveraged Yield Farming" 프로토콜에 대한 포스트입니다. DeFi의 취약점을 코드 기반으로 탐색하고 공격하는 연구에 앞서 DeFi의 다양한 프로토콜을 이해하고 전체적인 토큰 플로우를 알아보는 시간을 먼저 가지는 것이 중요하다는 생각을 다양한 취약점 케이스 분석 글을 확인하던 중 들었습니다. 실제 취약점의 원인을 분석하면 그 원인 자체는 단순합니다. 개발자의 실수, 사용하지 말아야할 주소 사용, Reentrancy와 같은 고전 취약점 그러나, 이런 취약점을 이해하고 있더라도, DeFi 서비스가 어떤 유형에 포함되고 전체적인 토큰의 흐름을 알지 못 하면 실제 속칭 돈이 되는 취약점을 찾기가 어려울 수 있습니다. 따라서 DeFi 프로토콜을 먼저 이해하고, 해당 프로토콜에서 주로 발생하는 취약점을 케이스 스터디하고 해당 취야검 사례를 기반으로 유사한 서비스에 대해서 비슷한 취약점이 존재하는지 살펴보는 순으로 진행하는 것이 보다 적절한 접근으로 보입니다. 이 번 포스트는 DeFi 프로토콜의 첫 번째로 Leveraged Yield Farming에 대해서 알아보고 이후 포스트에서 해당 서비스와 연관된 [취약점 사례](https://medium.com/immunefi/belt-finance-logic-error-bug-fix-postmortem-39308a158291)를 다음 포스트에서 살펴보로록 하겠습니다.
+
 
 # Background
 ## Entities
@@ -40,6 +43,7 @@ use_math: true #수식
 * 스테이킹과 달리 자유롭게 예치(Deposit), 출금(Withdraw)할 수 있음
 * 대여자의 수익모델은 예치에 대한 이자(interest) 수령을 통한 모델임
 * 대여자의 수익은 농부가 얼마나 랜딩풀을 활용하는지에 따라서 지급받는 이자수익도 달라지게 되며, 대여자의 경우 DeFi내에서 비교적 안정적인 장기수익을 기대할 수 있음
+
 ### Farmer(농부)
 * 이자농사에 참여하는 대상자를 농부(Farmer)로 지칭함
 * 이자농사를 위해 일정한 자기 자산을 담보물로 제공해야함
@@ -83,37 +87,78 @@ ibToken은 토큰을 예치했을때 받게되는 징표와 같은 것입니다.
 ~~~
 
 ## What is position(Liqudiation)
+이제 Leveraged Yield Farming에 들어가기전에 Position에 대해서 알아보겠습니다. 포지션은 시장을 바라보는 나의 시각이라고 보시면 되고 long position은 앞으로 투자 상품의 가격이 상승할꺼라는 것이고 short position은 가격이 하락할 것이라는 관점입니다. 아래 그림은 바이낸스 비트코인 선물시장이며 비트코인이 상승할 것이라면 long 포지션을 사고, 가격이 하락할 것이라면 short 포지션을 사면 됩니다. 포지션 거래와 꼭 함께 있는 것이 레버리지(leverage)입니다.
+
+만약에 아래 그림에서 leverage를 10배를 하게되었을 때 내가 만약에 long포지션을 샀고, 비트코인이 10%가 올랐다면 100% 수익을 올릴수 있습니다. 만약 반대의 경우가 발생하면 -100%가 되는 것이고 이 때 청산(liqudiation)이 발생하게 됩니다. 일종의 홀짝 게임이라고 생각하시면 됩니다. 청산이되면 내가 포지션 구입 비용에 들어갔던 돈은 다른쪽(short 포지션 매수자) 수익과 바이낸스 거래 수수료로 사용됩니다.
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/position.png"| relative_url}})  |
 |:--:| 
 | 그림.2 Binance Future 거래 화면  |
 
+Leveraged Yield Framing에서는 다들 예상하셨다시피 leveraged를 사용할 수 있으며, 이때 중요한게 이자농사 풀에 투입될 토큰중 어느 토큰을 빌릴지 잘 선택하는게 중요합니다.
 
 ## What is Leveraged Yield Farming(레버리지 이자농사)
+
+내가 가진 담보토큰 보다 훨씬 큰돈을 가지고 이자농사를 하면 훨씬 큰 이자를 벌 수 있다는 돈에 대한 인간의 탐욕을 기반으로하는 서비스입니다. 더욱이 변동성이 큰 암호화폐 시장의 특징과 적절한 대여 토콘의 선택은 이익을 극대화할 수도 있고, 최악의 손실을 볼 수 도 있습니다.
+
+프랑슘(Francium)이라고 솔라나 네트워크에서 Alpaca와 비슷한 서비스를 하는 곳입니다. 이 프랑슘에서는 Leveraged Yield Farming이전에 다양한 시뮬레이션을 할 수 있게해주고, 적절한 레버리지 및 대출 토큰 선택에 도움주고 있습니다. 레버리지 이자 농사를 할 때 가급적 한 쪽 토큰을 스테이블 토큰으로해서 변동성을 조금이라도 낮추는게 좋습니다. 변동성 높은 토큰 두개를 하는게 수익을 극대화할 수 있으나 반대의 경우도 생각해야합니다. 
+
+현재 22년 6월과 같이 베어(Bear) 마켓인 경우는 아무래도 가격이 내려갈 가능성이 높은 Solana를 대출받아서 이자농사를 하는게 나중에 갚아야할 솔라나를 생각하면 좋은 선택이 될 수 있습니다. 그림 3에서와 같이 솔라나 가격이 상승하면 청산될 수 있습니다. 
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/francium01.png"| relative_url}})  |
 |:--:| 
 | 그림.3 Francium Leverage Farming서비스 시뮬레이터에서 USDC를 공급하고 Solana를 빌렸을 경우  |
 
+그러나 솔라나가 지금 저점이라고 생각하고 솔라나를 공급하고 USDC를 대출받을 수 있습니다. 나중에 솔라나 가격이 올라가면 적은 솔나라로 USDC를 값을 수 있으니 이자 플러스 훨씬 이득이 됩니다. 그러나 솔라나 가격이 더 떨어진다면 청산되게 됩니다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/francium02.png.png"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/francium02.png"| relative_url}})  |
 | 그림.4 Francium Leverage Farming서비스 시뮬레이터에서 Solana를 공급하고 USDC를 빌렸을 경우 |
 
+즉 Leveraged Yield Farming의 경우 시장의 상태에 따라 받을 수 있는 이자를 극대화할 수 있으며, 실제 풀(Pool)에서 표시하고 있는 APR보다 훨씬 많은 이자 수익을 확보할 수 있습니다.
+
+Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니다.
+
+지금 현재 2022년 6월6일 WEMIX의 경우 \$ 3.694이고 Klaytn의 경우 \$ 0.4069 대략 계산을 쉽게 하기 위해서 교환비가 1:10 정도 된다고 가정하겠습니다.
+
+투자가 홍길동씨는 100 WEMIX를 가지고 있습니다. 100WEMIX를 가만히 거래소에 두기 보다, 장기적으로 BEAR 마킷이고 WEMIX 토큰을 매도할 생각이 없기 때문에 이자농사를 할 계획인데 단기적으로 이익을 극대화하기 위해 레버리지를 사용할 생각을 합니다.
+
+* 홍길동씨의 자산은 100 WEMIX입니다. 최대 이익을 위해 레버리지 계수를 3을 선택합니다.
+* 이제 홍길동씨의 자산은 300(100 * 3) WEMIX입니다. 이 300 WEMIX를 자산을 형성하기 위해 200 WEMIX를 대여풀에서 빌려야 합니다.
+* 이 때 선택을 할 수 있습니다. WEMIX가 Klaytn 상승률보다 높아서 나중에 교환비가 1:100, 1:1000이 될 것이라고 생각하면 Klaytn을 대출하는게 훨씬 이득입니다. 만약에 반대라면 지금 WEMIX를 Klaytn으로 바꾸고, WEMIX를 대출받는게 더 좋습니다.
+* 여기서는 WEMIX가 더 상승한다고 홍길동씨는 판단했기 때문에 200 WEMIX에 대응하는 2000 Klaytn을 빌렸습니다.
+* 풀에 넣을 때에는 1:1 비율로 집어 넣어야 하기 때문에 500 Klaytn을 50 WEMIX로 바꾸고 150 WEMIX, 1500 Klaytn을 풀에 집어 넣었습니다. 
+* 한 달뒤 이자풀에서 돈을 인출합니다. 이 때 교환비가 1:100이 되었습니다. 일단 1500 klaytn에서 부족한 500 Klaytn에 대한 5 WEMIX만 교환해서 2000 Klaytn과 이자를 갚고 풀 이자와 추가적인 가격변동에 의한 WEMIX 수익을 얻게 됩니다.
+
+위의 경우는 정말 운이 좋은 경우라 볼 수 있고, 보통은 암호화폐 두개를 페어로 하는 것은 고려사항이 많아서 너무 위험한 것 같습니다. 개인적으로는 스테이블코인과 암호화폐 쌍이 보다 안전해 보입니다.
 
 # Tokenflow: Alpaca Finance
-## PancakeSwap Farms
-## Mdex Farms
-## Biswap Farms
-## SpookySwap Farms
-## WaultSwap Farms
 
+* PancakeSwap Farms
+* Mdex Farms
+* Biswap Farms
+* SpookySwap Farms
+* WaultSwap Farms
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_project01.png"| relative_url}})  |
+| 그림.5 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 Swaping 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
+
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_farm02.png"| relative_url}})  |
+| 그림.6 Alpaca Finance Leveraged Yield Farming 흐름도 |
 
 
 # Tokenflow: Kleva
+* TBA(코드 분석 기반)
 
 # The Difference between Alpha, Alpaca Finance and Kleva
+본인 자체 풀보다 다양한 DeFi와 연동하여 풀들을 사용자들이 여러 DeFi이 돌아다니지 않고 편하게 이자서비스를 할 수 있도록 하는 것이 핵심이고 자기들 대여풀에서 돈을 인출해서 해당 토큰 쌍 APR를 활용할 수 있도록 하여, 중간에 수수료를 챙기는 구조의 금융 서비스라고 생각하면 될 것 같습니다.
+
+현재까지의 살펴본 결과로는 개인적으로 이 3걔의 서비스 Alpha, Alpaca, Kleva는 거의 동일한 서비스를 하는 것으로 판단되며, Kleva의 경우 Alpaca와 너무 비슷해서 동일한 코드에서 출발한 것으로 판단될 정도입니다.
 
 # Conclusion
+
+이 번 글에서는 DeFi Protocol중 Leveraged Yield Farming 서비스를 살펴보았습니다. 랜딩풀(Vault)라는 것을 제외하면 다른 토큰 쌍풀(Pool)의 경우는 다른 Swap서비스를 끌어다 서비스를 제공하는 구조였으며, 고배율 레버리지 기능을 제공 암호화폐시장에서의 변동성을 기반으로 이자 농사꾼들이 청산 및 레버리지 사용에 대한 이자농사를 기반으로 돈을 버는 서비스임을 확인할 수 있었습니다.
+
 
 # References
 * [https://medium.com/@versofinance/understanding-leveraged-yield-farming-72b5f8609a0a](https://medium.com/@versofinance/understanding-leveraged-yield-farming-72b5f8609a0a)
@@ -125,3 +170,4 @@ ibToken은 토큰을 예치했을때 받게되는 징표와 같은 것입니다.
 * [https://thedefiant.io/leveraged-yield-farming/](https://thedefiant.io/leveraged-yield-farming/)
 * [https://francium.io/app/calculator](https://francium.io/app/calculator)
 * [https://github.com/alpaca-finance/bsc-alpaca-contract/tree/main/solidity/contracts](https://github.com/alpaca-finance/bsc-alpaca-contract/tree/main/solidity/contracts)
+* [https://medium.com/immunefi/belt-finance-logic-error-bug-fix-postmortem-39308a158291](https://medium.com/immunefi/belt-finance-logic-error-bug-fix-postmortem-39308a158291)
