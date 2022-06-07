@@ -133,19 +133,68 @@ Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니�
 
 # Tokenflow: Alpaca Finance
 
-* PancakeSwap Farms
-* Mdex Farms
-* Biswap Farms
-* SpookySwap Farms
-* WaultSwap Farms
+## Alpaca Finance
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_project01.png"| relative_url}})  |
-| 그림.5 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 Swaping 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
+Alpaca Finance의 경우 FairLaunch 서비스라는 것을 강조하고 있습니다. 실제 FairLaunch관련 컨트렉트도 github에서 확인할 수 있습니다. 그 개념을 미뤄 짐작해 보면 다음과 같습니다. 
 
+FairLaunch의 반대 경우를 생각해보면 되는데 바로 ICO 또는 PreSale을 생각하면 됩니다. 일반적으로 블록체인 프로젝트를 시작할 때 자금을 모으기 위해 ICO 또는 토큰 PreSale을 합니다. 소스의 몇몇이 초기 저렴하게 토큰을 구매해서 나중에 가격 상승의 혜택을 보게 됩니다. Alpaca Finance의 경우 이러한 ICO 또는 PreSale을 하지 않고 누구나 Lending 풀에 토큰을 예치하고 해당 ibToken을 스테이킹 함으로써 Alpaca 토큰을 가질 수 있습니다. 소수의 인원의 섬점 효과가 없이 누구나 공평하게 Alpaca 커너넌스 토큰을 소요할 수 있습니다. 이러한 특징을 FairLaunch 서비스로 표현하고 있습니다. [FairLaunch 소스코드](https://github.com/bears-team/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/solidity/contracts/6/token/FairLaunch.sol#L47)를 보면 Alpaca토큰 동작과 관련있음을 확인할 수 있습니다.
+
+## The Overview of Alpaca Finance
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_farm02.png"| relative_url}})  |
-| 그림.6 Alpaca Finance Leveraged Yield Farming 흐름도 |
+| 그림.6 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
 
+* Alice : 대여자(Lender), BNB토큰을 Lending Pool, 코드상 Vault에 예치하고 대응하는 ibToken인 ibBNB를 받게 된다. 관련코드는 [여기](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/solidity/contracts/6/protocol/Vault.sol#L207)를 보면됩니다. 실제 코드를 보면 BNB가 아니라 WBNB(Wrapped BNB)라는 것을 확인할 수 있는데, 이것에 대해서는 좀더 조사를해서 내용을 보완하겠습니다. 여기서 우리가 알아야할 것은 최초의 외부 지갑에서 돈이 흘러들어가는 것을 과정을 분석하기 위해서 Vault.sol 파일을 분석해야한다는 사실입니다.
+
+~~~
+// Solidity
+address vaultContractAddress = '0xd7D069493685A581d27824Fc46EdA46B7EfC0063'; // BNB Vault
+if (msg.value == 0) { // if no native token is sent, then it is a ERC20/BEP20 token deposit
+	IERC20(tokenAddess).safeTransferFrom(address(msg.sender), address(this), amountToken);
+}
+// Allow transfer to vault
+SafeToken.safeApprove(tokenAddess, vaultContractAddress, amountToken);
+// Deposit to vault
+IVault(vaultContractAddress).deposit(amountToken);
+~~~
+
+예치시 받는 ibToken의 가치는 아래와 코드의 계산과정을 거쳐서 결정됩니다.
+Vault는 ERC20 토큰 컨트렉트를 상속하기 때문에 totalSupply() 함수는 [Openzeppelin 사이트](https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#IERC20-totalSupply--)에서 확인 가능하다. totalToken()은 Vault내 BNB토큰의 전체 개수이고 totalSupply()는 전체 발행된 ibToken의 개수입니다.
+
+~~~
+// Solidity
+address vaultContractAddress = '0xd7D069493685A581d27824Fc46EdA46B7EfC0063'; // BNB Vault
+IVault vault = IVault(vaultContractAddress);
+uint256 ibTokenAmount = ...;
+uint256 ibTokenPrice = vault.totalToken()).div(vault.totalSupply();
+uint256 underlyingTokenAmount = ibTokenAmount.mul(ibTokenPrice);
+~~~
+
+* Bob : 이자 농사 농부(Farmer), 그림.6에서는 BTC/BNB 페어에서 이자농사를 하기를 원하며, BTC를 예치하고, BNB를 빌리는 형태로 레버리지 이자 농사를 실시, 이 때 Bob의 전제는 BTC가격이 오를 것을 예상하고 농사를 하는 것이며, 앞에서 설명한 Long(롱) 포지션에 해당합니다. 소스코드에서도 이 동작을 확인하고 싶어서 찾고 있으며, 아직 확인하지 못 했습니다.
+* Erin : 청산 봇(Liquidator bot), Bob과 같이 레버리지 이자 농사를 하는 경우 담보물의 가치 변동에 따른 청산이 발생할 수 있는데, 이 작업을 돕는 봇이며 청산시 보상으로 $$5%$$ 를 수수료를 챙기며, 이 수수료로 Alpaca 거버넌스 코는 Alpaca를 소각하는데 활용, Alpaca 토큰의 가격 상승의 동력을 만들어냅니다. 변동성이 강할때 청산이 많이 발생함으로 그 때 Alpaca Finance는 많은 수익 창출이 가능합니다. 코드상 확인이 필요합니다.
+* Carlos : 보상 헌팅 봇(Bounty Hunter Bot), 각각의 풀에 보상들이 자동으로 재투자되는지 확인하고 감시하는 역할을 담당하는 봇이라고 하는데, 정확하게 확인이 필요할 것 같습니다. 모든 이자 농부들이게 복리 이자를 자동 지급하는 역할을 한다고 하며, 이 역할을 수행함으로서 보상의 약 $$3%$$ 의 수수료를 챙긴다고 되어 있습니다. 이 수수료를 Alpaca 개발팀에서 가져가게 됩니다.
+
+위 Alpaca Finance내 참여자들의 구성을 볼때, 우리가 집중해서 분석해야할 코드는 Alice와 Bob인 것을 확인할 수 있습니다. 결국 Vault에 큰 돈이될 토큰이 있으므로 Alpaca 서비스에서 돈을 빼낸다면 Vault에 집중해야할 것으로 보이고, Yield Farming쪽에서 돈을 빼낼 방법을 고민할려면 연동된 서비스 코드까지 광범위하게 분석해야할 것입니다.
+
+Alpaca Finance 서비스에서는 일반 시중은행에서 다양한 투자회사의 금융상품을 판매하는 것 처럼 다양한 연동서비스의 상품을 취급하고 있습니다. Alpaca Finance에서 제공하는 상품은 다음과 같습니다.
+
+* PancakeSwap Farms(BNB)
+* Mdex Farms(BNB)
+* Biswap Farms(BNB)
+* SpookySwap Farms(Fantom)
+* WaultSwap Farms(Deprecated)
+
+Alpaca 서비스의 contract 소스코드에서도 위 서비스를 확인할 수 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_project01.png"| relative_url}})  |
+| 그림.5 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
+
+또한 [이곳 문서](https://docs.alpacafinance.org/leveraged-yield-farming/pool-specific-parameters-1/pool-specific-parameters#pancakeswap-tusd-pairs-1)를 확인하면, PancakeSwap 풀중에서 Alpaca Finance에서 지원하는 서비스별 Contract주소를 확인할 수 있습니다.
+
+Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트렉트(Contract)주소](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/.mainnet.json#L709)를 json형태로 유지관리 하고 있는 것을 확인할 수 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake.jpg"| relative_url}})  |
+| 그림.7 Alpaca Finance와 PancakeSwap간의 Tokenflow |
 
 # Tokenflow: Kleva
 * TBA(코드 분석 기반)
