@@ -133,6 +133,52 @@ Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니�
 
 # Tokenflow: Alpaca Finance
 
+## Configuration
+### Types of nodes
+* Archive nodes : Has data since genesis block.
+* Full nodes : Receive copies of transactions. Has the current state of the blockchain.
+* Light nodes : Doesn't have the entirety of the current blockchain state and depends on a full node, useful for low memory and computational devices.
+* Miner nodes : Miner nodes verify transactions and add them to the blocks. They then mine those blocks and secure the blockchain with proof of work. 
+
+### Hardhat instllation
+
+~~~
+npm install --save-dev hardhat
+npm install --save-dev @nomiclabs/hardhat-ethers ethers chai @nomiclabs/hardhat-waffle ethereum-waffle
+~~~
+
+### Hardhat fork BSC mainnet
+Alpaca finance github 프로젝트를 다운로드하면 DotEnv파일 예제가 다음과 같이 있습니다. Metamask에서 계정을 두개 만들고 각각의 PrivateKey를 Export해서 PRIVATE_KEY와 QA_PRIVATE_KEY를 설정해 줍니다. BSC_MAINET_ARCHIVE_RPC의 경우는 [rpc.info](rcp.info) 사이트에서 BSC Mainent주소를 입력하였습니다.
+
+~~~
+# Testnet Env
+BSC_TESTNET_PRIVATE_KEY="xxx"
+ETH_TESTNET_PRIVATE_KEY="xxx"
+FANTOM_TESTNET_PRIVATE_KEY="xxx"
+
+ETH_KOVAN_RPC="xxx"
+
+# Mainnet Env
+BSC_MAINNET_PRIVATE_KEY="xxx"
+ETH_MAINNET_PRIVATE_KEY="xxx"
+FANTOM_MAINNET_PRIVATE_KEY="xxx"
+
+BSC_MAINNET_ARCHIVE_RPC="https://bsc-dataseed.binance.org/"
+
+BSC_MAINNET_RPC="xxx"
+ETH_MAINNET_RPC="xxx"
+FTM_MAINNET_RPC="xxx"
+FORK_RPC="http://127.0.0.1:8545"
+
+DEPLOYER_ADDRESS="xxx"
+
+TYPECHAIN_TARGET="ethers-v5"
+
+QA_PRIVATE_KEY="xxx"
+~~~
+
+Hardhat의 경우 localhost RPC의 chainid는 31337이라고 합니다.
+
 ## Alpaca Finance
 
 Alpaca Finance의 경우 FairLaunch 서비스라는 것을 강조하고 있습니다. 실제 FairLaunch관련 컨트렉트도 github에서 확인할 수 있습니다. 그 개념을 미뤄 짐작해 보면 다음과 같습니다. 
@@ -220,3 +266,4 @@ Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트
 * [https://francium.io/app/calculator](https://francium.io/app/calculator)
 * [https://github.com/alpaca-finance/bsc-alpaca-contract/tree/main/solidity/contracts](https://github.com/alpaca-finance/bsc-alpaca-contract/tree/main/solidity/contracts)
 * [https://medium.com/immunefi/belt-finance-logic-error-bug-fix-postmortem-39308a158291](https://medium.com/immunefi/belt-finance-logic-error-bug-fix-postmortem-39308a158291)
+* [rpc.info](rpc.info)
