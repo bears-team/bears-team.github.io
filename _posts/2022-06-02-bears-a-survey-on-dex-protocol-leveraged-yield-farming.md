@@ -140,12 +140,45 @@ Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니�
 * Light nodes : Doesn't have the entirety of the current blockchain state and depends on a full node, useful for low memory and computational devices.
 * Miner nodes : Miner nodes verify transactions and add them to the blocks. They then mine those blocks and secure the blockchain with proof of work. 
 
-### Hardhat instllation
+### Yarn Compile and Yarn
+Alpaca Finance의 프로젝트 설명을 보면 yarn을 실행하라고 되어 있습니다. 실제로 sudo apt install yarn으로 yarn을 설치하고 실행하면 에러가 발생할 수 있습이다 그럴 경우 아래의 명령어로 yarn을 일단 재설치해보시기 바랍니다.
+
+~~~
+sudo apt remove cmdtest
+sudo apt remove yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install yarn
+~~~
+
+yarn과 npm install도 궁합이 안 좋은 것 같습니다. yarn을 재설치하고 난 뒤에 <span style="background-color:#fff5b1">"yarn error An unexpected error occurred: "Commit hash required".</span> 에러가 발생한다면 git clone으로 새로 alpaca finance 프로젝트를 다운로드 받아야 합니다.
+
+yarn을 실행하다보면 아래와 같은 에러가 출력이 되는 경우가 있습니다. 이 에러를 해결하기 위해 많은 시간을 투자하였는데, Alpaca 프로젝트 관련자로 추정되는 사람이 한 답변 한 개를 찾을 수 있었습니다. <span style="background-color:#fff5b1">해결 방법은 yarn compile을 실행하고 다시 yarn을 실행</span>하라는 것이였습니다. 
+~~~
+$ tsc -p tsconfig.cjs.json
+error TS18003: No inputs were found in config file '/mnt/d/Playground/BEARS/case/bsc-alpaca-contract/tsconfig.cjs.json'. Specified 'include' paths were '["./typechain/**/*.ts"]' and 'exclude' paths were '["node_modules","build","cache","artifacts"]'.
+~~~
+
+yarn compile을 하면 또 수많은 에러가 생성됩니다. 이 쯤되면 로컬 환경 구축을 통한 분석환경을 구축을 통한 분석을 해당 프로젝트 팀이 의도적으로 방해하고 있다라는 느낌이 듭니다. yarn compile 에러를 해결해야 하는데, WSL 환경이라서 생기는 문제일 수도 있을 것 같습니다.
+
+### Hardhat Installation
+만약에 Hardhat이 설치되어 있지 않으면 Hardhat이 없다는 에러가 출력이 될 것 입니다. Hardhat을 설치하는 방법은 아래와 같으며 Alpaca 프로젝트의 경우 NodeJS 패키지 매니저로 yarn을 설치하는 것이 좋습니다.
 
 ~~~
 npm install --save-dev hardhat
 npm install --save-dev @nomiclabs/hardhat-ethers ethers chai @nomiclabs/hardhat-waffle ethereum-waffle
+
+yarn add hardhat
+yarn add @nomiclabs/hardhat-ethers ethers chai @nomiclabs/hardhat-waffle ethereum-waffle
 ~~~
+
+yarn으로 Hardhat 설치시 아래와 같은 에러가 발생한다면 <span style="background-color:#fff5b1">nvm install --lts</span> 명령을 실행 후 다시 설치시도하면 에러를 해결할 수 있습니다.
+
+~~~
+"error hardhat@2.9.8: The engine "node" is incompatible with this module. Expected version "^12.0.0 || ^14.0.0 || ^16.0.0". Got "17.0.1"
+~~~
+
 
 ### Hardhat fork BSC mainnet
 Alpaca finance github 프로젝트를 다운로드하면 DotEnv파일 예제가 다음과 같이 있습니다. Metamask에서 계정을 두개 만들고 각각의 PrivateKey를 Export해서 PRIVATE_KEY와 QA_PRIVATE_KEY를 설정해 줍니다. BSC_MAINET_ARCHIVE_RPC의 경우는 [rpc.info](rcp.info) 사이트에서 BSC Mainent주소를 입력하였습니다.
