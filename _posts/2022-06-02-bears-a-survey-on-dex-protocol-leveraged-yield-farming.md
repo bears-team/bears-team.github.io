@@ -179,6 +179,14 @@ yarn으로 Hardhat 설치시 아래와 같은 에러가 발생한다면 <span st
 "error hardhat@2.9.8: The engine "node" is incompatible with this module. Expected version "^12.0.0 || ^14.0.0 || ^16.0.0". Got "17.0.1"
 ~~~
 
+### Install package from local folder
+Alpaca Finance의 BSC쪽 contract 분석환경을 구축하면서, contract 컴파일이 실패, 이것에 대한 원인 분석 및 디버깅을 위해 Openzeplin에서 개발한 @openzeplin/hardhat-upgrades 모듈에 콘솔 출력을 추가할 필요가 생겼습니다. 이를 위해 처음에는 node_model 폴더에 @openzeplin/hardhat-upgrades 폴더에 소스코드를 수정했지만 반영이 안되었습니다. 이것을 해결하기위해 구글 검색결과 대략 2가지 정도의 해결 방법이 있었습니다. 핵심은 소스수정후 재컴파일이 필요하다는 것이고 이것을 위해 github 프로젝트의 경우 fork를 한 후, 해당 프로젝트 소스코드 변조후 http를 통한 패키지 재설치이고 다른 한 방법은 fork한 프로젝트를 로컬에서 수정 및 컴파일하여 이상없는 것을 확인 후 로컬 폴더로 부터 패키지 설치 명령을 실행하는 방법이다. 로컬 폴더 설치의 경우 link를 활용한 심볼 링크로 설치할 수도 있고, add 옵션으로 실제 파일 복사 컴파일 설치 방법이 있다.
+
+~~~
+yarn add --dev --force @openzeppelin/hardhat-upgrades@https://github.com/bears-team/openzeppelin-upgrades.git
+
+yarn add --dev --force file:../openzeppelin-upgrades/packages/plugin-hardhat/
+~~~
 
 ### Hardhat fork BSC mainnet
 Alpaca finance github 프로젝트를 다운로드하면 DotEnv파일 예제가 다음과 같이 있습니다. Metamask에서 계정을 두개 만들고 각각의 PrivateKey를 Export해서 PRIVATE_KEY와 QA_PRIVATE_KEY를 설정해 줍니다. BSC_MAINET_ARCHIVE_RPC의 경우는 [rpc.info](rcp.info) 사이트에서 BSC Mainent주소를 입력하였습니다.
