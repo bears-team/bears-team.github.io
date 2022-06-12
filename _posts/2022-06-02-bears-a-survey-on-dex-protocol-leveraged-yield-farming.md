@@ -188,7 +188,7 @@ yarn add --dev --force @openzeppelin/hardhat-upgrades@https://github.com/bears-t
 yarn add --dev --force file:../openzeppelin-upgrades/packages/plugin-hardhat/
 ~~~
 
-### Hardhat fork BSC mainnet
+### Hardhat Network Configuration(fork BSC mainnet)
 Alpaca finance github 프로젝트를 다운로드하면 DotEnv파일 예제가 다음과 같이 있습니다. Metamask에서 계정을 두개 만들고 각각의 PrivateKey를 Export해서 PRIVATE_KEY와 QA_PRIVATE_KEY를 설정해 줍니다. BSC_MAINET_ARCHIVE_RPC의 경우는 [rpc.info](rcp.info) 사이트에서 BSC Mainent주소를 입력하였습니다.
 
 ~~~
@@ -218,7 +218,18 @@ TYPECHAIN_TARGET="ethers-v5"
 QA_PRIVATE_KEY="xxx"
 ~~~
 
-Hardhat의 경우 localhost RPC의 chainid는 31337이라고 합니다.
+Hardhat의 경우 localhost RPC의 chainid는 31337이라고 합니다. Hardhat에서 mainnet을 포크해서 로컬 RPC를 구성하는 명령은 "npx hardhat node --fork https://bac-dataseed.binance.org/ --no-deploy" 을 입력하면되고, 친절하게 alpaca 프로젝트는 스크립트(run_mainnet_fork.sh)를 지원하고 있습니다. 메인넷 포크를 실행한 후 metamask와의 연동은 그림과 같이 네트워크를 추가함으로써 가능합니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/mm01.png"| relative_url}})  |
+| 그림.6 BSC네트쿼크를 포크후 메타마스크에 포크된 네트워크를 추가할때의 설정 |
+
+네트워크도 연결되었으니, 이제 테스트를 위한 계정 설정으로 살펴보겠습니다.
+일단 스마트컨트렉트를 트리거(Trigger)할려면, 토큰이 많은 계정이 필요합니다. 메인넷을 포크하면 Hardhat에서 토큰이 아주 많은 계정들을 제공해줍니다. 아래이 그림에서와 같이 Hardhat이 제공하는 계정을 "Private Key"를 활용해서 메타마스크에 추가하였고, 해당 계정에서 다른 계정으로 토큰을 전송하였습니다. 계정을 추가는 메타마스크의  "Import Account" 메뉴로 할 수 있습니다.
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/hh05.png"| relative_url}})  |
+| 그림.7 BSC 메인넷 포크할 때 제공되는 계정을 메타마스크에 추가하고, 다른 계정으로 토큰 전송 |
+
+이제 우리는 BSC 메인넷도 BNB토큰을 가지고 있는 계정도 가짐으로써, 분석을 위한 기본적인 준비는 된 것 같습니다.
 
 ## Alpaca Finance
 
@@ -229,7 +240,7 @@ FairLaunch의 반대 경우를 생각해보면 되는데 바로 ICO 또는 PreSa
 ## The Overview of Alpaca Finance
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_farm02.png"| relative_url}})  |
-| 그림.6 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
+| 그림.8 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
 
 * Alice : 대여자(Lender), BNB토큰을 Lending Pool, 코드상 Vault에 예치하고 대응하는 ibToken인 ibBNB를 받게 된다. 관련코드는 [여기](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/solidity/contracts/6/protocol/Vault.sol#L207)를 보면됩니다. 실제 코드를 보면 BNB가 아니라 WBNB(Wrapped BNB)라는 것을 확인할 수 있는데, 이것에 대해서는 좀더 조사를해서 내용을 보완하겠습니다. 여기서 우리가 알아야할 것은 최초의 외부 지갑에서 돈이 흘러들어가는 것을 과정을 분석하기 위해서 Vault.sol 파일을 분석해야한다는 사실입니다.
 
@@ -274,14 +285,14 @@ Alpaca Finance 서비스에서는 일반 시중은행에서 다양한 투자회�
 Alpaca 서비스의 contract 소스코드에서도 위 서비스를 확인할 수 있습니다.
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_project01.png"| relative_url}})  |
-| 그림.5 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
+| 그림.9 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
 
 또한 [이곳 문서](https://docs.alpacafinance.org/leveraged-yield-farming/pool-specific-parameters-1/pool-specific-parameters#pancakeswap-tusd-pairs-1)를 확인하면, PancakeSwap 풀중에서 Alpaca Finance에서 지원하는 서비스별 Contract주소를 확인할 수 있습니다.
 
 Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트렉트(Contract)주소](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/.mainnet.json#L709)를 json형태로 유지관리 하고 있는 것을 확인할 수 있습니다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake.jpg"| relative_url}})  |
-| 그림.7 Alpaca Finance와 PancakeSwap간의 Tokenflow |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake01.jpg"| relative_url}})  |
+| 그림.10 Alpaca Finance와 PancakeSwap간의 Tokenflow |
 
 # Tokenflow: Kleva
 * TBA(코드 분석 기반)
