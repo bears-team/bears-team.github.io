@@ -132,6 +132,7 @@ Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니�
 위의 경우는 정말 운이 좋은 경우라 볼 수 있고, 보통은 암호화폐 두개를 페어로 하는 것은 고려사항이 많아서 너무 위험한 것 같습니다. 개인적으로는 스테이블코인과 암호화폐 쌍이 보다 안전해 보입니다.
 
 # Tokenflow: Alpaca Finance
+Tokenflow라는 단어는 구글에 검색해도 잘 안 나올겁니다. 왜냐하면 제가 만든 용어라서 그렇습니다. 일반적으로 우리가 기존 시스템(x86, Android, iOS, ...)에서 취약점을 탐지하기 위해서 분석을 할 때, 크게는 두 가지 관점에서 분석을 합니다. 바로 Controlflow, Dataflow입니다. Controlflow는 함수 호출을 중심으로 기능을 분석하면서, 취약한 로직, 코드가 있는 부분을 발견 버그를 취약점을 발전시키는 것이라면 Dataflow 분석은 입력데이터로 부터 이 입력 데이터가 영향을 주는 코드를 중심으로 분석하면서 취약점을 탐지하는 분석입니다. Dataflow기반 취약점 탐지 방법으로는 가장 유명한 기법이 Taint analysis라고 볼 수 있습니다. 이러한 관점을 Blockchain에게 적용했을 때 결국 Smart Contract에서의 취약점이 의미가 있을려면 Token의 무단 인출이 가능해야 함으로 Token을 중심으로 DApp을 분석하자는 관점으로 Tokenflow라는 용어를 만들어 봤습니다. 스마트 컨트렉트 생태계애서의 Dataflow라고 생각할 수 있습니다. 앞으로 제 포스팅에서는 Tokenflow, Tokenflow analysis라는 용어를 계속 사용할 계획입니다.
 
 ## Configuration
 ### Types of nodes
