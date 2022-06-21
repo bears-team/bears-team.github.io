@@ -1,5 +1,5 @@
 ---
-title:  "A Survey On DEX Protocol Part1: Leveraged Yield Farming"
+title:  "A Survey On DEX Protocol Part1: Leveraged Yield Farming-Part1(Overview)"
 excerpt: "DeFi 취약점 연구를 위한 DeFi 프로토콜 소개 시리즈, 그 첫번째 Leveraged Yield Farming에 대한 글입니다."
 
 author: Panda
@@ -13,7 +13,7 @@ tags:
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
 date: 2022-06-14 7:00:00 +09:00
-lastmod: 2022-06-14 20:00:00 +09:00
+lastmod: 2022-06-22 20:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
@@ -131,10 +131,9 @@ Kleva Protocol에서 예로 레버리지 이자 농사를 설명해보겠습니�
 
 위의 경우는 정말 운이 좋은 경우라 볼 수 있고, 보통은 암호화폐 두개를 페어로 하는 것은 고려사항이 많아서 너무 위험한 것 같습니다. 개인적으로는 스테이블코인과 암호화폐 쌍이 보다 안전해 보입니다.
 
-# Tokenflow: Alpaca Finance
-Tokenflow라는 단어는 구글에 검색해도 잘 안 나올겁니다. 왜냐하면 제가 만든 용어라서 그렇습니다. 일반적으로 우리가 기존 시스템(x86, Android, iOS, ...)에서 취약점을 탐지하기 위해서 분석을 할 때, 크게는 두 가지 관점에서 분석을 합니다. 바로 Controlflow, Dataflow입니다. Controlflow는 함수 호출을 중심으로 기능을 분석하면서, 취약한 로직, 코드가 있는 부분을 발견 버그를 취약점을 발전시키는 것이라면 Dataflow 분석은 입력데이터로 부터 이 입력 데이터가 영향을 주는 코드를 중심으로 분석하면서 취약점을 탐지하는 분석입니다. Dataflow기반 취약점 탐지 방법으로는 가장 유명한 기법이 Taint analysis라고 볼 수 있습니다. 이러한 관점을 Blockchain에게 적용했을 때 결국 Smart Contract에서의 취약점이 의미가 있을려면 Token의 무단 인출이 가능해야 함으로 Token을 중심으로 DApp을 분석하자는 관점으로 Tokenflow라는 용어를 만들어 봤습니다. 스마트 컨트렉트 생태계애서의 Dataflow라고 생각할 수 있습니다. 앞으로 제 포스팅에서는 Tokenflow, Tokenflow analysis라는 용어를 계속 사용할 계획입니다.
+# Alpaca Finance
 
-## Configuration
+## Project Configuration
 ### Types of nodes
 * Archive nodes : Has data since genesis block.
 * Full nodes : Receive copies of transactions. Has the current state of the blockchain.
@@ -232,13 +231,10 @@ Hardhat의 경우 localhost RPC의 chainid는 31337이라고 합니다. Hardhat�
 
 이제 우리는 BSC 메인넷도 BNB토큰을 가지고 있는 계정도 가짐으로써, 분석을 위한 기본적인 준비는 된 것 같습니다.
 
-## Alpaca Finance
-
+## The Overview of Alpaca Finance
 Alpaca Finance의 경우 FairLaunch 서비스라는 것을 강조하고 있습니다. 실제 FairLaunch관련 컨트렉트도 github에서 확인할 수 있습니다. 그 개념을 미뤄 짐작해 보면 다음과 같습니다. 
 
 FairLaunch의 반대 경우를 생각해보면 되는데 바로 ICO 또는 PreSale을 생각하면 됩니다. 일반적으로 블록체인 프로젝트를 시작할 때 자금을 모으기 위해 ICO 또는 토큰 PreSale을 합니다. 소스의 몇몇이 초기 저렴하게 토큰을 구매해서 나중에 가격 상승의 혜택을 보게 됩니다. Alpaca Finance의 경우 이러한 ICO 또는 PreSale을 하지 않고 누구나 Lending 풀에 토큰을 예치하고 해당 ibToken을 스테이킹 함으로써 Alpaca 토큰을 가질 수 있습니다. 소수의 인원의 섬점 효과가 없이 누구나 공평하게 Alpaca 커너넌스 토큰을 소요할 수 있습니다. 이러한 특징을 FairLaunch 서비스로 표현하고 있습니다. [FairLaunch 소스코드](https://github.com/bears-team/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/solidity/contracts/6/token/FairLaunch.sol#L47)를 보면 Alpaca토큰 동작과 관련있음을 확인할 수 있습니다.
-
-## The Overview of Alpaca Finance
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_farm02.png"| relative_url}})  |
 | 그림.8 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
@@ -294,9 +290,6 @@ Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트
 
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake01.jpg"| relative_url}})  |
 | 그림.10 Alpaca Finance와 PancakeSwap간의 Tokenflow |
-
-# Tokenflow: Kleva
-* TBA(코드 분석 기반)
 
 # The Difference between Alpha, Alpaca Finance and Kleva
 본인 자체 풀보다 다양한 DeFi와 연동하여 풀들을 사용자들이 여러 DeFi이 돌아다니지 않고 편하게 이자서비스를 할 수 있도록 하는 것이 핵심이고 자기들 대여풀에서 돈을 인출해서 해당 토큰 쌍 APR를 활용할 수 있도록 하여, 중간에 수수료를 챙기는 구조의 금융 서비스라고 생각하면 될 것 같습니다.
