@@ -291,6 +291,8 @@ Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트
 | ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake01.jpg"| relative_url}})  |
 | 그림.10 Alpaca Finance와 PancakeSwap간의 Tokenflow |
 
+Alpaca 서비스에 대한 상세한 소스코드 감사기반 분석은 Tokenflow 분석 포스트에서 기술하도록 하겠습니다.
+
 # The Difference between Alpha, Alpaca Finance and Kleva
 본인 자체 풀보다 다양한 DeFi와 연동하여 풀들을 사용자들이 여러 DeFi이 돌아다니지 않고 편하게 이자서비스를 할 수 있도록 하는 것이 핵심이고 자기들 대여풀에서 돈을 인출해서 해당 토큰 쌍 APR를 활용할 수 있도록 하여, 중간에 수수료를 챙기는 구조의 금융 서비스라고 생각하면 될 것 같습니다.
 

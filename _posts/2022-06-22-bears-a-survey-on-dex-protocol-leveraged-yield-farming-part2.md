@@ -7,6 +7,7 @@ categories:
   - Background
   - Smart Contract
   - Bears Team
+  - Tokenflow Analysis
 tags:
   - DeFi
   - Survey
