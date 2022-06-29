@@ -46,10 +46,10 @@ use_math: true #수식
 Tokenflow라는 단어는 구글에 검색해도 잘 안 나올겁니다. 왜냐하면 제가 만든 용어라서 그렇습니다. 일반적으로 우리가 기존 시스템(x86, Android, iOS, ...)에서 취약점을 탐지하기 위해서 분석을 할 때, 크게는 두 가지 관점에서 분석을 합니다. 바로 Controlflow, Dataflow입니다. Controlflow는 함수 호출을 중심으로 기능을 분석하면서, 취약한 로직, 코드가 있는 부분을 발견 버그를 취약점을 발전시키는 것이라면 Dataflow 분석은 입력데이터로 부터 이 입력 데이터가 영향을 주는 코드를 중심으로 분석하면서 취약점을 탐지하는 분석입니다. Dataflow기반 취약점 탐지 방법으로는 가장 유명한 기법이 Taint analysis라고 볼 수 있습니다. 이러한 관점을 Blockchain에게 적용했을 때 결국 Smart Contract에서의 취약점이 의미가 있을려면 Token의 무단 인출이 가능해야 함으로 Token을 중심으로 DApp을 분석하자는 관점으로 Tokenflow라는 용어를 만들어 봤습니다. 스마트 컨트렉트 생태계애서의 Dataflow라고 생각할 수 있습니다. 앞으로 제 포스팅에서는 Tokenflow, Tokenflow analysis라는 용어를 계속 사용할 계획입니다.
 
 
-## The Overflow Tokenflow of Alpaca Finance
+## The Overview Tokenflow
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/alpaca_farm02.png"| relative_url}})  |
-| 그림.8 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/alpaca_farm02.png"| relative_url}})  |
+| 그림.1 Alpaca Finance Leveraged Yield Farming 중심의 서비스 관계도 |
 
 * Alice : 대여자(Lender), BNB토큰을 Lending Pool, 코드상 Vault에 예치하고 대응하는 ibToken인 ibBNB를 받게 된다. 관련코드는 [여기](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/solidity/contracts/6/protocol/Vault.sol#L207)를 보면됩니다. 실제 코드를 보면 BNB가 아니라 WBNB(Wrapped BNB)라는 것을 확인할 수 있는데, 이것에 대해서는 좀더 조사를해서 내용을 보완하겠습니다. 여기서 우리가 알아야할 것은 최초의 외부 지갑에서 돈이 흘러들어가는 것을 과정을 분석하기 위해서 Vault.sol 파일을 분석해야한다는 사실입니다.
 
@@ -93,15 +93,37 @@ Alpaca Finance 서비스에서는 일반 시중은행에서 다양한 투자회�
 
 Alpaca 서비스의 contract 소스코드에서도 위 서비스를 확인할 수 있습니다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_project01.png"| relative_url}})  |
-| 그림.9 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/alpaca_project01.png"| relative_url}})  |
+| 그림.2 Alpaca Finance 프로젝트 폴더, Alpaca Finance의 경우 외부 서비스의 풀을 그대로 활용하고 있음을 알 수 있다.|
 
 또한 [이곳 문서](https://docs.alpacafinance.org/leveraged-yield-farming/pool-specific-parameters-1/pool-specific-parameters#pancakeswap-tusd-pairs-1)를 확인하면, PancakeSwap 풀중에서 Alpaca Finance에서 지원하는 서비스별 Contract주소를 확인할 수 있습니다.
 
 Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트렉트(Contract)주소](https://github.com/alpaca-finance/bsc-alpaca-contract/blob/c6fafa2a9f32604464ed3a5116384a476800e45c/.mainnet.json#L709)를 json형태로 유지관리 하고 있는 것을 확인할 수 있습니다.
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-02-bears-a-survey-on-dex-protocol-leveraged-yield-farming/alpaca_pancake01.jpg"| relative_url}})  |
-| 그림.10 Alpaca Finance와 PancakeSwap간의 Tokenflow |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/alpaca_pancake01.jpg"| relative_url}})  |
+| 그림.3 Alpaca Finance와 PancakeSwap간의 Tokenflow |
+
+## The Detailed Tokenflow(With respect to BNB)
+
+소스코드 분석을 기반으로 EOA(개인지갑)에서 부터 Pancakeswap까지의 흐름을 도식화한 것입니다. 아래 그림.4에서 PancakeswapWork가 바로 Yield Farming에 관련된 핵심 컨트렉트입니다. 
+
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/overview_alpaca_tokenflow"| relative_url}})  |
+| 그림.4 EOA에서 PancakeSwap까지의 Tokenflow |
+
+### 왜 Yield Farming 컨트렉트 파일의 접미사가 Worker일까?
+
+* 소스코드를 분석하면 다양한 Worker들이 존재하는 것을 확인할 수 있음
+* 연동되는 서비스별 Work가 존재함
+* 개인적인 생각으로는 Vault의 자산 증식에 기여하는 일꾼이라는 개념으로 Worker라는 접미사를 붙인 것으로 추정함
+
+### Overview를 통해 확인하는 Alpaca Finance의 수익 구조
+
+* Alpaca Finance 서비스를 통해 Yield Farming을 위해 부족한 돈은 위 그림.4에서 처럼 Alpaca Finance내 Vault에서 대출 받게 됨. 
+* 이는 대출 수수로 형태로 Vault의 자산을 늘이게 됨
+* 또한 Vault에 유동성을 공급하는 사람들이 추가적인 이자수익을 획득하기 위해 ibToken를 FairLaunch를 통해 Alpaca Token를 받고, 이 Alpaca Token를 스테이킹하거나 유통하여 Alpaca Token을 유통시킴, 이 유통의 힘으로 Alpaca Finance의 가치 상승에 기여함
+* Yield Farming을 하는 가운데, 청산이되는 농부들이 있을 것이며, 해당 청산을 통해 Vault 및 Alpaca Token의 가치를 향상 시켜서 이윤을 창출함
+* Alpaca Token의 가치 상승, 에초에 개발자 그룹에 할당된 Alpaca Token의 매도를 통해, 개발자 그룹은 현금 확보가 가능함
+
 
 # Conclusion
 
