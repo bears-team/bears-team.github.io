@@ -107,7 +107,7 @@ Alpaca 서비스의 경우 자신들이 서비스하는 [토큰쌍 풀의 컨트
 
 소스코드 분석을 기반으로 EOA(개인지갑)에서 부터 Pancakeswap까지의 흐름을 도식화한 것입니다. 아래 그림.4에서 PancakeswapWork가 바로 Yield Farming에 관련된 핵심 컨트렉트입니다. 
 
-| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/overview_alpaca_tokenflow"| relative_url}})  |
+| ![Image Alt 텍스트]({{"/assets/images_post/2022-06-22-bears-a-survey-on-dex-protocol-leveraged-yield-farming-part2/overview_alpaca_tokenflow.png"| relative_url}})  |
 | 그림.4 EOA에서 PancakeSwap까지의 Tokenflow |
 
 ### 왜 Yield Farming 컨트렉트 파일의 접미사가 Worker일까?
