@@ -32,7 +32,14 @@ use_math: true #수식
 # Introudction
   * [Alexander Schlindwein](https://twitter.com/bobface16)이 2021년 5월 2일에 Immunefi에 제보한 취약점으로 Floshloan기반의 논리취약점. 
   * Alexander Schlindwein의 경우 다수의 DeFi관련 취약점을 제보한 실력이 높은 화이트해커로 DeFi업계에서 명성이 있는 것으로 주변분들의 얘기를 통해 알게됨.
-  * 이 취약점 분석이 중요한 이유중 하나로 DeFi관련해서 취약점 분석시, 공격 코드가 공개된 블로그를 한 번도 확인하지 못 했는데, 해당 취약점의 경우 공격코드가 공개된 유일한 취약점 분석 블로그로 생각해도 된다. Flashloan 취약점을 실제로 돌려볼 수 있는 소중한 기회라고 생각하고 자세히 분석할 필요성이 존재한다.
+  * 이 취약점 분석이 중요한 이유중 하나로 DeFi관련해서 취약점 분석시, 공격 코드가 공개된 블로그를 한 번도 확인하지 못 했는데, 해당 취약점의 경우 공격코드가 공개된 유일한 취약점 분석 블로그
+  * Flashloan 취약점을 실제로 돌려볼 수 있는 소중한 기회라고 생각하고 자세히 분석할 필요성이 존재함
+
+## Summary
+  * flashloan 기능을 활용한 공격, 최대 60,000ETH 유출 가능
+  * 21년 5월2일에 Alexander Schlindwein이 immuefi에 제보
+  * Fei Protocol은 Alexander Schlindwein에게 $800,000 지급
+  * 이후 Fei Protocol은 취약점에 대한 분석을 결과를 발표함
 
 # Vulnerability
 
