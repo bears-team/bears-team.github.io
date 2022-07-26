@@ -69,3 +69,5 @@ use_math: true #수식
 * [https://medium.com/fei-protocol/fei-bonding-curve-bug-post-mortem-98d2c6f271e9](https://medium.com/fei-protocol/fei-bonding-curve-bug-post-mortem-98d2c6f271e9)
 * [https://medium.com/immunefi/a-guide-to-reproducing-ethereum-exploits-fei-protocol-224b30b517d6](https://medium.com/immunefi/a-guide-to-reproducing-ethereum-exploits-fei-protocol-224b30b517d6)
 * [https://github.com/fei-protocol/fei-protocol-core/pull/81/commits/f10a43d91fce77fe1d03f7914483120698aabc72](https://github.com/fei-protocol/fei-protocol-core/pull/81/commits/f10a43d91fce77fe1d03f7914483120698aabc72)
+* [https://www.quicknode.com/guides/web3-sdks/how-to-fork-ethereum-mainnet-with-hardhat](https://www.quicknode.com/guides/web3-sdks/how-to-fork-ethereum-mainnet-with-hardhat)
+* [https://docs.alchemy.com/alchemy/introduction/getting-started](https://docs.alchemy.com/alchemy/introduction/getting-started)
