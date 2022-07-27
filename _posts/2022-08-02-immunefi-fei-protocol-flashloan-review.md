@@ -71,3 +71,5 @@ use_math: true #수식
 * [https://github.com/fei-protocol/fei-protocol-core/pull/81/commits/f10a43d91fce77fe1d03f7914483120698aabc72](https://github.com/fei-protocol/fei-protocol-core/pull/81/commits/f10a43d91fce77fe1d03f7914483120698aabc72)
 * [https://www.quicknode.com/guides/web3-sdks/how-to-fork-ethereum-mainnet-with-hardhat](https://www.quicknode.com/guides/web3-sdks/how-to-fork-ethereum-mainnet-with-hardhat)
 * [https://docs.alchemy.com/alchemy/introduction/getting-started](https://docs.alchemy.com/alchemy/introduction/getting-started)
+* [https://docs.soliditylang.org/en/v0.7.4/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.7.4/using-the-compiler.html#input-description)
+* 
