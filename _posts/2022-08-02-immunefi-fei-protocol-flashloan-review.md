@@ -12,8 +12,8 @@ tags:
   - Review
   - Korean
 #last_modified_at: 2021-09-23 18:06:00 +09:00
-date: 2022-08-02 7:00:00 +09:00
-lastmod: 2022-08-02 7:00:00 +09:00
+date: 2022-08-09 7:00:00 +09:00
+lastmod: 2022-08-09 7:00:00 +09:00
 sitemap :
 changefreq : daily
 priority : 1.0
